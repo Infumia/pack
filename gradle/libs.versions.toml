@@ -1,0 +1,6 @@
+[versions]
+
+[libraries]
+
+[plugins]
+nexus = { id = "com.vanniktech.maven.publish", version = "0.28.0" }
