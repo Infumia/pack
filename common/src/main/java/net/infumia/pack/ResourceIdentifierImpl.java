@@ -1,6 +1,7 @@
 package net.infumia.pack;
 
 final class ResourceIdentifierImpl<T extends ResourceProducer> implements ResourceIdentifier<T> {
+
     private final String id;
     private final Class<T> type;
 

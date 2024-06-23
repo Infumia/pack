@@ -1,5 +1,10 @@
 package net.infumia.pack;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
@@ -8,20 +13,19 @@ import team.unnamed.creative.font.BitMapFontProvider;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
 final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract {
+
     private final Key textureKey;
     private final Writable writable;
 
     private Set<Texture> textures;
     private Set<FontProvider> fontProviders;
 
-    ResourceProducerSpacesDefault(final Key fontKey, final Key textureKey, final Writable writable) {
+    ResourceProducerSpacesDefault(
+        final Key fontKey,
+        final Key textureKey,
+        final Writable writable
+    ) {
         super(fontKey);
         this.textureKey = textureKey;
         this.writable = writable;
@@ -63,7 +67,10 @@ final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract
         return this.textures;
     }
 
-    private BitMapFontProvider.Builder prepareBuilder(final ArbitraryCharacterFactory characterFactory, final int length) {
+    private BitMapFontProvider.Builder prepareBuilder(
+        final ArbitraryCharacterFactory characterFactory,
+        final int length
+    ) {
         final BitMapFontProvider.Builder fontProviderBuilder = FontProvider.bitMap();
         final char character = characterFactory.create();
         fontProviderBuilder.characters(String.valueOf(character));

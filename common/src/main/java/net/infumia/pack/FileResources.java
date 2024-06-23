@@ -1,17 +1,17 @@
 package net.infumia.pack;
 
+import java.util.Arrays;
+import java.util.Collection;
 import team.unnamed.creative.atlas.Atlas;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.model.Model;
 import team.unnamed.creative.texture.Texture;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 /**
  * Utility class for creating various types of {@link FileResource} instances.
  */
 public final class FileResources {
+
     /**
      * Creates a {@link FileResource} for the specified texture.
      *

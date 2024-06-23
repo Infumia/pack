@@ -1,14 +1,14 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 abstract class ResourceProducerSpacesAbstract implements ResourceProducerSpaces {
+
     private final Key fontKey;
     protected Map<Integer, Character> mapping;
 

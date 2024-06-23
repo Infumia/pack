@@ -1,9 +1,8 @@
 package net.infumia.pack;
 
-import net.kyori.adventure.text.format.TextColor;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.format.TextColor;
 
 /**
  * Represents an interface for a glyph collection that supports multi-character glyphs.
@@ -27,7 +26,8 @@ public interface ResourceProducerImageMultichar extends ResourceProducer {
      * @return A list of GlyphAppendable representing the translated text.
      * @throws IllegalArgumentException If translation fails.
      */
-    default List<GlyphAppendable> translate(final String text, final TextColor color) throws IllegalArgumentException {
+    default List<GlyphAppendable> translate(final String text, final TextColor color)
+        throws IllegalArgumentException {
         final List<GlyphAppendable> glyphs = new ArrayList<>();
         for (final char character : text.toCharArray()) {
             if (character == ' ') {

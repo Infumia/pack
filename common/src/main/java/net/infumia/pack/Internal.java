@@ -1,13 +1,13 @@
 package net.infumia.pack;
 
-import net.kyori.adventure.key.Key;
-import team.unnamed.creative.base.Writable;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import net.kyori.adventure.key.Key;
+import team.unnamed.creative.base.Writable;
 
 final class Internal {
+
     static final String DEFAULT_NAMESPACE = "glyphs";
     static final Key DEFAULT_SPACES_FONT_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces");
     static final int SEPARATOR_WIDTH = 1;
@@ -23,8 +23,10 @@ final class Internal {
 
     static int calculateWidth(
         final BufferedImage image,
-        final int fromX, final int fromY,
-        final int toX, final int toY
+        final int fromX,
+        final int fromY,
+        final int toX,
+        final int toY
     ) {
         int width;
         for (width = toX - 1; width > fromX; width--) {

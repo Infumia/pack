@@ -9,6 +9,7 @@ import java.util.HashSet;
  */
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharacterFactory {
+
     private final Collection<Character> reserved;
     private char startPoint;
 
@@ -18,7 +19,10 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
      * @param startPoint the starting character for generating new characters.
      * @param reserved   the collection of characters that should not be produced by the factory. Cannot be null.
      */
-    public ArbitraryCharacterFactoryReserved(final char startPoint, final Collection<Character> reserved) {
+    public ArbitraryCharacterFactoryReserved(
+        final char startPoint,
+        final Collection<Character> reserved
+    ) {
         this.startPoint = startPoint;
         this.reserved = reserved;
     }
@@ -53,6 +57,7 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
     }
 
     private static final class Internal {
+
         private static final Lazy<Collection<Character>> RESERVED = Lazy.of(() -> {
             final Collection<Character> reserved = new HashSet<>();
             for (char c = 'a'; c <= 'z'; c++) {
@@ -66,8 +71,44 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
             }
             Collections.addAll(
                 reserved,
-                '!', '?', ':', '$', ';', '#', '@', '%', '^', '&', '*', '(', ')', '_', '-', '+', '/', '\\', '"', '\'',
-                '{', '}', '[', ']', '~', '`', '<', '>', ',', '.', '|', '\n', '\r', '\b', '\f', '\t', ' ', '='
+                '!',
+                '?',
+                ':',
+                '$',
+                ';',
+                '#',
+                '@',
+                '%',
+                '^',
+                '&',
+                '*',
+                '(',
+                ')',
+                '_',
+                '-',
+                '+',
+                '/',
+                '\\',
+                '"',
+                '\'',
+                '{',
+                '}',
+                '[',
+                ']',
+                '~',
+                '`',
+                '<',
+                '>',
+                ',',
+                '.',
+                '|',
+                '\n',
+                '\r',
+                '\b',
+                '\f',
+                '\t',
+                ' ',
+                '='
             );
             return reserved;
         });

@@ -1,5 +1,13 @@
 package net.infumia.pack;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
@@ -9,16 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
+
     private final Key key;
     private final Texture texture;
     private final Map<TextureProperties, ResourceProducerImageMultichar> propertiesToMultichar;
@@ -33,10 +33,14 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
     ) {
         this.key = key;
         this.texture = texture;
-        this.propertiesToMultichar = propertiesList.stream()
-            .collect(Collectors.toMap(
-                Function.identity(),
-                properties -> ResourceProducers.multichar(key, texture, properties, charactersMapping))
+        this.propertiesToMultichar = propertiesList
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    Function.identity(),
+                    properties ->
+                        ResourceProducers.multichar(key, texture, properties, charactersMapping)
+                )
             );
     }
 
@@ -52,15 +56,17 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
     }
 
     @Override
-    public void produce(final ArbitraryCharacterFactory characterFactory) throws ResourceAlreadyProducedException {
+    public void produce(final ArbitraryCharacterFactory characterFactory)
+        throws ResourceAlreadyProducedException {
         if (this.fontProviders != null) {
             throw new ResourceAlreadyProducedException();
         }
         this.fontProviders = new HashSet<>();
-        this.propertiesToMultichar.values().forEach(multichar -> {
-            multichar.produce(characterFactory);
-            this.fontProviders.addAll(multichar.fontProviders());
-        });
+        this.propertiesToMultichar.values()
+            .forEach(multichar -> {
+                multichar.produce(characterFactory);
+                this.fontProviders.addAll(multichar.fontProviders());
+            });
     }
 
     @Override
@@ -75,7 +81,8 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
 
     private ResourceProducerImageMultichar getGlyphCollection(final int height, final int ascent) {
         final TextureProperties properties = new TextureProperties(height, ascent);
-        final ResourceProducerImageMultichar glyphCollection = this.propertiesToMultichar.get(properties);
+        final ResourceProducerImageMultichar glyphCollection =
+            this.propertiesToMultichar.get(properties);
         if (glyphCollection == null) {
             throw new IllegalArgumentException("Font with " + properties + " not found");
         }
@@ -99,7 +106,9 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
         final String text,
         final TextColor color
     ) throws IllegalArgumentException {
-        return Collections.unmodifiableList(this.getGlyphCollection(height, ascent).translate(text, color));
+        return Collections.unmodifiableList(
+            this.getGlyphCollection(height, ascent).translate(text, color)
+        );
     }
 
     @Override
@@ -109,9 +118,12 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
         final Component component
     ) throws IllegalArgumentException {
         final ResourceProducerImageMultichar collection = this.getGlyphCollection(height, ascent);
-        final Collection<Kyori.ColoredComponentTextPart> textAndColors = Kyori.toColoredParts(component);
+        final Collection<Kyori.ColoredComponentTextPart> textAndColors = Kyori.toColoredParts(
+            component
+        );
         return Collections.unmodifiableList(
-            textAndColors.stream()
+            textAndColors
+                .stream()
                 .map(parts -> collection.translate(parts.text(), parts.color()))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList())

@@ -1,11 +1,11 @@
 package net.infumia.pack;
 
-import net.kyori.adventure.text.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.Component;
 
 final class GlyphComponentBuilderImpl implements GlyphComponentBuilder {
+
     private final ResourceProducerSpaces spacesProducer;
     private final int initialPosition;
     private final Component baseComponent;
@@ -64,8 +64,9 @@ final class GlyphComponentBuilderImpl implements GlyphComponentBuilder {
         }
         Component component = this.baseComponent;
         if (this.initialPosition != 0) {
-            component =
-                component.append(this.spacesProducer.translate(this.initialPosition).toAdventure());
+            component = component.append(
+                this.spacesProducer.translate(this.initialPosition).toAdventure()
+            );
         }
         for (final Glyph glyph : this.glyphs) {
             component = component.append(glyph.toAdventure());

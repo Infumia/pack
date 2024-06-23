@@ -6,12 +6,18 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
 final class GlyphImagePrepared implements GlyphAppendable, GlyphColorable {
+
     private final Key key;
     private final char character;
     private final int width;
     private TextColor color;
 
-    GlyphImagePrepared(final Key key, final char character, final int width, final TextColor color) {
+    GlyphImagePrepared(
+        final Key key,
+        final char character,
+        final int width,
+        final TextColor color
+    ) {
         this.key = key;
         this.character = character;
         this.width = width;
@@ -20,7 +26,9 @@ final class GlyphImagePrepared implements GlyphAppendable, GlyphColorable {
 
     @Override
     public Component toAdventure() {
-        return Component.text(this.character).font(this.key).color(this.color == null ? NamedTextColor.BLACK : this.color);
+        return Component.text(this.character)
+            .font(this.key)
+            .color(this.color == null ? NamedTextColor.BLACK : this.color);
     }
 
     @Override

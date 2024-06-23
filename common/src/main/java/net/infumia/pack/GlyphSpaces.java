@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import team.unnamed.creative.font.Font;
 
 final class GlyphSpaces implements GlyphAppendable {
+
     static final GlyphAppendable DEFAULT = new GlyphSpaces(Font.MINECRAFT_DEFAULT, " ", 4);
 
     private final Component component;

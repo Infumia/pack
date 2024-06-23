@@ -1,10 +1,10 @@
 package net.infumia.pack;
 
+import java.util.Collection;
 import team.unnamed.creative.ResourcePack;
 
-import java.util.Collection;
-
 final class FileResourceAll implements FileResource {
+
     private final Collection<FileResource> resources;
 
     FileResourceAll(final Collection<FileResource> resources) {

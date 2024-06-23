@@ -4,6 +4,7 @@ package net.infumia.pack;
  * Utility class providing factory methods to create instances of {@link FileResourceCompiler}.
  */
 public final class FileResourceCompilers {
+
     /**
      * Creates a simple {@link FileResourceCompiler} instance with a custom character factory.
      *

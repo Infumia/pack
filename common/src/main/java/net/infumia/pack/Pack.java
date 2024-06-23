@@ -1,9 +1,8 @@
 package net.infumia.pack;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Contract;
 import team.unnamed.creative.ResourcePack;
-
-import java.util.Collection;
 
 /**
  * An interface represents a collection of resources and provides methods to manage and manipulate them.

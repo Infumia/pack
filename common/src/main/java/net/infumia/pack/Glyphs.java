@@ -4,6 +4,7 @@ package net.infumia.pack;
  * Utility class for working with glyphs.
  */
 public final class Glyphs {
+
     /**
      * Returns an empty glyph instance.
      *

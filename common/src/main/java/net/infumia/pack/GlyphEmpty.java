@@ -4,10 +4,10 @@ import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.text.Component;
 
 final class GlyphEmpty implements GlyphAppendable {
+
     static final GlyphEmpty INSTANCE = new GlyphEmpty();
 
-    private GlyphEmpty() {
-    }
+    private GlyphEmpty() {}
 
     @Override
     public Component toAdventure() throws ResourceNotProducedException {

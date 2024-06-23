@@ -1,15 +1,5 @@
 package net.infumia.pack;
 
-import net.infumia.pack.exception.ResourceAlreadyProducedException;
-import net.infumia.pack.exception.ResourceNotProducedException;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.format.TextColor;
-import org.jetbrains.annotations.NotNull;
-import team.unnamed.creative.font.BitMapFontProvider;
-import team.unnamed.creative.font.FontProvider;
-import team.unnamed.creative.texture.Texture;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,8 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.imageio.ImageIO;
+import net.infumia.pack.exception.ResourceAlreadyProducedException;
+import net.infumia.pack.exception.ResourceNotProducedException;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.format.TextColor;
+import org.jetbrains.annotations.NotNull;
+import team.unnamed.creative.font.BitMapFontProvider;
+import team.unnamed.creative.font.FontProvider;
+import team.unnamed.creative.texture.Texture;
 
 final class ResourceProducerImageMulticharImpl implements ResourceProducerImageMultichar {
+
     private final Map<Character, Character> originToChar = new HashMap<>();
 
     private final Key key;
@@ -56,7 +56,8 @@ final class ResourceProducerImageMulticharImpl implements ResourceProducerImageM
     }
 
     @Override
-    public void produce(final ArbitraryCharacterFactory characterFactory) throws ResourceAlreadyProducedException {
+    public void produce(final ArbitraryCharacterFactory characterFactory)
+        throws ResourceAlreadyProducedException {
         if (this.fontProviders != null) {
             throw new ResourceAlreadyProducedException();
         }
@@ -97,25 +98,35 @@ final class ResourceProducerImageMulticharImpl implements ResourceProducerImageM
         int width = 0;
         for (int lineIndex = 0; lineIndex < this.charactersMapping.size(); lineIndex++) {
             final String line = this.charactersMapping.get(lineIndex);
-            for (int characterIndex = 0; characterIndex < line.toCharArray().length; characterIndex++) {
+            for (
+                int characterIndex = 0;
+                characterIndex < line.toCharArray().length;
+                characterIndex++
+            ) {
                 if (line.charAt(characterIndex) == character) {
                     if (this.image == null) {
                         this.cacheImage();
                     }
                     if (this.image == null) {
-                        throw new IllegalArgumentException("Image " + this.texture.key() + " not found");
+                        throw new IllegalArgumentException(
+                            "Image " + this.texture.key() + " not found"
+                        );
                     }
                     final int filePartWidth =
                         this.image.getWidth() / this.charactersMapping.get(0).length();
-                    final int filePartHeight = this.image.getHeight() / this.charactersMapping.size();
-                    width = (int) Math.ceil(((double) this.properties.height() / (double) filePartHeight)
-                                            * Internal.calculateWidth(
-                        this.image,
-                        filePartWidth * characterIndex,
-                        filePartHeight * lineIndex,
-                        filePartWidth * (characterIndex + 1),
-                        filePartHeight * (lineIndex + 1)))
-                            + Internal.SEPARATOR_WIDTH;
+                    final int filePartHeight =
+                        this.image.getHeight() / this.charactersMapping.size();
+                    width = (int) Math.ceil(
+                        ((double) this.properties.height() / (double) filePartHeight) *
+                        Internal.calculateWidth(
+                            this.image,
+                            filePartWidth * characterIndex,
+                            filePartHeight * lineIndex,
+                            filePartWidth * (characterIndex + 1),
+                            filePartHeight * (lineIndex + 1)
+                        )
+                    ) +
+                    Internal.SEPARATOR_WIDTH;
                     break;
                 }
             }

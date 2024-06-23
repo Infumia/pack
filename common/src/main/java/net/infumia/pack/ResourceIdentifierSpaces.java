@@ -4,6 +4,7 @@ package net.infumia.pack;
  * Utility class containing resource identifiers for various resource types.
  */
 public final class ResourceIdentifierSpaces {
+
     /**
      * Resource identifier for spaces resource producer.
      */

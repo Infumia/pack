@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
 final class GlyphImageColoredImpl implements GlyphImageColored {
+
     private final GlyphImage original;
     private TextColor color;
 

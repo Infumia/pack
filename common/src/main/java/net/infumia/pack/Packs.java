@@ -4,6 +4,7 @@ package net.infumia.pack;
  * Utility class for creating instances of {@link Pack}.
  */
 public final class Packs {
+
     /**
      * Creates a new Pack instance with the specified file resource compiler.
      *

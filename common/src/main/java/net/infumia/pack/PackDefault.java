@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 final class PackDefault implements Pack {
+
     private final FileResourceCompiler compiler;
     private final Map<String, ResourceProducer> raw = new HashMap<>();
     private final Map<String, ResourceProducer> compiled = new HashMap<>();
@@ -33,9 +34,14 @@ final class PackDefault implements Pack {
     }
 
     @Override
-    public <T extends ResourceProducer> Pack with(final ResourceIdentifier<T> id, final T producer) {
+    public <T extends ResourceProducer> Pack with(
+        final ResourceIdentifier<T> id,
+        final T producer
+    ) {
         if (this.raw.containsKey(id.key()) || this.compiled.containsKey(id.key())) {
-            throw new IllegalArgumentException("Producer with " + id.key() + " identifier already registered");
+            throw new IllegalArgumentException(
+                "Producer with " + id.key() + " identifier already registered"
+            );
         }
         this.raw.put(id.key(), producer);
         return this;
@@ -51,7 +57,9 @@ final class PackDefault implements Pack {
     public <T extends ResourceProducer> T get(final ResourceIdentifier<T> id)
         throws IllegalArgumentException {
         if (!this.compiled.containsKey(id.key())) {
-            throw new IllegalArgumentException("Producer with " + id.key() + " identifier is not compiled");
+            throw new IllegalArgumentException(
+                "Producer with " + id.key() + " identifier is not compiled"
+            );
         }
         final ResourceProducer producer = this.compiled.get(id.key());
         if (!id.type().isAssignableFrom(producer.getClass())) {

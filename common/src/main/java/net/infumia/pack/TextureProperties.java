@@ -6,6 +6,7 @@ import java.util.Objects;
  * Represents the properties of a texture, including its height and ascent.
  */
 public final class TextureProperties {
+
     private final int height;
     private final int ascent;
 
@@ -57,8 +58,8 @@ public final class TextureProperties {
 
     @Override
     public String toString() {
-        return "TextureProperties[" +
-               "height=" + this.height + ", " +
-               "ascent=" + this.ascent + ']';
+        return (
+            "TextureProperties[" + "height=" + this.height + ", " + "ascent=" + this.ascent + ']'
+        );
     }
 }

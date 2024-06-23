@@ -1,15 +1,15 @@
 package net.infumia.pack;
 
+import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.texture.Texture;
-
-import java.util.List;
 
 /**
  * Utility class for creating instances of {@link ResourceProducerSpaces}.
  */
 public final class ResourceProducers {
+
     /**
      * Creates a space producer with specified font key, texture key, and writable.
      *
@@ -53,7 +53,11 @@ public final class ResourceProducers {
      * @param properties The properties of the glyph image. Cannot be null.
      * @return A {@link GlyphImage} instance.
      */
-    public static GlyphImage image(final Key key, final Texture texture, final TextureProperties properties) {
+    public static GlyphImage image(
+        final Key key,
+        final Texture texture,
+        final TextureProperties properties
+    ) {
         return new GlyphImageImpl(key, texture, properties);
     }
 
@@ -72,7 +76,12 @@ public final class ResourceProducers {
         final List<TextureProperties> propertiesList,
         final List<String> charactersMapping
     ) {
-        return new ResourceProducerLanguageImpl(fontKey, texture, propertiesList, charactersMapping);
+        return new ResourceProducerLanguageImpl(
+            fontKey,
+            texture,
+            propertiesList,
+            charactersMapping
+        );
     }
 
     /**
@@ -90,7 +99,12 @@ public final class ResourceProducers {
         final TextureProperties properties,
         final List<String> charactersMapping
     ) {
-        return new ResourceProducerImageMulticharImpl(fontKey, texture, properties, charactersMapping);
+        return new ResourceProducerImageMulticharImpl(
+            fontKey,
+            texture,
+            properties,
+            charactersMapping
+        );
     }
 
     private ResourceProducers() {

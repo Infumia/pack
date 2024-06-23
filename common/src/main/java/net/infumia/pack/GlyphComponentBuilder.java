@@ -1,15 +1,13 @@
 package net.infumia.pack;
 
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-
-import java.util.List;
 
 /**
  * Interface for building glyph components with various positioning and appending capabilities.
  */
 public interface GlyphComponentBuilder {
-
     /**
      * Creates a universal GlyphComponentBuilder with the specified space producer.
      *
@@ -27,7 +25,11 @@ public interface GlyphComponentBuilder {
      * @return A new GlyphComponentBuilder instance.
      */
     static GlyphComponentBuilder gui(final ResourceProducerSpaces spacesProducer) {
-        return new GlyphComponentBuilderImpl(spacesProducer, -8, Component.text("", NamedTextColor.WHITE));
+        return new GlyphComponentBuilderImpl(
+            spacesProducer,
+            -8,
+            Component.text("", NamedTextColor.WHITE)
+        );
     }
 
     /**
@@ -63,7 +65,10 @@ public interface GlyphComponentBuilder {
      * @param glyph        The glyph to append.
      * @return This GlyphComponentBuilder instance.
      */
-    default GlyphComponentBuilder append(final PositionType positionType, final GlyphAppendable glyph) {
+    default GlyphComponentBuilder append(
+        final PositionType positionType,
+        final GlyphAppendable glyph
+    ) {
         return this.append(positionType, 0, glyph);
     }
 
@@ -75,7 +80,11 @@ public interface GlyphComponentBuilder {
      * @param glyphes      The list of glyphs to append.
      * @return This GlyphComponentBuilder instance.
      */
-    GlyphComponentBuilder append(PositionType positionType, int position, List<? extends GlyphAppendable> glyphes);
+    GlyphComponentBuilder append(
+        PositionType positionType,
+        int position,
+        List<? extends GlyphAppendable> glyphes
+    );
 
     /**
      * Appends a list of glyphs with specified position type and default position (0).
@@ -119,7 +128,10 @@ public interface GlyphComponentBuilder {
      * @param glyphList The list of glyphs to append.
      * @return This GlyphComponentBuilder instance.
      */
-    default GlyphComponentBuilder append(final int position, final List<? extends GlyphAppendable> glyphList) {
+    default GlyphComponentBuilder append(
+        final int position,
+        final List<? extends GlyphAppendable> glyphList
+    ) {
         return this.append(PositionType.ABSOLUTE, position, glyphList);
     }
 
@@ -155,6 +167,6 @@ public interface GlyphComponentBuilder {
      */
     enum PositionType {
         ABSOLUTE,
-        RELATIVE
+        RELATIVE,
     }
 }

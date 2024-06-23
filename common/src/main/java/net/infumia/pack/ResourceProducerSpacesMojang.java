@@ -1,14 +1,13 @@
 package net.infumia.pack;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.font.SpaceFontProvider;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 
 final class ResourceProducerSpacesMojang extends ResourceProducerSpacesAbstract {
 
@@ -32,7 +31,10 @@ final class ResourceProducerSpacesMojang extends ResourceProducerSpacesAbstract 
         final SpaceFontProvider.Builder fontProviderBuilder = FontProvider.space();
         for (int length = 1; length <= 2048; length *= 2) {
             fontProviderBuilder.advance(this.retrieveCharacter(characterFactory, length), length);
-            fontProviderBuilder.advance(this.retrieveCharacter(characterFactory, length * (-1)), length * (-1));
+            fontProviderBuilder.advance(
+                this.retrieveCharacter(characterFactory, length * (-1)),
+                length * (-1)
+            );
         }
         this.fontProviders = Collections.singleton(fontProviderBuilder.build());
     }
@@ -45,7 +47,10 @@ final class ResourceProducerSpacesMojang extends ResourceProducerSpacesAbstract 
         return this.fontProviders;
     }
 
-    private char retrieveCharacter(final ArbitraryCharacterFactory characterFactory, final int length) {
+    private char retrieveCharacter(
+        final ArbitraryCharacterFactory characterFactory,
+        final int length
+    ) {
         final char character = characterFactory.create();
         this.mapping.put(length, character);
         return character;

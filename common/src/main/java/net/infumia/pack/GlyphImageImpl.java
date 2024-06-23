@@ -1,5 +1,12 @@
 package net.infumia.pack;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import javax.imageio.ImageIO;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
@@ -8,15 +15,8 @@ import team.unnamed.creative.font.BitMapFontProvider;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
 final class GlyphImageImpl implements GlyphImage {
+
     private final Key key;
     private final Texture texture;
     private final TextureProperties properties;
@@ -44,7 +44,8 @@ final class GlyphImageImpl implements GlyphImage {
     }
 
     @Override
-    public void produce(final ArbitraryCharacterFactory characterFactory) throws ResourceAlreadyProducedException {
+    public void produce(final ArbitraryCharacterFactory characterFactory)
+        throws ResourceAlreadyProducedException {
         if (this.fontProviders != null) {
             throw new ResourceAlreadyProducedException();
         }
@@ -76,12 +77,15 @@ final class GlyphImageImpl implements GlyphImage {
             return this.width;
         }
         try {
-            final BufferedImage image =
-                ImageIO.read(new ByteArrayInputStream(this.texture.data().toByteArray()));
+            final BufferedImage image = ImageIO.read(
+                new ByteArrayInputStream(this.texture.data().toByteArray())
+            );
             final int fileHeight = image.getHeight();
             this.width = (int) Math.ceil(
-                ((double) this.properties.height() / (double) fileHeight) * Internal.calculateWidth(image)
-            ) + Internal.SEPARATOR_WIDTH;
+                ((double) this.properties.height() / (double) fileHeight) *
+                Internal.calculateWidth(image)
+            ) +
+            Internal.SEPARATOR_WIDTH;
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

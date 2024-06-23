@@ -3,6 +3,7 @@ package net.infumia.pack;
 import java.util.function.Supplier;
 
 final class Lazy<T> implements Supplier<T> {
+
     static <T> Lazy<T> of(final Supplier<T> supplier) {
         return new Lazy<>(supplier);
     }
