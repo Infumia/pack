@@ -34,9 +34,6 @@ fun Project.spotless() {
                 .config(
                     mapOf(
                         "parser" to "toml",
-                        "tabWidth" to 4,
-                        "useTabs" to false,
-                        "printWidth" to 100,
                         "plugins" to listOf("prettier-plugin-toml"),
                     ),
                 )
