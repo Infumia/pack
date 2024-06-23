@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-subprojects {
-    apply<JavaPlugin>()
-}
+subprojects { apply<JavaPlugin>() }
 
 repositories.mavenCentral()
 
@@ -28,9 +26,29 @@ spotless {
             .yamlFeature("SPLIT_LINES", false)
     }
 
+    kotlinGradle {
+        target(
+            "buildSrc/**/*.gradle.kts",
+            "*.gradle.kts",
+            *subprojects
+                .map { it.name }
+                .map { "$it/*.gradle.kts" }
+                .toTypedArray(),
+        )
+        ktfmt().kotlinlangStyle().configure {
+            it.setMaxWidth(80)
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+            it.setRemoveUnusedImport(true)
+        }
+    }
+
     java {
         target(
-            "**/src/main/java/net/infumia/**/*.java",
+            *subprojects
+                .map { it.name }
+                .map { "$it/src/main/java/**/*.java" }
+                .toTypedArray(),
         )
         importOrder()
         removeUnusedImports()

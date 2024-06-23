@@ -1,16 +1,10 @@
-plugins {
-    `kotlin-dsl`
-}
+plugins { `kotlin-dsl` }
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
 }
 
-dependencies {
-    implementation(libs.nexus.plugin)
-}
+dependencies { implementation(libs.nexus.plugin) }
 
-kotlin {
-    jvmToolchain(11)
-}
+kotlin { jvmToolchain(11) }
