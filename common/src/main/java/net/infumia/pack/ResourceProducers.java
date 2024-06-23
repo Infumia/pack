@@ -19,21 +19,21 @@ public final class ResourceProducers {
      * @param spacesWritable The writable instance for spaces. Cannot be null.
      * @return A {@link ResourceProducerSpaces} instance.
      */
-    public static ResourceProducerSpaces spaces(
+    public static ResourceProducerSpaces spacesBitmap(
         final Key fontKey,
         final Key textureKey,
         final Writable spacesWritable
     ) {
-        return new ResourceProducerSpacesDefault(fontKey, textureKey, spacesWritable);
+        return new ResourceProducerSpacesBitmap(fontKey, textureKey, spacesWritable);
     }
 
     /**
-     * Creates a ResourceProducerSpaces instance with default parameters.
+     * Creates a {@link ResourceProducerSpaces} instance with default parameters.
      *
-     * @return A ResourceProducerSpaces instance.
+     * @return A {@link ResourceProducerSpaces} instance.
      */
-    public static ResourceProducerSpaces spaces() {
-        return ResourceProducers.spaces(
+    public static ResourceProducerSpaces spacesBitmap() {
+        return ResourceProducers.spacesBitmap(
             Font.MINECRAFT_DEFAULT,
             Internal.DEFAULT_SPACES_TEXTURE_KEY,
             Internal.resourceFromJar("space.png")

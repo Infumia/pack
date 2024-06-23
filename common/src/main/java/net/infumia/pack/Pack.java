@@ -42,6 +42,8 @@ public interface Pack {
 
     /**
      * Adds Mojang-specific spaces resource to this pack.
+     * <p>
+     * Available after pack format 9.
      *
      * @return This pack instance.
      */
@@ -56,8 +58,8 @@ public interface Pack {
      * @return This Pack instance with the default spaces added.
      */
     @Contract("-> this")
-    default Pack withDefaultSpaces() {
-        return this.with(ResourceIdentifiers.SPACES, ResourceProducers.spaces());
+    default Pack withBitmapSpaces() {
+        return this.with(ResourceIdentifiers.SPACES, ResourceProducers.spacesBitmap());
     }
 
     /**

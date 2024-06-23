@@ -13,7 +13,7 @@ import team.unnamed.creative.font.BitMapFontProvider;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 
-final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract {
+final class ResourceProducerSpacesBitmap extends ResourceProducerSpacesAbstract {
 
     private final Key textureKey;
     private final Writable writable;
@@ -21,11 +21,7 @@ final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract
     private List<Texture> textures;
     private List<FontProvider> fontProviders;
 
-    ResourceProducerSpacesDefault(
-        final Key fontKey,
-        final Key textureKey,
-        final Writable writable
-    ) {
+    ResourceProducerSpacesBitmap(final Key fontKey, final Key textureKey, final Writable writable) {
         super(fontKey);
         this.textureKey = Internal.keyWithPngExtension(textureKey);
         this.writable = writable;
