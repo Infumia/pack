@@ -30,17 +30,16 @@ fun Project.spotless() {
 
         format("toml") {
             target("gradle/libs.versions.toml")
-            prettier()
+            prettier(prettierConfig)
                 .config(
                     mapOf(
-                        "parser" to "java",
+                        "parser" to "toml",
                         "tabWidth" to 4,
                         "useTabs" to false,
                         "printWidth" to 100,
                         "plugins" to listOf("prettier-plugin-toml"),
                     ),
                 )
-
         }
 
         kotlinGradle {
