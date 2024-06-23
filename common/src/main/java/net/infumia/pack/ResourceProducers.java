@@ -1,6 +1,5 @@
 package net.infumia.pack;
 
-import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;

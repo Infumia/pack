@@ -4,6 +4,9 @@ import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.texture.Texture;
 
+/**
+ * Utility class for creating resource producers related to languages and multi-character glyphs.
+ */
 public final class Language {
 
     /**
