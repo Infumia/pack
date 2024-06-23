@@ -16,17 +16,25 @@ public final class FileResourceCompilers {
     }
 
     /**
-     * Creates a simple PackCompiler instance using a default character factory.
-     * <p>
-     * Uses an instance of {@link ArbitraryCharacterFactoryReserved} as the default character factory.
+     * Creates a default {@link FileResourceCompiler} instance using a reserved character factory.
      *
-     * @return A newly created {@link FileResourceCompiler} instance configured with a default character factory.
+     * @return A newly created {@link FileResourceCompiler} instance configured with the default character factory.
      */
     public static FileResourceCompiler simple() {
-        return FileResourceCompilers.simple(new ArbitraryCharacterFactoryReserved());
+        return Internal.DEFAULT_COMPILER.get();
     }
 
     private FileResourceCompilers() {
         throw new IllegalStateException("Utility class");
+    }
+
+    private static final class Internal {
+
+        private static final Lazy<ArbitraryCharacterFactory> CHARACTER_FACTORY = Lazy.of(
+            ArbitraryCharacterFactoryReserved::new
+        );
+        private static final Lazy<FileResourceCompiler> DEFAULT_COMPILER = Lazy.of(
+            () -> FileResourceCompilers.simple(Internal.CHARACTER_FACTORY.get())
+        );
     }
 }
