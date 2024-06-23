@@ -13,8 +13,8 @@ final class ResourceProducerSpacesMojang extends ResourceProducerSpacesAbstract 
 
     private Collection<FontProvider> fontProviders;
 
-    ResourceProducerSpacesMojang(final Key key) {
-        super(key);
+    ResourceProducerSpacesMojang(final Key fontKey) {
+        super(fontKey);
     }
 
     @Override

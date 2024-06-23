@@ -10,8 +10,7 @@ final class Internal {
 
     private static final String RESOURCES_FOLDER = "pack-resources";
     static final String DEFAULT_NAMESPACE = "glyphs";
-    static final Key DEFAULT_SPACES_FONT_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces");
-    static final Key DEFAULT_SPACES_TEXTURE_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces.png");
+    static final Key DEFAULT_SPACES_TEXTURE_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces");
     static final int SEPARATOR_WIDTH = 1;
 
     static Key keyWithPngExtension(final Key key) {

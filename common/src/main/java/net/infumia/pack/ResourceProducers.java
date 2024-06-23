@@ -3,6 +3,7 @@ package net.infumia.pack;
 import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
+import team.unnamed.creative.font.Font;
 import team.unnamed.creative.texture.Texture;
 
 /**
@@ -33,7 +34,7 @@ public final class ResourceProducers {
      */
     public static ResourceProducerSpaces spaces() {
         return ResourceProducers.spaces(
-            Internal.DEFAULT_SPACES_FONT_KEY,
+            Font.MINECRAFT_DEFAULT,
             Internal.DEFAULT_SPACES_TEXTURE_KEY,
             Internal.resourceFromJar("space.png")
         );
@@ -42,11 +43,11 @@ public final class ResourceProducers {
     /**
      * Creates a Mojang-specific space producer with the specified key.
      *
-     * @param key The key for the Mojang space producer. Cannot be null.
+     * @param fontKey The font key for the Mojang space producer. Cannot be null.
      * @return A {@link ResourceProducerSpaces} instance for Mojang.
      */
-    public static ResourceProducerSpaces spacesMojang(final Key key) {
-        return new ResourceProducerSpacesMojang(key);
+    public static ResourceProducerSpaces spacesMojang(final Key fontKey) {
+        return new ResourceProducerSpacesMojang(fontKey);
     }
 
     /**
@@ -55,7 +56,7 @@ public final class ResourceProducers {
      * @return A {@link ResourceProducerSpaces} instance for Mojang.
      */
     public static ResourceProducerSpaces spacesMojang() {
-        return ResourceProducers.spacesMojang(Internal.DEFAULT_SPACES_FONT_KEY);
+        return ResourceProducers.spacesMojang(Font.MINECRAFT_DEFAULT);
     }
 
     /**

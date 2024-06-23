@@ -1,10 +1,10 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
 import net.kyori.adventure.key.Key;
@@ -18,8 +18,8 @@ final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract
     private final Key textureKey;
     private final Writable writable;
 
-    private Set<Texture> textures;
-    private Set<FontProvider> fontProviders;
+    private List<Texture> textures;
+    private List<FontProvider> fontProviders;
 
     ResourceProducerSpacesDefault(
         final Key fontKey,
@@ -27,7 +27,7 @@ final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract
         final Writable writable
     ) {
         super(fontKey);
-        this.textureKey = textureKey;
+        this.textureKey = Internal.keyWithPngExtension(textureKey);
         this.writable = writable;
     }
 
@@ -42,12 +42,12 @@ final class ResourceProducerSpacesDefault extends ResourceProducerSpacesAbstract
             throw new ResourceAlreadyProducedException();
         }
         this.mapping = new HashMap<>();
-        final Set<FontProvider> fontProviders = new HashSet<>();
+        final List<FontProvider> fontProviders = new ArrayList<>();
         for (int length = 1; length <= 2048; length *= 2) {
             fontProviders.add(this.prepareBuilder(characterFactory, length).build());
             fontProviders.add(this.prepareBuilder(characterFactory, length * (-1)).build());
         }
-        this.textures = Collections.singleton(Texture.texture(this.textureKey, this.writable));
+        this.textures = Collections.singletonList(Texture.texture(this.textureKey, this.writable));
         this.fontProviders = fontProviders;
     }
 
