@@ -43,6 +43,18 @@ spotless {
         }
     }
 
+    kotlin {
+        target(
+            "buildSrc/src/main/kotlin/**/*.kt",
+        )
+        ktfmt().kotlinlangStyle().configure {
+            it.setMaxWidth(100)
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+            it.setRemoveUnusedImport(true)
+        }
+    }
+
     java {
         target(
             *subprojects
