@@ -3,3 +3,5 @@ plugins {
 }
 
 rootProject.name = "pack"
+
+include("common", "blank", "generator")

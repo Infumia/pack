@@ -1,6 +1,13 @@
 [versions]
+creative = "1.7.2"
+spotless = "6.25.0"
 
 [libraries]
+adventure-api = { module = "net.kyori:adventure-api", version = "4.17.0"}
+creative-api = { module = "team.unnamed:creative-api", version.ref = "creative"}
+creative-serializer = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative"}
+
+nexus-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.29.0" }
 
 [plugins]
-nexus = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
