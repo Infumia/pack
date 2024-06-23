@@ -1,9 +1,8 @@
 package net.infumia.pack;
 
+import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.texture.Texture;
-
-import java.util.List;
 
 public final class Language {
 
