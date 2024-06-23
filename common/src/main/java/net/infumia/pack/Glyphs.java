@@ -20,7 +20,7 @@ public final class Glyphs {
      * @return The space glyph.
      */
     public static GlyphAppendable space() {
-        return GlyphSpaces.DEFAULT;
+        return GlyphImpl.DEFAULT_SPACE;
     }
 
     private Glyphs() {

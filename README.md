@@ -17,7 +17,10 @@ dependencies {
 
     // Blank Slot (Optional)
     implementation "net.infumia:pack-blank:VERSION"
-    
+
+    // Language (Optional)
+    implementation "net.infumia:pack-language:VERSION"
+
     // Generator (Optional)
     implementation "net.infumia:pack-generator:VERSION"
     // Required, https://mvnrepository.com/artifact/team.unnamed/creative-serializer-minecraft/

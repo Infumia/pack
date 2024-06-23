@@ -47,7 +47,7 @@ public interface Pack {
      */
     @Contract("-> this")
     default Pack withMojangSpaces() {
-        return this.with(ResourceIdentifierSpaces.SPACES, ResourceProducers.spacesMojang());
+        return this.with(ResourceIdentifiers.SPACES, ResourceProducers.spacesMojang());
     }
 
     /**
@@ -66,7 +66,7 @@ public interface Pack {
      * @return The Mojang-specific spaces resource producer.
      */
     default ResourceProducerSpaces spaces() {
-        return this.get(ResourceIdentifierSpaces.SPACES);
+        return this.get(ResourceIdentifiers.SPACES);
     }
 
     /**

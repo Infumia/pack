@@ -50,6 +50,6 @@ abstract class ResourceProducerSpacesAbstract implements ResourceProducerSpaces 
             }
             currentRankLength *= 2;
         }
-        return new GlyphSpaces(this.fontKey, Internal.toCharArray(characters), length);
+        return new GlyphImpl(this.fontKey, Internal.toCharArray(characters), length);
     }
 }
