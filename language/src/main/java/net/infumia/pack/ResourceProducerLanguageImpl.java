@@ -39,7 +39,7 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
                 Collectors.toMap(
                     Function.identity(),
                     properties ->
-                        ResourceProducers.multichar(key, texture, properties, charactersMapping)
+                        Language.multichar(key, texture, properties, charactersMapping)
                 )
             );
     }

@@ -9,7 +9,7 @@ import team.unnamed.creative.base.Writable;
 final class Internal {
 
     private static final String RESOURCES_FOLDER = "pack-resources";
-    static final String DEFAULT_NAMESPACE = "glyphs";
+    static final String DEFAULT_NAMESPACE = "pack";
     static final Key DEFAULT_SPACES_TEXTURE_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces");
     static final int SEPARATOR_WIDTH = 1;
 
