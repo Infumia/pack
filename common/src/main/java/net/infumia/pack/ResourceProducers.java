@@ -27,6 +27,19 @@ public final class ResourceProducers {
     }
 
     /**
+     * Creates a ResourceProducerSpaces instance with default parameters.
+     *
+     * @return A ResourceProducerSpaces instance.
+     */
+    public static ResourceProducerSpaces spaces() {
+        return ResourceProducers.spaces(
+            Internal.DEFAULT_SPACES_FONT_KEY,
+            Internal.DEFAULT_SPACES_TEXTURE_KEY,
+            Internal.resourceFromJar("space.png")
+        );
+    }
+
+    /**
      * Creates a Mojang-specific space producer with the specified key.
      *
      * @param key The key for the Mojang space producer. Cannot be null.

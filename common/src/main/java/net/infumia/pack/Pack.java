@@ -51,6 +51,16 @@ public interface Pack {
     }
 
     /**
+     * Adds the default spaces resource producer to the pack.
+     *
+     * @return This Pack instance with the default spaces added.
+     */
+    @Contract("-> this")
+    default Pack withDefaultSpaces() {
+        return this.with(ResourceIdentifiers.SPACES, ResourceProducers.spaces());
+    }
+
+    /**
      * Retrieves the resource producer associated with the given identifier.
      *
      * @param id  The identifier for the resource producer. Cannot be null.

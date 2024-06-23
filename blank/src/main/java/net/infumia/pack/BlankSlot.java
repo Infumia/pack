@@ -108,7 +108,7 @@ public final class BlankSlot {
                     Internal.DEFAULT_NAMESPACE,
                     "blank_slot",
                     Key.key("item/paper"),
-                    Internal.resourceFromJar("pack-resources/blank_slot.png"),
+                    Internal.resourceFromJar("blank_slot.png"),
                     1
                 )
         );
