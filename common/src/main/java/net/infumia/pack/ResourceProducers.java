@@ -6,7 +6,7 @@ import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.texture.Texture;
 
 /**
- * Utility class for creating instances of {@link ResourceProducerSpaces}.
+ * Utility class for creating instances of {@link ResourceProducer}.
  */
 public final class ResourceProducers {
 
