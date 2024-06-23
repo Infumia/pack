@@ -30,6 +30,8 @@ fun Project.spotless() {
 
         format("toml") {
             target("gradle/libs.versions.toml")
+            endWithNewline()
+            trimTrailingWhitespace()
             prettier(prettierConfig)
                 .config(
                     mapOf(
@@ -39,24 +41,15 @@ fun Project.spotless() {
                 )
         }
 
-        kotlinGradle {
+        kotlin {
             target(
+                "buildSrc/src/main/kotlin/**/*.kt",
                 "buildSrc/**/*.gradle.kts",
                 "*.gradle.kts",
                 *subprojects.map { it.name }.map { "$it/*.gradle.kts" }.toTypedArray(),
             )
-            ktfmt().kotlinlangStyle().configure {
-                it.setMaxWidth(80)
-                it.setBlockIndent(4)
-                it.setContinuationIndent(4)
-                it.setRemoveUnusedImport(true)
-            }
-        }
-
-        kotlin {
-            target(
-                "buildSrc/src/main/kotlin/**/*.kt",
-            )
+            endWithNewline()
+            trimTrailingWhitespace()
             ktfmt().kotlinlangStyle().configure {
                 it.setMaxWidth(100)
                 it.setBlockIndent(4)
