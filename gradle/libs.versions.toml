@@ -8,6 +8,4 @@ creative-api = { module = "team.unnamed:creative-api", version.ref = "creative"}
 creative-serializer = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative"}
 
 nexus-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.29.0" }
-
-[plugins]
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+spotless-plugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }

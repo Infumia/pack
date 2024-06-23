@@ -5,6 +5,9 @@ repositories {
     gradlePluginPortal()
 }
 
-dependencies { implementation(libs.nexus.plugin) }
+dependencies {
+    implementation(libs.nexus.plugin)
+    implementation(libs.spotless.plugin)
+}
 
 kotlin { jvmToolchain(11) }
