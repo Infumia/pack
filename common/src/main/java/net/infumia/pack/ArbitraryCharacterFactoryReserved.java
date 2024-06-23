@@ -42,7 +42,7 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
      * starting from the default character '\uA201'.
      */
     public ArbitraryCharacterFactoryReserved() {
-        this(Internal.reserved());
+        this(Internal.RESERVED.get());
     }
 
     @Override
@@ -112,10 +112,6 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
             );
             return reserved;
         });
-
-        private static Collection<Character> reserved() {
-            return Internal.RESERVED.get();
-        }
 
         private Internal() {
             throw new IllegalStateException("Utility class");
