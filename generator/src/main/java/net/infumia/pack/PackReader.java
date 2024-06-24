@@ -65,9 +65,10 @@ final class PackReader {
             this.base,
             packReference,
             packPartReferences,
-            this.settings.serializer(),
+            this.settings.root(),
             this.settings.outputDirectory(),
-            this.settings.outputFile()
+            this.settings.outputFile(),
+            this.settings.serializer()
         );
     }
 
