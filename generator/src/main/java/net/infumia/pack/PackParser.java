@@ -41,7 +41,9 @@ public final class PackParser {
     private static void parseParts(final PackGeneratorContext context) {
         final Pack pack = context.pack();
         final Collection<PackReferencePart> parts = context.packPartReferences();
-        for (final PackReferencePart part : parts) {}
+        for (final PackReferencePart part : parts) {
+            pack.with(part.toResource());
+        }
     }
 
     private PackParser() {
