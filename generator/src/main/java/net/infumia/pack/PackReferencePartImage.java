@@ -3,6 +3,7 @@ package net.infumia.pack;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.file.Path;
+import java.util.Locale;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
@@ -15,6 +16,8 @@ public final class PackReferencePartImage extends PackReferencePart {
     private final String image;
     private final int height;
     private final int ascent;
+
+    private Path directory;
 
     @JsonCreator
     public PackReferencePartImage(
@@ -34,17 +37,36 @@ public final class PackReferencePartImage extends PackReferencePart {
     @Override
     public void add(final PackGeneratorContext context) {
         final Path root = context.rootDirectory();
+
+        final String parent;
+        if (this.directory == null) {
+            parent = "";
+        } else {
+            parent = root
+                .relativize(this.directory)
+                .toString()
+                .toLowerCase(Locale.ROOT)
+                .replace(" ", "_") +
+            "/";
+        }
+
         final Pack pack = context.pack();
         pack.with(
             (ResourceIdentifierImage) () -> this.key,
             ResourceProducers.image(
                 Font.MINECRAFT_DEFAULT,
                 Texture.texture(
-                    Key.key(this.namespace, this.key + ".png"),
-                    Writable.path(root.resolve(this.image))
+                    Key.key(this.namespace, parent + this.key + ".png"),
+                    Writable.path(root.resolve(parent + this.image))
                 ),
                 new TextureProperties(this.height, this.ascent)
             )
         );
+    }
+
+    @Override
+    PackReferencePartImage directory(final Path directory) {
+        this.directory = directory;
+        return this;
     }
 }

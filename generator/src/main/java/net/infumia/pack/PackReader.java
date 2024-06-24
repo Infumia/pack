@@ -53,7 +53,16 @@ final class PackReader {
                     final MappingIterator<PackReferencePart> iterator =
                         this.packPartReader.readValues(file)
                 ) {
-                    return iterator.readAll();
+                    final Path path = file.getParentFile().toPath();
+                    if (path.equals(this.settings.root())) {
+                        return iterator.readAll();
+                    } else {
+                        return iterator
+                            .readAll()
+                            .stream()
+                            .map(part -> part.directory(path))
+                            .collect(Collectors.toSet());
+                    }
                 } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
