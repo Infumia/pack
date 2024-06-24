@@ -1,7 +1,6 @@
 package net.infumia.pack;
 
 import java.util.Collection;
-import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.metadata.pack.PackMeta;
 
 /**
@@ -16,25 +15,33 @@ public final class PackParser {
      * @return the updated pack generator context.
      */
     public static PackGeneratorContext parse(final PackGeneratorContext context) {
-        final PackReferenceMeta packReference = context.packReference();
-        final Collection<PackReferencePart> partReferences = context.packPartReferences();
-        final ResourcePack resourcePack = context.resourcePack();
-        final PackMeta packMeta = packReference.parsePackMeta(context.serializer());
-        resourcePack.packMeta(packMeta);
+        PackParser.parseMeta(context);
+        PackParser.parseParts(context);
+        context.pack().writeAll(context.resourcePack());
+        return context;
+    }
+
+    private static void parseMeta(final PackGeneratorContext context) {
         final Pack pack = context.pack();
-        // TODO: portlek, Parse partReferences here.
-        if (packReference.addBlankSlot()) {
+        final PackReferenceMeta meta = context.packReference();
+        final PackMeta packMeta = meta.parsePackMeta(context.serializer());
+        context.resourcePack().packMeta(packMeta);
+        if (meta.addBlankSlot()) {
             pack.with(BlankSlot.get());
         }
-        if (packReference.addSpaces()) {
+        if (meta.addSpaces()) {
             if (packMeta.formats().isInRange(9)) {
                 pack.withMojangSpaces();
             } else {
                 pack.withBitmapSpaces();
             }
         }
-        pack.writeAll(resourcePack);
-        return context;
+    }
+
+    private static void parseParts(final PackGeneratorContext context) {
+        final Pack pack = context.pack();
+        final Collection<PackReferencePart> parts = context.packPartReferences();
+        for (final PackReferencePart part : parts) {}
     }
 
     private PackParser() {
