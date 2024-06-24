@@ -17,14 +17,6 @@ public final class PackReferencePart {
         this.image = image;
     }
 
-    public String key() {
-        return this.key;
-    }
-
-    public String image() {
-        return this.image;
-    }
-
     public FileResource parseResource() {
         return FileResources.all();
     }
