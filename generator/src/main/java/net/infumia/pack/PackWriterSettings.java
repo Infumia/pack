@@ -1,21 +1,20 @@
 package net.infumia.pack;
 
-import team.unnamed.creative.serialize.ResourcePackWriter;
-import team.unnamed.creative.serialize.minecraft.fs.FileTreeWriter;
+import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 
 /**
  * Settings for writing a resource pack.
  */
 public final class PackWriterSettings {
 
-    private final ResourcePackWriter<FileTreeWriter> writer;
+    private final MinecraftResourcePackWriter writer;
 
     /**
      * Ctor.
      *
      * @param writer the resource pack writer. Cannot be null.
      */
-    public PackWriterSettings(final ResourcePackWriter<FileTreeWriter> writer) {
+    public PackWriterSettings(final MinecraftResourcePackWriter writer) {
         this.writer = writer;
     }
 
@@ -24,7 +23,7 @@ public final class PackWriterSettings {
      *
      * @return the resource pack writer.
      */
-    public ResourcePackWriter<FileTreeWriter> writer() {
+    public MinecraftResourcePackWriter writer() {
         return this.writer;
     }
 }
