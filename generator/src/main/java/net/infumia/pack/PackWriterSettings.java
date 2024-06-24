@@ -1,5 +1,6 @@
 package net.infumia.pack;
 
+import java.util.StringJoiner;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 
 /**
@@ -25,5 +26,12 @@ public final class PackWriterSettings {
      */
     public MinecraftResourcePackWriter writer() {
         return this.writer;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PackWriterSettings.class.getSimpleName() + "[", "]")
+            .add("writer=" + this.writer)
+            .toString();
     }
 }

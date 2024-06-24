@@ -3,6 +3,8 @@ package net.infumia.pack;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.StringJoiner;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 
 /**
@@ -13,8 +15,8 @@ public final class PackReaderSettings {
     private final Path root;
     private final FileVisitOption[] visitOptions;
     private final String packReferenceFileName;
-    private final String directoryName;
-    private final String zipFileName;
+    private final Path outputDirectory;
+    private final Path outputFile;
     private final ObjectMapper mapper;
     private final ComponentSerializer<?, ?, String> serializer;
 
@@ -24,25 +26,25 @@ public final class PackReaderSettings {
      * @param root                  the root path.
      * @param visitOptions          the visit options. Can be null.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param directoryName         the directory name. Can be null.
-     * @param zipFileName           the zip file name. Can be null.
+     * @param outputDirectory       the directory name. Can be null.
+     * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
-     * @param serializer         the serializer to serialize components when needed. Cannot be null.
+     * @param serializer            the serializer to serialize components when needed. Cannot be null.
      */
     public PackReaderSettings(
         final Path root,
         final FileVisitOption[] visitOptions,
         final String packReferenceFileName,
-        final String directoryName,
-        final String zipFileName,
+        final Path outputDirectory,
+        final Path outputFile,
         final ObjectMapper mapper,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.root = root;
         this.visitOptions = visitOptions;
         this.packReferenceFileName = packReferenceFileName;
-        this.directoryName = directoryName;
-        this.zipFileName = zipFileName;
+        this.outputDirectory = outputDirectory;
+        this.outputFile = outputFile;
         this.mapper = mapper;
         this.serializer = serializer;
     }
@@ -52,19 +54,19 @@ public final class PackReaderSettings {
      *
      * @param root                  the root path.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param directoryName         the directory name. Can be null.
-     * @param zipFileName           the zip file name. Can be null.
+     * @param outputDirectory       the directory name. Can be null.
+     * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
      */
     public PackReaderSettings(
         final Path root,
         final String packReferenceFileName,
-        final String directoryName,
-        final String zipFileName,
+        final Path outputDirectory,
+        final Path outputFile,
         final ObjectMapper mapper,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this(root, null, packReferenceFileName, directoryName, zipFileName, mapper, serializer);
+        this(root, null, packReferenceFileName, outputDirectory, outputFile, mapper, serializer);
     }
 
     /**
@@ -95,21 +97,21 @@ public final class PackReaderSettings {
     }
 
     /**
-     * Returns the directory name.
+     * Returns the output directory.
      *
-     * @return the directory name. Can be null.
+     * @return the directory output. Can be null.
      */
-    public String directoryName() {
-        return this.directoryName;
+    public Path outputDirectory() {
+        return this.outputDirectory;
     }
 
     /**
-     * Returns the zip file name.
+     * Returns the zip file.
      *
-     * @return the zip file name. Can be null.
+     * @return the zip file. Can be null.
      */
-    public String zipFileName() {
-        return this.zipFileName;
+    public Path outputFile() {
+        return this.outputFile;
     }
 
     /**
@@ -128,5 +130,18 @@ public final class PackReaderSettings {
      */
     public ComponentSerializer<?, ?, String> serializer() {
         return this.serializer;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PackReaderSettings.class.getSimpleName() + "[", "]")
+            .add("root=" + this.root)
+            .add("visitOptions=" + Arrays.toString(this.visitOptions))
+            .add("packReferenceFileName='" + this.packReferenceFileName + "'")
+            .add("outputDirectory=" + this.outputDirectory)
+            .add("outputFile=" + this.outputFile)
+            .add("mapper=" + this.mapper)
+            .add("serializer=" + this.serializer)
+            .toString();
     }
 }

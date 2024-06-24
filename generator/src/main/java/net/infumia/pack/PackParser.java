@@ -16,8 +16,8 @@ public final class PackParser {
      * @return the updated pack generator context.
      */
     public static PackGeneratorContext parse(final PackGeneratorContext context) {
-        final PackReference packReference = context.packReference();
-        final Collection<PackPartReference> partReferences = context.packPartReferences();
+        final PackReferenceMeta packReference = context.packReference();
+        final Collection<PackReferencePart> partReferences = context.packPartReferences();
         final ResourcePack resourcePack = context.resourcePack();
         final PackMeta packMeta = packReference.parsePackMeta(context.serializer());
         resourcePack.packMeta(packMeta);

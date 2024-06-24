@@ -1,6 +1,7 @@
 package net.infumia.pack;
 
 import java.nio.file.Path;
+import java.util.StringJoiner;
 import team.unnamed.creative.ResourcePack;
 
 /**
@@ -16,10 +17,10 @@ public final class PackGeneratedContext {
     /**
      * Ctor.
      *
-     * @param resourcePack       the resource pack. Cannot be null.
-     * @param pack               the pack. Cannot be null.
-     * @param outputDirectory    the output directory. Can be null.
-     * @param outputFile         the output file. Can be null.
+     * @param resourcePack    the resource pack. Cannot be null.
+     * @param pack            the pack. Cannot be null.
+     * @param outputDirectory the output directory. Can be null.
+     * @param outputFile      the output file. Can be null.
      */
     PackGeneratedContext(
         final ResourcePack resourcePack,
@@ -67,5 +68,15 @@ public final class PackGeneratedContext {
      */
     public Path outputFile() {
         return this.outputFile;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PackGeneratedContext.class.getSimpleName() + "[", "]")
+            .add("resourcePack=" + this.resourcePack)
+            .add("pack=" + this.pack)
+            .add("outputDirectory=" + this.outputDirectory)
+            .add("outputFile=" + this.outputFile)
+            .toString();
     }
 }

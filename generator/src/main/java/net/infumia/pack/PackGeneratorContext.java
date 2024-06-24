@@ -3,6 +3,7 @@ package net.infumia.pack;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.StringJoiner;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.ResourcePack;
 
@@ -13,8 +14,8 @@ public final class PackGeneratorContext {
 
     private final ResourcePack resourcePack;
     private final Pack pack;
-    private final PackReference packReference;
-    private final Collection<PackPartReference> packPartReferences;
+    private final PackReferenceMeta packReference;
+    private final Collection<PackReferencePart> packPartReferences;
     private final Path outputDirectory;
     private final Path outputFile;
     private final ComponentSerializer<?, ?, String> serializer;
@@ -33,8 +34,8 @@ public final class PackGeneratorContext {
     PackGeneratorContext(
         final ResourcePack resourcePack,
         final Pack pack,
-        final PackReference packReference,
-        final Collection<PackPartReference> packPartReferences,
+        final PackReferenceMeta packReference,
+        final Collection<PackReferencePart> packPartReferences,
         final ComponentSerializer<?, ?, String> serializer,
         final Path outputDirectory,
         final Path outputFile
@@ -71,7 +72,7 @@ public final class PackGeneratorContext {
      *
      * @return the pack reference.
      */
-    public PackReference packReference() {
+    public PackReferenceMeta packReference() {
         return this.packReference;
     }
 
@@ -80,7 +81,7 @@ public final class PackGeneratorContext {
      *
      * @return the pack part references.
      */
-    public Collection<PackPartReference> packPartReferences() {
+    public Collection<PackReferencePart> packPartReferences() {
         return this.packPartReferences;
     }
 
@@ -109,5 +110,18 @@ public final class PackGeneratorContext {
      */
     public Path outputFile() {
         return this.outputFile;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PackGeneratorContext.class.getSimpleName() + "[", "]")
+            .add("resourcePack=" + this.resourcePack)
+            .add("pack=" + this.pack)
+            .add("packReference=" + this.packReference)
+            .add("packPartReferences=" + this.packPartReferences)
+            .add("outputDirectory=" + this.outputDirectory)
+            .add("outputFile=" + this.outputFile)
+            .add("serializer=" + this.serializer)
+            .toString();
     }
 }

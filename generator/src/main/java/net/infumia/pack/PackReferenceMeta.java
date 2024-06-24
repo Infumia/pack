@@ -1,5 +1,8 @@
 package net.infumia.pack;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.StringJoiner;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.metadata.pack.PackFormat;
 import team.unnamed.creative.metadata.pack.PackMeta;
@@ -7,7 +10,7 @@ import team.unnamed.creative.metadata.pack.PackMeta;
 /**
  * Represents a reference to a pack with format constraints and a description.
  */
-public final class PackReference {
+public final class PackReferenceMeta {
 
     private final Integer format;
     private final Integer minimumFormat;
@@ -26,13 +29,14 @@ public final class PackReference {
      * @param addBlankSlot  adds the {@link BlankSlot} resources.
      * @param addSpaces     adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
      */
-    public PackReference(
-        final Integer format,
-        final Integer minimumFormat,
-        final Integer maximumFormat,
-        final String description,
-        final boolean addBlankSlot,
-        final boolean addSpaces
+    @JsonCreator
+    public PackReferenceMeta(
+        @JsonProperty("format") final Integer format,
+        @JsonProperty("minimum-format") final Integer minimumFormat,
+        @JsonProperty("maximum-format") final Integer maximumFormat,
+        @JsonProperty("description") final String description,
+        @JsonProperty("add-blank-slot") final boolean addBlankSlot,
+        @JsonProperty("add-spaces") final boolean addSpaces
     ) {
         this.format = format;
         this.minimumFormat = minimumFormat;
@@ -96,5 +100,17 @@ public final class PackReference {
             PackFormat.format(minimumFormat, minimumFormat, maximumFormat),
             serializer.deserialize(this.description)
         );
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PackReferenceMeta.class.getSimpleName() + "[", "]")
+            .add("format=" + this.format)
+            .add("minimumFormat=" + this.minimumFormat)
+            .add("maximumFormat=" + this.maximumFormat)
+            .add("description='" + this.description + "'")
+            .add("addBlankSlot=" + this.addBlankSlot)
+            .add("addSpaces=" + this.addSpaces)
+            .toString();
     }
 }

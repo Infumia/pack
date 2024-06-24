@@ -21,8 +21,6 @@ final class PackReader {
     private final Pack base;
 
     private File packReferenceFile;
-    private Path outputDirectory;
-    private Path outputFile;
     private ObjectReader packReader;
     private ObjectReader packPartReader;
 
@@ -44,12 +42,12 @@ final class PackReader {
     }
 
     private PackGeneratorContext read0(@NotNull final Stream<Path> walking) throws IOException {
-        final PackReference packReference = this.packReader.readValue(this.packReferenceFile);
-        final Collection<PackPartReference> packPartReferences = walking
+        final PackReferenceMeta packReference = this.packReader.readValue(this.packReferenceFile);
+        final Collection<PackReferencePart> packPartReferences = walking
             .map(Path::toFile)
             .map(file -> {
                 try (
-                    final MappingIterator<PackPartReference> iterator =
+                    final MappingIterator<PackReferencePart> iterator =
                         this.packPartReader.readValues(file)
                 ) {
                     return iterator.readAll();
@@ -65,8 +63,8 @@ final class PackReader {
             packReference,
             packPartReferences,
             this.settings.serializer(),
-            this.outputDirectory,
-            this.outputFile
+            this.settings.outputDirectory(),
+            this.settings.outputFile()
         );
     }
 
@@ -80,16 +78,6 @@ final class PackReader {
         }
         this.packReferenceFile = packReferenceFile.toFile();
 
-        final String directoryName = this.settings.directoryName();
-        if (directoryName != null) {
-            this.outputDirectory = root.resolve(directoryName);
-        }
-
-        final String zipFileName = this.settings.zipFileName();
-        if (zipFileName != null) {
-            this.outputFile = root.resolve(zipFileName);
-        }
-
         final ObjectMapper mapper = this.settings.mapper();
         this.packReader = mapper.readerFor(Internal.PACK_TYPE);
         this.packPartReader = mapper.readerFor(Internal.PACK_PART_TYPE);
@@ -97,11 +85,11 @@ final class PackReader {
 
     private static final class Internal {
 
-        private static final TypeReference<PackReference> PACK_TYPE = new TypeReference<
-            PackReference
+        private static final TypeReference<PackReferenceMeta> PACK_TYPE = new TypeReference<
+            PackReferenceMeta
         >() {};
-        private static final TypeReference<PackPartReference> PACK_PART_TYPE = new TypeReference<
-            PackPartReference
+        private static final TypeReference<PackReferencePart> PACK_PART_TYPE = new TypeReference<
+            PackReferencePart
         >() {};
     }
 }
