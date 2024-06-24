@@ -19,7 +19,7 @@ public final class PackReaderSettings {
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
-     * Constructs a new PackReaderSettings.
+     * Ctor.
      *
      * @param root                  the root path.
      * @param visitOptions          the visit options. Can be null.
@@ -48,7 +48,7 @@ public final class PackReaderSettings {
     }
 
     /**
-     * Constructs a new PackReaderSettings.
+     * Ctor.
      *
      * @param root                  the root path.
      * @param packReferenceFileName the pack reference file name. Cannot be null.

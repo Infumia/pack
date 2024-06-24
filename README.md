@@ -23,6 +23,8 @@ dependencies {
 
     // Generator (Optional)
     implementation "net.infumia:pack-generator:VERSION"
+    // Required, https://mvnrepository.com/artifact/team.unnamed/team.unnamed:creative-serializer-minecraft/
+    implementation "team.unnamed:team.unnamed:creative-serializer-minecraft:1.7.2"
     // Required, https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind/
     implementation "com.fasterxml.jackson.core:jackson-databind:"
     // Required, https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/

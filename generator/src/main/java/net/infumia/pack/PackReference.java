@@ -17,7 +17,7 @@ public final class PackReference {
     private final boolean addSpaces;
 
     /**
-     * Constructs a new PackReference.
+     * Ctor.
      *
      * @param format        the pack format. Can be null
      * @param minimumFormat the minimum pack format. Can be null
