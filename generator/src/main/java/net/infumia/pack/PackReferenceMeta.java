@@ -31,10 +31,10 @@ public final class PackReferenceMeta {
      */
     @JsonCreator
     public PackReferenceMeta(
-        @JsonProperty final Integer format,
+        @JsonProperty("format") final Integer format,
         @JsonProperty("minimum-format") final Integer minimumFormat,
         @JsonProperty("maximum-format") final Integer maximumFormat,
-        @JsonProperty final String description,
+        @JsonProperty("description") final String description,
         @JsonProperty("add-blank-slot") final boolean addBlankSlot,
         @JsonProperty("add-spaces") final boolean addSpaces
     ) {

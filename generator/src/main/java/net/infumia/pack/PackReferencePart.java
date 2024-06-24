@@ -9,7 +9,10 @@ public final class PackReferencePart {
     private final String image;
 
     @JsonCreator
-    public PackReferencePart(@JsonProperty final String key, @JsonProperty final String image) {
+    public PackReferencePart(
+        @JsonProperty("key") final String key,
+        @JsonProperty("image") final String image
+    ) {
         this.key = key;
         this.image = image;
     }
