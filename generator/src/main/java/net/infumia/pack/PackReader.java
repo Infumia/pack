@@ -44,7 +44,10 @@ final class PackReader {
     private PackGeneratorContext read0(@NotNull final Stream<Path> walking) throws IOException {
         final PackReferenceMeta packReference = this.packReader.readValue(this.packReferenceFile);
         final Collection<PackReferencePart> packPartReferences = walking
+            .filter(Files::isRegularFile)
+            .filter(this.settings.readFilter())
             .map(Path::toFile)
+            .filter(file -> !this.packReferenceFile.equals(file))
             .map(file -> {
                 try (
                     final MappingIterator<PackReferencePart> iterator =

@@ -2,9 +2,11 @@ package net.infumia.pack;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.StringJoiner;
+import java.util.function.Predicate;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 
 /**
@@ -18,6 +20,7 @@ public final class PackReaderSettings {
     private final Path outputDirectory;
     private final Path outputFile;
     private final ObjectMapper mapper;
+    private final Predicate<Path> readFilter;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
@@ -29,6 +32,7 @@ public final class PackReaderSettings {
      * @param outputDirectory       the directory name. Can be null.
      * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
+     * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
      * @param serializer            the serializer to serialize components when needed. Cannot be null.
      */
     public PackReaderSettings(
@@ -38,6 +42,7 @@ public final class PackReaderSettings {
         final Path outputDirectory,
         final Path outputFile,
         final ObjectMapper mapper,
+        final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.root = root;
@@ -46,6 +51,7 @@ public final class PackReaderSettings {
         this.outputDirectory = outputDirectory;
         this.outputFile = outputFile;
         this.mapper = mapper;
+        this.readFilter = readFilter;
         this.serializer = serializer;
     }
 
@@ -57,6 +63,7 @@ public final class PackReaderSettings {
      * @param outputDirectory       the directory name. Can be null.
      * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
+     * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
      */
     public PackReaderSettings(
         final Path root,
@@ -64,9 +71,19 @@ public final class PackReaderSettings {
         final Path outputDirectory,
         final Path outputFile,
         final ObjectMapper mapper,
+        final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this(root, null, packReferenceFileName, outputDirectory, outputFile, mapper, serializer);
+        this(
+            root,
+            null,
+            packReferenceFileName,
+            outputDirectory,
+            outputFile,
+            mapper,
+            readFilter,
+            serializer
+        );
     }
 
     /**
@@ -124,6 +141,15 @@ public final class PackReaderSettings {
     }
 
     /**
+     * Returns the read filter.
+     *
+     * @return the read filter.
+     */
+    public Predicate<Path> readFilter() {
+        return this.readFilter;
+    }
+
+    /**
      * Returns the component serializer.
      *
      * @return the component serializer.
@@ -141,6 +167,7 @@ public final class PackReaderSettings {
             .add("outputDirectory=" + this.outputDirectory)
             .add("outputFile=" + this.outputFile)
             .add("mapper=" + this.mapper)
+            .add("readFilter=" + this.readFilter)
             .add("serializer=" + this.serializer)
             .toString();
     }
