@@ -42,7 +42,7 @@ public final class PackParser {
         final Pack pack = context.pack();
         final Collection<PackReferencePart> parts = context.packPartReferences();
         for (final PackReferencePart part : parts) {
-            pack.with(part.toResource());
+            pack.with(part.parseResource());
         }
     }
 

@@ -22,7 +22,7 @@ public final class PackReferencePart {
         return this.image;
     }
 
-    public FileResource toResource() {
+    public FileResource parseResource() {
         return FileResources.all();
     }
 }
