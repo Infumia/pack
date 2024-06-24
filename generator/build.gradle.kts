@@ -7,9 +7,7 @@ dependencies {
     compileOnly(project(":blank"))
     compileOnly(project(":language"))
 
-    compileOnly(libs.creative.api)
-    compileOnly(libs.creative.serializer)
     compileOnly(libs.adventure.api)
+    compileOnly(libs.creative.api)
     compileOnly(libs.jackson.databind)
-    compileOnly(libs.jackson.yaml)
 }

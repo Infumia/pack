@@ -1,0 +1,100 @@
+package net.infumia.pack;
+
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import team.unnamed.creative.metadata.pack.PackFormat;
+import team.unnamed.creative.metadata.pack.PackMeta;
+
+/**
+ * Represents a reference to a pack with format constraints and a description.
+ */
+public final class PackReference {
+
+    private final Integer format;
+    private final Integer minimumFormat;
+    private final Integer maximumFormat;
+    private final String description;
+    private final boolean addBlankSlot;
+    private final boolean addSpaces;
+
+    /**
+     * Constructs a new PackReference.
+     *
+     * @param format        the pack format. Can be null
+     * @param minimumFormat the minimum pack format. Can be null
+     * @param maximumFormat the maximum pack format. Can be null
+     * @param description   the description of the pack
+     * @param addBlankSlot  adds the {@link BlankSlot} resources.
+     * @param addSpaces     adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
+     */
+    public PackReference(
+        final Integer format,
+        final Integer minimumFormat,
+        final Integer maximumFormat,
+        final String description,
+        final boolean addBlankSlot,
+        final boolean addSpaces
+    ) {
+        this.format = format;
+        this.minimumFormat = minimumFormat;
+        this.maximumFormat = maximumFormat;
+        this.description = description;
+        this.addBlankSlot = addBlankSlot;
+        this.addSpaces = addSpaces;
+    }
+
+    /**
+     * Returns whether the {@link BlankSlot} resources should be added.
+     *
+     * @return {@code true} if the {@link BlankSlot} resources should be added, {@code false} otherwise
+     */
+    public boolean addBlankSlot() {
+        return this.addBlankSlot;
+    }
+
+    /**
+     * Returns whether spaces should be added.
+     *
+     * @return {@code true} if spaces should be added, {@code false} otherwise
+     */
+    public boolean addSpaces() {
+        return this.addSpaces;
+    }
+
+    /**
+     * Parses the pack formats to a {@link PackMeta} object.
+     *
+     * @param serializer the component serializer. Cannot be null.
+     * @return the generated {@link PackMeta}.
+     * @throws IllegalStateException if none of the {@link #format},{@link #minimumFormat}, and {@link #maximumFormat} are provided.
+     */
+    public PackMeta parsePackMeta(final ComponentSerializer<?, ?, String> serializer) {
+        if (this.format == null && this.minimumFormat == null && this.maximumFormat == null) {
+            throw new IllegalStateException(
+                "At least one of format, minimumFormat and maximumFormat must be provided!"
+            );
+        }
+
+        final int minimumFormat;
+        if (this.format != null) {
+            minimumFormat = this.format;
+        } else if (this.minimumFormat != null) {
+            minimumFormat = this.minimumFormat;
+        } else {
+            minimumFormat = this.maximumFormat;
+        }
+
+        final int maximumFormat;
+        if (this.format != null) {
+            maximumFormat = this.format;
+        } else if (this.maximumFormat != null) {
+            maximumFormat = this.maximumFormat;
+        } else {
+            maximumFormat = minimumFormat;
+        }
+
+        return PackMeta.of(
+            PackFormat.format(minimumFormat, minimumFormat, maximumFormat),
+            serializer.deserialize(this.description)
+        );
+    }
+}
