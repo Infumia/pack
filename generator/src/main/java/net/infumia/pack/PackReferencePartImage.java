@@ -59,12 +59,13 @@ public final class PackReferencePartImage extends PackReferencePart {
         }
 
         final Pack pack = context.pack();
+        final String key = parent + this.key;
         pack.with(
-            (ResourceIdentifierImage) () -> this.key,
+            (ResourceIdentifierImage) () -> key,
             ResourceProducers.image(
                 Font.MINECRAFT_DEFAULT,
                 Texture.texture(
-                    Key.key(namespace, parent + this.key + ".png"),
+                    Key.key(namespace, key + ".png"),
                     Writable.path(root.resolve(parent + this.image))
                 ),
                 new TextureProperties(this.height, this.ascent)
