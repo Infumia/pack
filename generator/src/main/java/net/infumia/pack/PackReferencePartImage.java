@@ -36,6 +36,11 @@ public final class PackReferencePartImage extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
+        final String namespace = this.namespace == null ? context.packReference().defaultNamespace() : this.namespace;
+        if (namespace == null) {
+            throw new IllegalStateException("Pack reference namespace cannot be null!");
+        }
+
         final Path root = context.rootDirectory();
 
         final String parent;
@@ -56,7 +61,7 @@ public final class PackReferencePartImage extends PackReferencePart {
             ResourceProducers.image(
                 Font.MINECRAFT_DEFAULT,
                 Texture.texture(
-                    Key.key(this.namespace, parent + this.key + ".png"),
+                    Key.key(namespace, parent + this.key + ".png"),
                     Writable.path(root.resolve(parent + this.image))
                 ),
                 new TextureProperties(this.height, this.ascent)

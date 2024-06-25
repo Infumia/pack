@@ -2,10 +2,12 @@ package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.StringJoiner;
+import net.kyori.adventure.key.KeyPattern;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.metadata.pack.PackFormat;
 import team.unnamed.creative.metadata.pack.PackMeta;
+
+import java.util.StringJoiner;
 
 /**
  * Represents a reference to a pack with format constraints and a description.
@@ -18,16 +20,18 @@ public final class PackReferenceMeta {
     private final String description;
     private final boolean addBlankSlot;
     private final boolean addSpaces;
+    private final String defaultNamespace;
 
     /**
      * Ctor.
      *
-     * @param format        the pack format. Can be null
-     * @param minimumFormat the minimum pack format. Can be null
-     * @param maximumFormat the maximum pack format. Can be null
-     * @param description   the description of the pack
-     * @param addBlankSlot  adds the {@link BlankSlot} resources.
-     * @param addSpaces     adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
+     * @param format           the pack format. Can be null
+     * @param minimumFormat    the minimum pack format. Can be null
+     * @param maximumFormat    the maximum pack format. Can be null
+     * @param description      the description of the pack
+     * @param addBlankSlot     adds the {@link BlankSlot} resources.
+     * @param addSpaces        adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
+     * @param defaultNamespace the default namespace that will be used when a {@link PackReferencePart} does not have a namespace. Can be null.
      */
     @JsonCreator
     public PackReferenceMeta(
@@ -36,7 +40,8 @@ public final class PackReferenceMeta {
         @JsonProperty("maximum-format") final Integer maximumFormat,
         @JsonProperty("description") final String description,
         @JsonProperty("add-blank-slot") final boolean addBlankSlot,
-        @JsonProperty("add-spaces") final boolean addSpaces
+        @JsonProperty("add-spaces") final boolean addSpaces,
+        @JsonProperty("default-namespace") final String defaultNamespace
     ) {
         this.format = format;
         this.minimumFormat = minimumFormat;
@@ -44,6 +49,7 @@ public final class PackReferenceMeta {
         this.description = description;
         this.addBlankSlot = addBlankSlot;
         this.addSpaces = addSpaces;
+        this.defaultNamespace = defaultNamespace;
     }
 
     /**
@@ -62,6 +68,15 @@ public final class PackReferenceMeta {
      */
     public boolean addSpaces() {
         return this.addSpaces;
+    }
+
+    /**
+     * Returns the default namespace.
+     *
+     * @return the default namespace. Can be null.
+     */
+    public String defaultNamespace() {
+        return this.defaultNamespace;
     }
 
     /**
