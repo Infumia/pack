@@ -2,12 +2,10 @@ package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.kyori.adventure.key.KeyPattern;
+import java.util.StringJoiner;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.metadata.pack.PackFormat;
 import team.unnamed.creative.metadata.pack.PackMeta;
-
-import java.util.StringJoiner;
 
 /**
  * Represents a reference to a pack with format constraints and a description.

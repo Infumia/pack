@@ -36,7 +36,9 @@ public final class PackReferencePartImage extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
-        final String namespace = this.namespace == null ? context.packReference().defaultNamespace() : this.namespace;
+        final String namespace = this.namespace == null
+            ? context.packReference().defaultNamespace()
+            : this.namespace;
         if (namespace == null) {
             throw new IllegalStateException("Pack reference namespace cannot be null!");
         }
