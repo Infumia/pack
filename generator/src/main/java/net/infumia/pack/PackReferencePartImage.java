@@ -53,6 +53,7 @@ public final class PackReferencePartImage extends PackReferencePart {
                 .relativize(this.directory)
                 .toString()
                 .toLowerCase(Locale.ROOT)
+                .replace("\\", "/")
                 .replace(" ", "_") +
             "/";
         }
