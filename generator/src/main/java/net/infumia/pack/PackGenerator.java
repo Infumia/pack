@@ -21,11 +21,10 @@ public final class PackGenerator {
         final PackWriterSettings writerSettings,
         final Pack base
     ) throws IOException {
-        final PackReader reader = new PackReader(readerSettings, base);
-        final PackWriter writer = new PackWriter(writerSettings);
-        final PackGeneratorContext context = reader.read();
-        final PackGeneratorContext parsed = PackParser.parse(context);
-        return writer.write(parsed);
+        return PackGenerator.write(
+            writerSettings,
+            PackParser.parse(PackGenerator.read(readerSettings, base))
+        );
     }
 
     /**
@@ -41,6 +40,35 @@ public final class PackGenerator {
         final PackWriterSettings writerSettings
     ) throws IOException {
         return PackGenerator.generate(readerSettings, writerSettings, Packs.create());
+    }
+
+    /**
+     * Reads the pack based on the provided settings and base pack.
+     *
+     * @param readerSettings the pack reader settings. Cannot be null.
+     * @param base           the base pack. Cannot be null.
+     * @return the pack generation context.
+     * @throws IOException if an I/O error is thrown when accessing the starting file.
+     */
+    public static PackGeneratorContext read(
+        final PackReaderSettings readerSettings,
+        final Pack base
+    ) throws IOException {
+        return new PackReader(readerSettings, base).read();
+    }
+
+    /**
+     * Writes the pack based on the provided settings and context.
+     *
+     * @param writerSettings the pack writer settings. Cannot be null.
+     * @param context        the pack generator context. Cannot be null.
+     * @return the generated pack context.
+     */
+    public static PackGeneratedContext write(
+        final PackWriterSettings writerSettings,
+        final PackGeneratorContext context
+    ) {
+        return new PackWriter(writerSettings).write(context);
     }
 
     private PackGenerator() {
