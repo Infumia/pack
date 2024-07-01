@@ -5,6 +5,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.*
 
 fun Project.applyCommon(javaVersion: Int = 8, sources: Boolean = true, javadoc: Boolean = true) {
@@ -13,7 +14,10 @@ fun Project.applyCommon(javaVersion: Int = 8, sources: Boolean = true, javadoc: 
     repositories.mavenCentral()
 
     extensions.configure<JavaPluginExtension> {
-        toolchain { languageVersion = JavaLanguageVersion.of(javaVersion) }
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+            vendor = JvmVendorSpec.ADOPTIUM
+        }
     }
 
     if (javadoc) {
