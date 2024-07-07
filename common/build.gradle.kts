@@ -4,5 +4,4 @@ publish()
 
 dependencies {
     compileOnly(libs.creative.api)
-    compileOnly(libs.adventure.api)
 }

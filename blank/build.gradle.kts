@@ -6,5 +6,4 @@ dependencies {
     compileOnly(project(":common"))
 
     compileOnly(libs.creative.api)
-    compileOnly(libs.adventure.api)
 }
