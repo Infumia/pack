@@ -5,7 +5,7 @@ import team.unnamed.creative.texture.Texture;
 
 final class FileResourceTexture implements FileResource {
 
-    private final Texture texture;
+    final Texture texture;
 
     FileResourceTexture(final Texture texture) {
         this.texture = texture;

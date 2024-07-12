@@ -8,7 +8,12 @@ import java.nio.file.Path;
  * Abstract base class for a pack part reference.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({ @JsonSubTypes.Type(value = PackReferencePartImage.class, name = "image") })
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(value = PackReferencePartImage.class, name = "image"),
+        @JsonSubTypes.Type(value = PackReferencePartItem.class, name = "item"),
+    }
+)
 public abstract class PackReferencePart {
 
     /**

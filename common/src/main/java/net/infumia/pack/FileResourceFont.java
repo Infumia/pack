@@ -5,7 +5,7 @@ import team.unnamed.creative.font.Font;
 
 final class FileResourceFont implements FileResource {
 
-    private final Font font;
+    final Font font;
 
     FileResourceFont(final Font font) {
         this.font = font;

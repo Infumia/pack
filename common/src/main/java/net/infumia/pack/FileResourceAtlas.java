@@ -5,7 +5,7 @@ import team.unnamed.creative.atlas.Atlas;
 
 final class FileResourceAtlas implements FileResource {
 
-    private final Atlas atlas;
+    final Atlas atlas;
 
     FileResourceAtlas(final Atlas atlas) {
         this.atlas = atlas;

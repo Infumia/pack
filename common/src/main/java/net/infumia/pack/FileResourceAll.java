@@ -5,7 +5,7 @@ import team.unnamed.creative.ResourcePack;
 
 final class FileResourceAll implements FileResource {
 
-    private final Collection<FileResource> resources;
+    final Collection<FileResource> resources;
 
     FileResourceAll(final Collection<FileResource> resources) {
         this.resources = resources;

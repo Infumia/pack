@@ -1,8 +1,15 @@
 package net.infumia.pack;
 
 import net.kyori.adventure.key.Key;
+import team.unnamed.creative.atlas.Atlas;
+import team.unnamed.creative.atlas.AtlasSource;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
+import team.unnamed.creative.model.ItemOverride;
+import team.unnamed.creative.model.ItemPredicate;
+import team.unnamed.creative.model.Model;
+import team.unnamed.creative.model.ModelTexture;
+import team.unnamed.creative.model.ModelTextures;
 import team.unnamed.creative.texture.Texture;
 
 /**
@@ -72,6 +79,55 @@ public final class ResourceProducers {
         final TextureProperties properties
     ) {
         return new GlyphImageImpl(fontKey, texture, properties);
+    }
+
+    /**
+     * Creates an item resource with the specified parameters.
+     *
+     * @param itemKey         The key for the item. Cannot be null.
+     * @param overriddenItemKey         The key for the base model. Cannot be null.
+     * @param itemImage           The writable image for the blank slot. Cannot be null.
+     * @param customModelData The custom model data value.
+     * @return A {@link FileResource} representing the created item.
+     */
+    public static FileResource item(
+        final Key itemKey,
+        final Key overriddenItemKey,
+        final Writable itemImage,
+        final int customModelData
+    ) {
+        return FileResources.all(
+            FileResources.model(
+                Model.model()
+                    .key(itemKey)
+                    .parent(Model.ITEM_GENERATED)
+                    .textures(ModelTextures.builder().layers(ModelTexture.ofKey(itemKey)).build())
+                    .build()
+            ),
+            FileResources.model(
+                Model.model()
+                    .key(overriddenItemKey)
+                    .parent(Model.ITEM_GENERATED)
+                    .textures(
+                        ModelTextures.builder()
+                            .layers(ModelTexture.ofKey(overriddenItemKey))
+                            .build()
+                    )
+                    .overrides(
+                        ItemOverride.of(itemKey, ItemPredicate.customModelData(customModelData))
+                    )
+                    .build()
+            ),
+            FileResources.texture(
+                Texture.texture(Internal.keyWithPngExtension(itemKey), itemImage)
+            ),
+            FileResources.atlas(
+                Atlas.atlas()
+                    .key(Atlas.BLOCKS)
+                    .sources(AtlasSource.directory(itemKey.namespace(), itemKey.namespace() + "/"))
+                    .build()
+            )
+        );
     }
 
     private ResourceProducers() {

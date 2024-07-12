@@ -9,12 +9,14 @@ import java.util.Set;
 final class PackDefault implements Pack {
 
     private final FileResourceCompiler compiler;
+    private final FileResourceMerger merger;
     private final Map<String, ResourceProducer> raw = new HashMap<>();
     private final Map<String, ResourceProducer> compiled = new HashMap<>();
     private final Set<FileResource> resources = new HashSet<>();
 
-    PackDefault(final FileResourceCompiler compiler) {
+    PackDefault(final FileResourceCompiler compiler, final FileResourceMerger merger) {
         this.compiler = compiler;
+        this.merger = merger;
     }
 
     @Override
@@ -29,6 +31,9 @@ final class PackDefault implements Pack {
     public void compileAll() {
         final Collection<FileResource> resources = this.compiler.compile(this.raw.values());
         this.resources.addAll(resources);
+        final Collection<FileResource> mergedResources = this.merger.merge(this.resources);
+        this.resources.clear();
+        this.resources.addAll(mergedResources);
         this.compiled.putAll(this.raw);
         this.raw.clear();
     }

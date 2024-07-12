@@ -6,13 +6,11 @@ import java.util.Locale;
 import java.util.StringJoiner;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.font.Font;
-import team.unnamed.creative.texture.Texture;
 
 /**
- * Represents an image part of a pack reference.
+ * Represents an item part of a pack reference.
  */
-public final class PackReferencePartImage extends PackReferencePart {
+public final class PackReferencePartItem extends PackReferencePart {
 
     @JsonProperty
     private String namespace;
@@ -20,14 +18,17 @@ public final class PackReferencePartImage extends PackReferencePart {
     @JsonProperty(required = true)
     private String key;
 
+    @JsonProperty(value = "custom-model-data", required = true)
+    private int customModelData;
+
     @JsonProperty(required = true)
     private String image;
 
-    @JsonProperty(required = true)
-    private int height;
+    @JsonProperty("overridden-namespace")
+    private String overriddenNamespace;
 
-    @JsonProperty(required = true)
-    private int ascent;
+    @JsonProperty(value = "overridden-key", required = true)
+    private String overriddenKey;
 
     private Path directory;
 
@@ -55,36 +56,40 @@ public final class PackReferencePartImage extends PackReferencePart {
             "/";
         }
 
-        final String key = parent + this.key;
+        final Key overriddenItemKey;
+        if (this.overriddenNamespace == null) {
+            overriddenItemKey = Key.key(this.overriddenKey);
+        } else {
+            overriddenItemKey = Key.key(this.overriddenNamespace, this.overriddenKey);
+        }
+
         context
             .pack()
             .with(
-                (ResourceIdentifierImage) () -> key,
-                ResourceProducers.image(
-                    Font.MINECRAFT_DEFAULT,
-                    Texture.texture(
-                        Key.key(namespace, key + ".png"),
-                        Writable.path(root.resolve(parent + this.image))
-                    ),
-                    new TextureProperties(this.height, this.ascent)
+                ResourceProducers.item(
+                    Key.key(namespace, parent + this.key),
+                    overriddenItemKey,
+                    Writable.path(root.resolve(parent + this.image)),
+                    this.customModelData
                 )
             );
     }
 
     @Override
-    PackReferencePartImage directory(final Path directory) {
+    PackReferencePartItem directory(final Path directory) {
         this.directory = directory;
         return this;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", PackReferencePartImage.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", PackReferencePartItem.class.getSimpleName() + "[", "]")
             .add("namespace='" + this.namespace + "'")
             .add("key='" + this.key + "'")
+            .add("customModelData=" + this.customModelData)
             .add("image='" + this.image + "'")
-            .add("height=" + this.height)
-            .add("ascent=" + this.ascent)
+            .add("overriddenNamespace='" + this.overriddenNamespace + "'")
+            .add("overriddenKey='" + this.overriddenKey + "'")
             .add("directory=" + this.directory)
             .toString();
     }

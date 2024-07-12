@@ -2,15 +2,7 @@ package net.infumia.pack;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.KeyPattern;
-import team.unnamed.creative.atlas.Atlas;
-import team.unnamed.creative.atlas.AtlasSource;
 import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.model.ItemOverride;
-import team.unnamed.creative.model.ItemPredicate;
-import team.unnamed.creative.model.Model;
-import team.unnamed.creative.model.ModelTexture;
-import team.unnamed.creative.model.ModelTextures;
-import team.unnamed.creative.texture.Texture;
 
 /**
  * Utility class for creating and retrieving blank slot file resources.
@@ -24,51 +16,6 @@ public final class BlankSlot {
      */
     public static FileResource get() {
         return Internal0.BLANK_SLOT.get();
-    }
-
-    /**
-     * Creates a blank slot file resource with the specified parameters.
-     *
-     * @param itemKey         The key for the item. Cannot be null.
-     * @param baseKey         The key for the base model. Cannot be null.
-     * @param blankSlotImage  The writable image for the blank slot. Cannot be null.
-     * @param customModelData The custom model data value.
-     * @return A {@link FileResource} representing the created blank slot.
-     */
-    public static FileResource create(
-        final Key itemKey,
-        final Key baseKey,
-        final Writable blankSlotImage,
-        final int customModelData
-    ) {
-        return FileResources.all(
-            FileResources.model(
-                Model.model()
-                    .key(itemKey)
-                    .parent(Model.ITEM_GENERATED)
-                    .textures(ModelTextures.builder().layers(ModelTexture.ofKey(itemKey)).build())
-                    .build()
-            ),
-            FileResources.model(
-                Model.model()
-                    .key(baseKey)
-                    .parent(Model.ITEM_GENERATED)
-                    .textures(ModelTextures.builder().layers(ModelTexture.ofKey(baseKey)).build())
-                    .overrides(
-                        ItemOverride.of(itemKey, ItemPredicate.customModelData(customModelData))
-                    )
-                    .build()
-            ),
-            FileResources.texture(
-                Texture.texture(Internal.keyWithPngExtension(itemKey), blankSlotImage)
-            ),
-            FileResources.atlas(
-                Atlas.atlas()
-                    .key(Atlas.BLOCKS)
-                    .sources(AtlasSource.directory(itemKey.namespace(), itemKey.namespace() + "/"))
-                    .build()
-            )
-        );
     }
 
     /**
@@ -88,7 +35,7 @@ public final class BlankSlot {
         final Writable blankSlotImage,
         final int customModelData
     ) {
-        return BlankSlot.create(
+        return ResourceProducers.item(
             Key.key(namespace, itemId),
             baseKey,
             blankSlotImage,

@@ -5,7 +5,7 @@ import team.unnamed.creative.model.Model;
 
 final class FileResourceModel implements FileResource {
 
-    private final Model model;
+    final Model model;
 
     FileResourceModel(final Model model) {
         this.model = model;

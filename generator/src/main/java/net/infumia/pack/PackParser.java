@@ -30,7 +30,7 @@ public final class PackParser {
             pack.with(BlankSlot.get());
         }
         if (meta.addSpaces()) {
-            if (packMeta.formats().isInRange(9)) {
+            if (packMeta.formats().min() >= 9) {
                 pack.withMojangSpaces();
             } else {
                 pack.withBitmapSpaces();
