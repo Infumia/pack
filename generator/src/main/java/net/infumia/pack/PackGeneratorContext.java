@@ -17,8 +17,6 @@ public final class PackGeneratorContext {
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
     private final Path rootDirectory;
-    private final Path outputDirectory;
-    private final Path outputFile;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
@@ -29,8 +27,6 @@ public final class PackGeneratorContext {
      * @param packReference      the pack file reference. Cannot be null.
      * @param packPartReferences the pack part references. Cannot be null.
      * @param rootDirectory      the root directory of the pack. Cannot be null.
-     * @param outputDirectory    the output directory. Can be null.
-     * @param outputFile         the output file. Can be null.
      * @param serializer         the serializer to serialize components when needed. Cannot be null.
      */
     PackGeneratorContext(
@@ -39,8 +35,6 @@ public final class PackGeneratorContext {
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
         final Path rootDirectory,
-        final Path outputDirectory,
-        final Path outputFile,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.resourcePack = resourcePack;
@@ -48,8 +42,6 @@ public final class PackGeneratorContext {
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
         this.rootDirectory = rootDirectory;
-        this.outputDirectory = outputDirectory;
-        this.outputFile = outputFile;
         this.serializer = serializer;
     }
 
@@ -99,24 +91,6 @@ public final class PackGeneratorContext {
     }
 
     /**
-     * Returns the output directory.
-     *
-     * @return the output directory. Can be null.
-     */
-    public Path outputDirectory() {
-        return this.outputDirectory;
-    }
-
-    /**
-     * Returns the output file.
-     *
-     * @return the output file. Can be null.
-     */
-    public Path outputFile() {
-        return this.outputFile;
-    }
-
-    /**
      * Returns the component serializer.
      *
      * @return the component serializer.
@@ -132,8 +106,6 @@ public final class PackGeneratorContext {
             .add("pack=" + this.pack)
             .add("packReference=" + this.packReference)
             .add("packPartReferences=" + this.packPartReferences)
-            .add("outputDirectory=" + this.outputDirectory)
-            .add("outputFile=" + this.outputFile)
             .add("serializer=" + this.serializer)
             .toString();
     }

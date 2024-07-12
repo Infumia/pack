@@ -17,8 +17,6 @@ public final class PackReaderSettings {
     private final Path root;
     private final FileVisitOption[] visitOptions;
     private final String packReferenceFileName;
-    private final Path outputDirectory;
-    private final Path outputFile;
     private final ObjectMapper mapper;
     private final Predicate<Path> readFilter;
     private final ComponentSerializer<?, ?, String> serializer;
@@ -29,8 +27,6 @@ public final class PackReaderSettings {
      * @param root                  the root path.
      * @param visitOptions          the visit options. Can be null.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param outputDirectory       the directory name. Can be null.
-     * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
      * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
      * @param serializer            the serializer to serialize components when needed. Cannot be null.
@@ -39,8 +35,6 @@ public final class PackReaderSettings {
         final Path root,
         final FileVisitOption[] visitOptions,
         final String packReferenceFileName,
-        final Path outputDirectory,
-        final Path outputFile,
         final ObjectMapper mapper,
         final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
@@ -48,8 +42,6 @@ public final class PackReaderSettings {
         this.root = root;
         this.visitOptions = visitOptions;
         this.packReferenceFileName = packReferenceFileName;
-        this.outputDirectory = outputDirectory;
-        this.outputFile = outputFile;
         this.mapper = mapper;
         this.readFilter = readFilter;
         this.serializer = serializer;
@@ -60,30 +52,17 @@ public final class PackReaderSettings {
      *
      * @param root                  the root path.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param outputDirectory       the directory name. Can be null.
-     * @param outputFile            the zip file name. Can be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
      * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
      */
     public PackReaderSettings(
         final Path root,
         final String packReferenceFileName,
-        final Path outputDirectory,
-        final Path outputFile,
         final ObjectMapper mapper,
         final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this(
-            root,
-            null,
-            packReferenceFileName,
-            outputDirectory,
-            outputFile,
-            mapper,
-            readFilter,
-            serializer
-        );
+        this(root, null, packReferenceFileName, mapper, readFilter, serializer);
     }
 
     /**
@@ -111,24 +90,6 @@ public final class PackReaderSettings {
      */
     public String packReferenceFileName() {
         return this.packReferenceFileName;
-    }
-
-    /**
-     * Returns the output directory.
-     *
-     * @return the directory output. Can be null.
-     */
-    public Path outputDirectory() {
-        return this.outputDirectory;
-    }
-
-    /**
-     * Returns the zip file.
-     *
-     * @return the zip file. Can be null.
-     */
-    public Path outputFile() {
-        return this.outputFile;
     }
 
     /**
@@ -164,8 +125,6 @@ public final class PackReaderSettings {
             .add("root=" + this.root)
             .add("visitOptions=" + Arrays.toString(this.visitOptions))
             .add("packReferenceFileName='" + this.packReferenceFileName + "'")
-            .add("outputDirectory=" + this.outputDirectory)
-            .add("outputFile=" + this.outputFile)
             .add("mapper=" + this.mapper)
             .add("readFilter=" + this.readFilter)
             .add("serializer=" + this.serializer)
