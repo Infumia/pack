@@ -2,15 +2,30 @@ package net.infumia.pack;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.atlas.Atlas;
+import team.unnamed.creative.model.ItemOverride;
+import team.unnamed.creative.model.ItemPredicate;
 import team.unnamed.creative.model.Model;
 
 final class FileResourceMergerDefault implements FileResourceMerger {
 
     static final FileResourceMerger INSTANCE = new FileResourceMergerDefault();
+    static final Comparator<ItemOverride> OVERRIDE_COMPARATOR = Comparator.comparingInt(value -> {
+        final Optional<ItemPredicate> first = value.predicate().stream().findFirst();
+        if (!first.isPresent()) {
+            return 0;
+        }
+        final ItemPredicate predicate = first.get();
+        if (predicate.name().equals("custom_model_data")) {
+            return (int) predicate.value();
+        }
+        return 0;
+    });
 
     private FileResourceMergerDefault() {}
 
@@ -23,7 +38,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
 
         final MultiMap<Key, Atlas> atlases = new MultiMap<>();
         final MultiMap<Key, Model> models = new MultiMap<>();
-        final HashSet<FileResource> remainings = new HashSet<>();
+        final HashSet<FileResource> remaining = new HashSet<>();
         for (final FileResource resource : simplified) {
             if (resource instanceof FileResourceAtlas) {
                 final Atlas atlas = ((FileResourceAtlas) resource).atlas;
@@ -34,7 +49,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
             }
             // TODO: portlek, Merge more things.
             else {
-                remainings.add(resource);
+                remaining.add(resource);
             }
         }
 
@@ -73,6 +88,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
                     .stream()
                     .map(Model::overrides)
                     .flatMap(Collection::stream)
+                    .sorted(FileResourceMergerDefault.OVERRIDE_COMPARATOR)
                     .collect(Collectors.toList())
             );
             mergedModels.add(builder.build());
@@ -85,7 +101,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
         mergedResources.addAll(
             mergedModels.stream().map(FileResources::model).collect(Collectors.toSet())
         );
-        mergedResources.addAll(remainings);
+        mergedResources.addAll(remaining);
         return mergedResources;
     }
 
