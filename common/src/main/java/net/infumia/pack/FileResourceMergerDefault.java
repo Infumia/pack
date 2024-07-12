@@ -23,6 +23,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
 
         final MultiMap<Key, Atlas> atlases = new MultiMap<>();
         final MultiMap<Key, Model> models = new MultiMap<>();
+        final HashSet<FileResource> remainings = new HashSet<>();
         for (final FileResource resource : simplified) {
             if (resource instanceof FileResourceAtlas) {
                 final Atlas atlas = ((FileResourceAtlas) resource).atlas;
@@ -32,6 +33,9 @@ final class FileResourceMergerDefault implements FileResourceMerger {
                 models.put(model.key(), model);
             }
             // TODO: portlek, Merge more things.
+            else {
+                remainings.add(resource);
+            }
         }
 
         final Collection<Atlas> mergedAtlases = new HashSet<>(atlases.keys().size());
@@ -81,6 +85,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
         mergedResources.addAll(
             mergedModels.stream().map(FileResources::model).collect(Collectors.toSet())
         );
+        mergedResources.addAll(remainings);
         return mergedResources;
     }
 
