@@ -36,7 +36,7 @@ final class ResourceProducerSpacesMojang extends ResourceProducerSpacesAbstract 
                 length * (-1)
             );
         }
-        this.fontProviders = Collections.singleton(fontProviderBuilder.build());
+        this.fontProviders = Collections.singletonList(fontProviderBuilder.build());
     }
 
     @Override

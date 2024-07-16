@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
@@ -29,7 +28,7 @@ final class ResourceProducerImageMulticharImpl implements ResourceProducerImageM
     private final TextureProperties properties;
     private final List<String> charactersMapping;
 
-    private Set<FontProvider> fontProviders;
+    private List<FontProvider> fontProviders;
     private BufferedImage image;
 
     ResourceProducerImageMulticharImpl(
@@ -76,7 +75,7 @@ final class ResourceProducerImageMulticharImpl implements ResourceProducerImageM
             mappingLines.add(builder.toString());
         }
         fontProviderBuilder.characters(mappingLines);
-        this.fontProviders = Collections.singleton(fontProviderBuilder.build());
+        this.fontProviders = Collections.singletonList(fontProviderBuilder.build());
     }
 
     @Override
@@ -86,7 +85,7 @@ final class ResourceProducerImageMulticharImpl implements ResourceProducerImageM
 
     @Override
     public Collection<Texture> textures() throws ResourceNotProducedException {
-        return Collections.singleton(this.texture);
+        return Collections.singletonList(this.texture);
     }
 
     @Override

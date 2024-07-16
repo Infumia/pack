@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import javax.imageio.ImageIO;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
 import net.infumia.pack.exception.ResourceNotProducedException;
@@ -22,7 +22,7 @@ final class GlyphImageImpl implements GlyphImage {
     private final TextureProperties properties;
 
     private Character character;
-    private Set<FontProvider> fontProviders;
+    private List<FontProvider> fontProviders;
 
     private int width = -1;
 
@@ -55,7 +55,7 @@ final class GlyphImageImpl implements GlyphImage {
         fontProviderBuilder.file(this.texture.key());
         fontProviderBuilder.ascent(this.properties.ascent());
         fontProviderBuilder.height(this.properties.height());
-        this.fontProviders = Collections.singleton(fontProviderBuilder.build());
+        this.fontProviders = Collections.singletonList(fontProviderBuilder.build());
     }
 
     @Override
@@ -68,7 +68,7 @@ final class GlyphImageImpl implements GlyphImage {
 
     @Override
     public Collection<Texture> textures() throws ResourceNotProducedException {
-        return Collections.singleton(this.texture);
+        return Collections.singletonList(this.texture);
     }
 
     @Override

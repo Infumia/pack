@@ -112,7 +112,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
         } else {
-            return Collections.singleton(resource);
+            return Collections.singletonList(resource);
         }
     }
 }

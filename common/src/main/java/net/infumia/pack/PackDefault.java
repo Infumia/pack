@@ -1,10 +1,10 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 final class PackDefault implements Pack {
 
@@ -12,7 +12,7 @@ final class PackDefault implements Pack {
     private final FileResourceMerger merger;
     private final Map<String, ResourceProducer> raw = new HashMap<>();
     private final Map<String, ResourceProducer> compiled = new HashMap<>();
-    private final Set<FileResource> resources = new HashSet<>();
+    private final List<FileResource> resources = new ArrayList<>();
 
     PackDefault(final FileResourceCompiler compiler, final FileResourceMerger merger) {
         this.compiler = compiler;

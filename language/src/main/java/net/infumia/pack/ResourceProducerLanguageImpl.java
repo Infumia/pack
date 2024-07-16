@@ -1,11 +1,10 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.infumia.pack.exception.ResourceAlreadyProducedException;
@@ -23,7 +22,7 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
     private final Texture texture;
     private final Map<TextureProperties, ResourceProducerImageMultichar> propertiesToMultichar;
 
-    private Set<FontProvider> fontProviders;
+    private List<FontProvider> fontProviders;
 
     ResourceProducerLanguageImpl(
         final Key key,
@@ -60,7 +59,7 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
         if (this.fontProviders != null) {
             throw new ResourceAlreadyProducedException();
         }
-        this.fontProviders = new HashSet<>();
+        this.fontProviders = new ArrayList<>();
         this.propertiesToMultichar.values()
             .forEach(multichar -> {
                 multichar.produce(characterFactory);
@@ -75,7 +74,7 @@ final class ResourceProducerLanguageImpl implements ResourceProducerLanguage {
 
     @Override
     public Collection<Texture> textures() throws ResourceNotProducedException {
-        return Collections.singleton(this.texture);
+        return Collections.singletonList(this.texture);
     }
 
     private ResourceProducerImageMultichar getGlyphCollection(final int height, final int ascent) {
