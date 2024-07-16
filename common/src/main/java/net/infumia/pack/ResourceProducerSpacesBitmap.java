@@ -73,10 +73,9 @@ final class ResourceProducerSpacesBitmap extends ResourceProducerSpacesAbstract 
         fontProviderBuilder.file(this.textureKey);
         if (length > 0) {
             fontProviderBuilder.height(length - 1);
-            fontProviderBuilder.ascent(0);
         } else {
             fontProviderBuilder.height(length - 2);
-            fontProviderBuilder.ascent(-32768);
+            fontProviderBuilder.ascent(Short.MIN_VALUE);
         }
         this.mapping.put(length, character);
         return fontProviderBuilder;
