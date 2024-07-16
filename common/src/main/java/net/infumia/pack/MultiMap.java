@@ -1,8 +1,8 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 final class MultiMap<K, V> {
@@ -12,7 +12,7 @@ final class MultiMap<K, V> {
     MultiMap() {}
 
     void put(final K key, final V value) {
-        this.map.computeIfAbsent(key, __ -> new HashSet<>()).add(value);
+        this.map.computeIfAbsent(key, __ -> new ArrayList<>()).add(value);
     }
 
     Collection<V> get(final K key) {

@@ -61,14 +61,14 @@ final class PackReader {
                             .readAll()
                             .stream()
                             .map(part -> part.directory(path))
-                            .collect(Collectors.toSet());
+                            .collect(Collectors.toList());
                     }
                 } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             })
             .flatMap(Collection::stream)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
         return new PackGeneratorContext(
             ResourcePack.resourcePack(),
             this.base,

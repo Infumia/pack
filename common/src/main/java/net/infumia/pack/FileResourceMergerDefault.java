@@ -1,9 +1,9 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import net.kyori.adventure.key.Key;
@@ -31,14 +31,14 @@ final class FileResourceMergerDefault implements FileResourceMerger {
 
     @Override
     public Collection<FileResource> merge(final Collection<FileResource> resources) {
-        final Collection<FileResource> simplified = new HashSet<>(resources.size());
+        final Collection<FileResource> simplified = new ArrayList<>(resources.size());
         for (final FileResource resource : resources) {
             simplified.addAll(this.simplify(resource));
         }
 
         final MultiMap<Key, Atlas> atlases = new MultiMap<>();
         final MultiMap<Key, Model> models = new MultiMap<>();
-        final HashSet<FileResource> remaining = new HashSet<>();
+        final Collection<FileResource> remaining = new ArrayList<>();
         for (final FileResource resource : simplified) {
             if (resource instanceof FileResourceAtlas) {
                 final Atlas atlas = ((FileResourceAtlas) resource).atlas;
@@ -53,7 +53,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
             }
         }
 
-        final Collection<Atlas> mergedAtlases = new HashSet<>(atlases.keys().size());
+        final Collection<Atlas> mergedAtlases = new ArrayList<>(atlases.keys().size());
         for (final Key key : atlases.keys()) {
             final Collection<Atlas> duplicates = atlases.get(key);
             final Atlas merged = Atlas.atlas()
@@ -69,7 +69,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
             mergedAtlases.add(merged);
         }
 
-        final Collection<Model> mergedModels = new HashSet<>(models.keys().size());
+        final Collection<Model> mergedModels = new ArrayList<>(models.keys().size());
         for (final Key key : models.keys()) {
             final Collection<Model> duplicates = models.get(key);
             final Model.Builder builder = Model.model().key(key);
@@ -97,9 +97,9 @@ final class FileResourceMergerDefault implements FileResourceMerger {
         final Collection<FileResource> mergedResources = mergedAtlases
             .stream()
             .map(FileResources::atlas)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
         mergedResources.addAll(
-            mergedModels.stream().map(FileResources::model).collect(Collectors.toSet())
+            mergedModels.stream().map(FileResources::model).collect(Collectors.toList())
         );
         mergedResources.addAll(remaining);
         return mergedResources;
@@ -110,7 +110,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
             return ((FileResourceAll) resource).resources.stream()
                 .map(this::simplify)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         } else {
             return Collections.singletonList(resource);
         }

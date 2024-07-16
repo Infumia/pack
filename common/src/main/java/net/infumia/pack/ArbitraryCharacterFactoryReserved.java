@@ -1,8 +1,8 @@
 package net.infumia.pack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * A factory for creating arbitrary characters, ensuring that reserved characters are not produced.
@@ -59,7 +59,7 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
     private static final class Internal {
 
         private static final Lazy<Collection<Character>> RESERVED = Lazy.of(() -> {
-            final Collection<Character> reserved = new HashSet<>();
+            final Collection<Character> reserved = new ArrayList<>();
             for (char c = 'a'; c <= 'z'; c++) {
                 reserved.add(c);
             }
