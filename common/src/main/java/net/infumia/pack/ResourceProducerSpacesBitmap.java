@@ -67,17 +67,17 @@ final class ResourceProducerSpacesBitmap extends ResourceProducerSpacesAbstract 
         final ArbitraryCharacterFactory characterFactory,
         final int length
     ) {
-        final BitMapFontProvider.Builder fontProviderBuilder = FontProvider.bitMap();
+        final BitMapFontProvider.Builder builder = FontProvider.bitMap();
         final char character = characterFactory.create();
-        fontProviderBuilder.characters(String.valueOf(character));
-        fontProviderBuilder.file(this.textureKey);
+        builder.characters(String.valueOf(character));
+        builder.file(this.textureKey);
         if (length > 0) {
-            fontProviderBuilder.height(length - 1);
+            builder.height(length - 1);
         } else {
-            fontProviderBuilder.height(length - 2);
-            fontProviderBuilder.ascent(Short.MIN_VALUE);
+            builder.height(length - 2);
+            builder.ascent(Short.MIN_VALUE);
         }
         this.mapping.put(length, character);
-        return fontProviderBuilder;
+        return builder;
     }
 }
