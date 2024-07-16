@@ -46,11 +46,11 @@ final class GlyphImageImpl implements GlyphImage {
     @Override
     public void produce(final ArbitraryCharacterFactory characterFactory)
         throws ResourceAlreadyProducedException {
-        if (this.fontProviders != null) {
+        if (this.fontProviders != null || this.character != null) {
             throw new ResourceAlreadyProducedException();
         }
-        final BitMapFontProvider.Builder fontProviderBuilder = FontProvider.bitMap();
         this.character = characterFactory.create();
+        final BitMapFontProvider.Builder fontProviderBuilder = FontProvider.bitMap();
         fontProviderBuilder.characters(String.valueOf(this.character));
         fontProviderBuilder.file(this.texture.key());
         fontProviderBuilder.ascent(this.properties.ascent());
@@ -94,7 +94,7 @@ final class GlyphImageImpl implements GlyphImage {
 
     @Override
     public char character() throws ResourceNotProducedException {
-        if (this.fontProviders == null) {
+        if (this.character == null) {
             throw new ResourceNotProducedException();
         }
         return this.character;
