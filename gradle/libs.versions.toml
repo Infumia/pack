@@ -1,5 +1,5 @@
 [versions]
-creative = "1.7.2"
+creative = "1.7.3"
 
 [libraries]
 adventure-api = { module = "net.kyori:adventure-api", version = "4.17.0" }
