@@ -63,6 +63,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
                         .stream()
                         .map(Atlas::sources)
                         .flatMap(Collection::stream)
+                        .distinct()
                         .collect(Collectors.toList())
                 )
                 .build();
@@ -88,6 +89,7 @@ final class FileResourceMergerDefault implements FileResourceMerger {
                     .stream()
                     .map(Model::overrides)
                     .flatMap(Collection::stream)
+                    .distinct()
                     .sorted(FileResourceMergerDefault.OVERRIDE_COMPARATOR)
                     .collect(Collectors.toList())
             );
