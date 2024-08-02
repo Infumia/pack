@@ -69,6 +69,7 @@ public final class ArbitraryCharacterFactoryReserved implements ArbitraryCharact
             for (char c = '0'; c <= '9'; c++) {
                 reserved.add(c);
             }
+            reserved.add((char) 167);
             Collections.addAll(
                 reserved,
                 '!',
