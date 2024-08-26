@@ -1,6 +1,6 @@
-import net.infumia.gradle.publish
+import net.infumia.gradle.applyPublish
 
-publish("blank")
+applyPublish("blank")
 
 dependencies {
     compileOnly(project(":common"))
