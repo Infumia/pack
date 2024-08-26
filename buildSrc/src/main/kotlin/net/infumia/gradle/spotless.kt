@@ -2,10 +2,11 @@ package net.infumia.gradle
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
+import com.diffplug.spotless.LineEnding
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.*
 
-fun Project.spotless() {
+fun Project.applySpotless() {
     val subProjects = subprojects.map { it.projectDir.toRelativeString(projectDir) }
 
     repositories.mavenCentral()
@@ -14,7 +15,7 @@ fun Project.spotless() {
 
     extensions.configure<SpotlessExtension> {
         isEnforceCheck = false
-        lineEndings = com.diffplug.spotless.LineEnding.UNIX
+        lineEndings = LineEnding.UNIX
 
         val prettierConfig =
             mapOf(

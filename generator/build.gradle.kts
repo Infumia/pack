@@ -1,6 +1,6 @@
-import net.infumia.gradle.publish
+import net.infumia.gradle.applyPublish
 
-publish("generator")
+applyPublish("generator")
 
 dependencies {
     compileOnly(project(":common"))
