@@ -19,7 +19,7 @@ fun Project.applyPublish(moduleName: String? = null, javaVersion: Int = 8) {
     val sourceSets = extensions.getByType<JavaPluginExtension>().sourceSets
     tasks.register("sourcesJar", Jar::class) {
         dependsOn("classes")
-        archiveClassifier.set("sources")
+        archiveClassifier = "sources"
         from(sourceSets["main"].allSource)
     }
 
