@@ -27,7 +27,14 @@ public final class PackParser {
         final PackMeta packMeta = meta.parsePackMeta(context.serializer());
         context.resourcePack().packMeta(packMeta);
         if (meta.addBlankSlot()) {
-            pack.with(BlankSlot.get());
+            final int customModelData;
+            final Integer cmd = meta.blankSlotCustomModelData();
+            if (cmd == null) {
+                customModelData = 1;
+            } else {
+                customModelData = cmd;
+            }
+            pack.with(BlankSlot.get(customModelData));
         }
         if (meta.addSpaces()) {
             if (packMeta.formats().min() >= 9) {

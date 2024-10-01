@@ -17,6 +17,7 @@ public final class PackReferenceMeta {
     private final Integer maximumFormat;
     private final String description;
     private final boolean addBlankSlot;
+    private final Integer blankSlotCustomModelData;
     private final boolean addSpaces;
     private final String defaultNamespace;
     private final Integer customModelDataOffset;
@@ -24,14 +25,15 @@ public final class PackReferenceMeta {
     /**
      * Ctor.
      *
-     * @param format                the pack format. Can be null
-     * @param minimumFormat         the minimum pack format. Can be null
-     * @param maximumFormat         the maximum pack format. Can be null
-     * @param description           the description of the pack
-     * @param addBlankSlot          adds the {@link BlankSlot} resources.
-     * @param addSpaces             adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
-     * @param defaultNamespace      the default namespace that will be used when a {@link PackReferencePart} does not have a namespace. Can be null.
-     * @param customModelDataOffset the custom model data offset to be used when automatically incrementing the next custom model data for items.
+     * @param format                   the pack format. Can be null
+     * @param minimumFormat            the minimum pack format. Can be null
+     * @param maximumFormat            the maximum pack format. Can be null
+     * @param description              the description of the pack
+     * @param addBlankSlot             adds the {@link BlankSlot} resources.
+     * @param blankSlotCustomModelData the custom model data of the blank slot paper model.
+     * @param addSpaces                adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
+     * @param defaultNamespace         the default namespace that will be used when a {@link PackReferencePart} does not have a namespace. Can be null.
+     * @param customModelDataOffset    the custom model data offset to be used when automatically incrementing the next custom model data for items.
      */
     @JsonCreator
     public PackReferenceMeta(
@@ -40,6 +42,7 @@ public final class PackReferenceMeta {
         @JsonProperty("maximum-format") final Integer maximumFormat,
         @JsonProperty("description") final String description,
         @JsonProperty("add-blank-slot") final boolean addBlankSlot,
+        @JsonProperty("blank-slot-custom-model-data") final Integer blankSlotCustomModelData,
         @JsonProperty("add-spaces") final boolean addSpaces,
         @JsonProperty("default-namespace") final String defaultNamespace,
         @JsonProperty("custom-model-data-offset") final Integer customModelDataOffset
@@ -49,6 +52,7 @@ public final class PackReferenceMeta {
         this.maximumFormat = maximumFormat;
         this.description = description;
         this.addBlankSlot = addBlankSlot;
+        this.blankSlotCustomModelData = blankSlotCustomModelData;
         this.addSpaces = addSpaces;
         this.defaultNamespace = defaultNamespace;
         this.customModelDataOffset = customModelDataOffset;
@@ -61,6 +65,15 @@ public final class PackReferenceMeta {
      */
     public boolean addBlankSlot() {
         return this.addBlankSlot;
+    }
+
+    /**
+     * Returns the custom model data of the blank slot.
+     *
+     * @return the custom model data of the blank slot.
+     */
+    public Integer blankSlotCustomModelData() {
+        return blankSlotCustomModelData;
     }
 
     /**
