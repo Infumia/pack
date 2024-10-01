@@ -1,6 +1,6 @@
 package net.infumia.pack;
 
-import java.util.Collection;
+import java.util.Comparator;
 import team.unnamed.creative.metadata.pack.PackMeta;
 
 /**
@@ -39,10 +39,11 @@ public final class PackParser {
     }
 
     private static void parseParts(final PackGeneratorContext context) {
-        final Collection<PackReferencePart> parts = context.packPartReferences();
-        for (final PackReferencePart part : parts) {
-            part.add(context);
-        }
+        context
+            .packPartReferences()
+            .stream()
+            .sorted(Comparator.comparing(part -> part.extractKey(context)))
+            .forEach(part -> part.add(context));
     }
 
     private PackParser() {

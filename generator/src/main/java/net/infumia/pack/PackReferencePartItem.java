@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 
@@ -18,8 +19,8 @@ public final class PackReferencePartItem extends PackReferencePart {
     @JsonProperty(required = true)
     private String key;
 
-    @JsonProperty(value = "custom-model-data", required = true)
-    private int customModelData;
+    @JsonProperty(value = "custom-model-data")
+    private Integer customModelData;
 
     @JsonProperty(required = true)
     private String image;
@@ -34,28 +35,6 @@ public final class PackReferencePartItem extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
-        final String namespace = this.namespace == null
-            ? context.packReference().defaultNamespace()
-            : this.namespace;
-        if (namespace == null) {
-            throw new IllegalStateException("Pack reference namespace cannot be null!");
-        }
-
-        final Path root = context.rootDirectory();
-
-        final String parent;
-        if (this.directory == null) {
-            parent = "";
-        } else {
-            parent = root
-                .relativize(this.directory)
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .replace("\\", "/")
-                .replace(" ", "_") +
-            "/";
-        }
-
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -67,10 +46,12 @@ public final class PackReferencePartItem extends PackReferencePart {
             .pack()
             .with(
                 ResourceProducers.item(
-                    Key.key(namespace, parent + this.key),
+                    this.extractKey(context),
                     overriddenItemKey,
-                    Writable.path(root.resolve(parent + this.image)),
-                    this.customModelData
+                    Writable.path(
+                        context.rootDirectory().resolve(this.parent(context) + this.image)
+                    ),
+                    this.customModelData(context)
                 )
             );
     }
@@ -79,6 +60,17 @@ public final class PackReferencePartItem extends PackReferencePart {
     PackReferencePartItem directory(final Path directory) {
         this.directory = directory;
         return this;
+    }
+
+    @Override
+    Key extractKey(final PackGeneratorContext context) {
+        final String namespace = this.namespace == null
+            ? context.packReference().defaultNamespace()
+            : this.namespace;
+        if (namespace == null) {
+            throw new IllegalStateException("Pack reference namespace cannot be null!");
+        }
+        return Key.key(namespace, this.parent(context) + this.key);
     }
 
     @Override
@@ -92,5 +84,40 @@ public final class PackReferencePartItem extends PackReferencePart {
             .add("overriddenKey='" + this.overriddenKey + "'")
             .add("directory=" + this.directory)
             .toString();
+    }
+
+    private String parent(final PackGeneratorContext context) {
+        if (this.directory == null) {
+            return "";
+        }
+        return (
+            context
+                .rootDirectory()
+                .relativize(this.directory)
+                .toString()
+                .toLowerCase(Locale.ROOT)
+                .replace("\\", "/")
+                .replace(" ", "_") +
+            "/"
+        );
+    }
+
+    private int customModelData(final PackGeneratorContext context) {
+        if (this.customModelData != null) {
+            return this.customModelData;
+        }
+
+        final Integer offset = context.packReference().customModelDataOffset();
+        if (offset == null) {
+            throw new IllegalStateException(
+                "Custom model data offset cannot be null when custom-model-data not specified!"
+            );
+        }
+
+        final AtomicInteger lastCustomModelData = context.lastCustomModelData();
+        if (offset > lastCustomModelData.get()) {
+            lastCustomModelData.set(offset);
+        }
+        return lastCustomModelData.getAndIncrement();
     }
 }

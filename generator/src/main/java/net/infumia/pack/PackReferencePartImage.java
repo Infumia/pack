@@ -33,38 +33,18 @@ public final class PackReferencePartImage extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
-        final String namespace = this.namespace == null
-            ? context.packReference().defaultNamespace()
-            : this.namespace;
-        if (namespace == null) {
-            throw new IllegalStateException("Pack reference namespace cannot be null!");
-        }
-
-        final Path root = context.rootDirectory();
-
-        final String parent;
-        if (this.directory == null) {
-            parent = "";
-        } else {
-            parent = root
-                .relativize(this.directory)
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .replace("\\", "/")
-                .replace(" ", "_") +
-            "/";
-        }
-
-        final String key = parent + this.key;
+        final Key key = this.extractKey(context);
         context
             .pack()
             .with(
-                (ResourceIdentifierImage) () -> key,
+                (ResourceIdentifierImage) () -> key.value(),
                 ResourceProducers.image(
                     Font.MINECRAFT_DEFAULT,
                     Texture.texture(
-                        Key.key(namespace, key + ".png"),
-                        Writable.path(root.resolve(parent + this.image))
+                        Key.key(key.namespace(), key.value() + ".png"),
+                        Writable.path(
+                            context.rootDirectory().resolve(this.parent(context) + this.image)
+                        )
                     ),
                     new TextureProperties(this.height, this.ascent)
                 )
@@ -78,6 +58,17 @@ public final class PackReferencePartImage extends PackReferencePart {
     }
 
     @Override
+    Key extractKey(final PackGeneratorContext context) {
+        final String namespace = this.namespace == null
+            ? context.packReference().defaultNamespace()
+            : this.namespace;
+        if (namespace == null) {
+            throw new IllegalStateException("Pack reference namespace cannot be null!");
+        }
+        return Key.key(namespace, this.parent(context) + this.key);
+    }
+
+    @Override
     public String toString() {
         return new StringJoiner(", ", PackReferencePartImage.class.getSimpleName() + "[", "]")
             .add("namespace='" + this.namespace + "'")
@@ -87,5 +78,21 @@ public final class PackReferencePartImage extends PackReferencePart {
             .add("ascent=" + this.ascent)
             .add("directory=" + this.directory)
             .toString();
+    }
+
+    private String parent(final PackGeneratorContext context) {
+        if (this.directory == null) {
+            return "";
+        }
+        return (
+            context
+                .rootDirectory()
+                .relativize(this.directory)
+                .toString()
+                .toLowerCase(Locale.ROOT)
+                .replace("\\", "/")
+                .replace(" ", "_") +
+            "/"
+        );
     }
 }
