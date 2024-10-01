@@ -111,7 +111,7 @@ public final class PackReferencePartItem extends PackReferencePart {
         if (offset == null) {
             throw new IllegalStateException(
                 String.format(
-                    "Custom model data offset cannot be null when custom-model-data not specified ('%s)!",
+                    "Custom model data offset cannot be null when custom-model-data not specified (%s)!",
                     this.extractKey(context)
                 )
             );
