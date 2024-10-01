@@ -35,28 +35,6 @@ public final class PackReferencePartItem extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
-        final String namespace = this.namespace == null
-            ? context.packReference().defaultNamespace()
-            : this.namespace;
-        if (namespace == null) {
-            throw new IllegalStateException("Pack reference namespace cannot be null!");
-        }
-
-        final Path root = context.rootDirectory();
-
-        final String parent;
-        if (this.directory == null) {
-            parent = "";
-        } else {
-            parent = root
-                .relativize(this.directory)
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .replace("\\", "/")
-                .replace(" ", "_") +
-            "/";
-        }
-
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -68,9 +46,11 @@ public final class PackReferencePartItem extends PackReferencePart {
             .pack()
             .with(
                 ResourceProducers.item(
-                    Key.key(namespace, parent + this.key),
+                    this.extractKey(context),
                     overriddenItemKey,
-                    Writable.path(root.resolve(parent + this.image)),
+                    Writable.path(
+                        context.rootDirectory().resolve(this.parent(context) + this.image)
+                    ),
                     this.customModelData(context)
                 )
             );
@@ -80,6 +60,17 @@ public final class PackReferencePartItem extends PackReferencePart {
     PackReferencePartItem directory(final Path directory) {
         this.directory = directory;
         return this;
+    }
+
+    @Override
+    Key extractKey(final PackGeneratorContext context) {
+        final String namespace = this.namespace == null
+            ? context.packReference().defaultNamespace()
+            : this.namespace;
+        if (namespace == null) {
+            throw new IllegalStateException("Pack reference namespace cannot be null!");
+        }
+        return Key.key(namespace, this.parent(context) + this.key);
     }
 
     @Override
@@ -93,6 +84,22 @@ public final class PackReferencePartItem extends PackReferencePart {
             .add("overriddenKey='" + this.overriddenKey + "'")
             .add("directory=" + this.directory)
             .toString();
+    }
+
+    private String parent(final PackGeneratorContext context) {
+        if (this.directory == null) {
+            return "";
+        }
+        return (
+            context
+                .rootDirectory()
+                .relativize(this.directory)
+                .toString()
+                .toLowerCase(Locale.ROOT)
+                .replace("\\", "/")
+                .replace(" ", "_") +
+            "/"
+        );
     }
 
     private int customModelData(final PackGeneratorContext context) {
