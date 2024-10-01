@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.ResourcePack;
 
@@ -12,6 +13,7 @@ import team.unnamed.creative.ResourcePack;
  */
 public final class PackGeneratorContext {
 
+    private final AtomicInteger lastCustomModelData = new AtomicInteger();
     private final ResourcePack resourcePack;
     private final Pack pack;
     private final PackReferenceMeta packReference;
@@ -97,6 +99,15 @@ public final class PackGeneratorContext {
      */
     public ComponentSerializer<?, ?, String> serializer() {
         return this.serializer;
+    }
+
+    /**
+     * Returns the last custom model data.
+     *
+     * @return the last custom model data.
+     */
+    public AtomicInteger lastCustomModelData() {
+        return lastCustomModelData;
     }
 
     @Override

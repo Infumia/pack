@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 
@@ -18,8 +19,8 @@ public final class PackReferencePartItem extends PackReferencePart {
     @JsonProperty(required = true)
     private String key;
 
-    @JsonProperty(value = "custom-model-data", required = true)
-    private int customModelData;
+    @JsonProperty(value = "custom-model-data")
+    private Integer customModelData;
 
     @JsonProperty(required = true)
     private String image;
@@ -70,7 +71,7 @@ public final class PackReferencePartItem extends PackReferencePart {
                     Key.key(namespace, parent + this.key),
                     overriddenItemKey,
                     Writable.path(root.resolve(parent + this.image)),
-                    this.customModelData
+                    this.customModelData(context)
                 )
             );
     }
@@ -92,5 +93,24 @@ public final class PackReferencePartItem extends PackReferencePart {
             .add("overriddenKey='" + this.overriddenKey + "'")
             .add("directory=" + this.directory)
             .toString();
+    }
+
+    private int customModelData(final PackGeneratorContext context) {
+        if (this.customModelData != null) {
+            return this.customModelData;
+        }
+
+        final Integer offset = context.packReference().customModelDataOffset();
+        if (offset == null) {
+            throw new IllegalStateException(
+                "Custom model data offset cannot be null when custom-model-data not specified!"
+            );
+        }
+
+        final AtomicInteger lastCustomModelData = context.lastCustomModelData();
+        if (offset > lastCustomModelData.get()) {
+            lastCustomModelData.set(offset);
+        }
+        return lastCustomModelData.getAndIncrement();
     }
 }

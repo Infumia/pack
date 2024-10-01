@@ -19,17 +19,19 @@ public final class PackReferenceMeta {
     private final boolean addBlankSlot;
     private final boolean addSpaces;
     private final String defaultNamespace;
+    private final Integer customModelDataOffset;
 
     /**
      * Ctor.
      *
-     * @param format           the pack format. Can be null
-     * @param minimumFormat    the minimum pack format. Can be null
-     * @param maximumFormat    the maximum pack format. Can be null
-     * @param description      the description of the pack
-     * @param addBlankSlot     adds the {@link BlankSlot} resources.
-     * @param addSpaces        adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
-     * @param defaultNamespace the default namespace that will be used when a {@link PackReferencePart} does not have a namespace. Can be null.
+     * @param format                the pack format. Can be null
+     * @param minimumFormat         the minimum pack format. Can be null
+     * @param maximumFormat         the maximum pack format. Can be null
+     * @param description           the description of the pack
+     * @param addBlankSlot          adds the {@link BlankSlot} resources.
+     * @param addSpaces             adds the {@link ResourceProducers#spacesBitmap()} or {@link ResourceProducers#spacesMojang()} based on the pack format.
+     * @param defaultNamespace      the default namespace that will be used when a {@link PackReferencePart} does not have a namespace. Can be null.
+     * @param customModelDataOffset the custom model data offset to be used when automatically incrementing the next custom model data for items.
      */
     @JsonCreator
     public PackReferenceMeta(
@@ -39,7 +41,8 @@ public final class PackReferenceMeta {
         @JsonProperty("description") final String description,
         @JsonProperty("add-blank-slot") final boolean addBlankSlot,
         @JsonProperty("add-spaces") final boolean addSpaces,
-        @JsonProperty("default-namespace") final String defaultNamespace
+        @JsonProperty("default-namespace") final String defaultNamespace,
+        @JsonProperty("custom-model-data-offset") final Integer customModelDataOffset
     ) {
         this.format = format;
         this.minimumFormat = minimumFormat;
@@ -48,6 +51,7 @@ public final class PackReferenceMeta {
         this.addBlankSlot = addBlankSlot;
         this.addSpaces = addSpaces;
         this.defaultNamespace = defaultNamespace;
+        this.customModelDataOffset = customModelDataOffset;
     }
 
     /**
@@ -75,6 +79,15 @@ public final class PackReferenceMeta {
      */
     public String defaultNamespace() {
         return this.defaultNamespace;
+    }
+
+    /**
+     * Returns the custom model data offset.
+     *
+     * @return the custom model data offset. Can be null
+     */
+    public Integer customModelDataOffset() {
+        return customModelDataOffset;
     }
 
     /**
