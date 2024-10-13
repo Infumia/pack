@@ -37,7 +37,7 @@ public final class PackReferencePartImage extends PackReferencePart {
         context
             .pack()
             .with(
-                (ResourceIdentifierImage) () -> key.value(),
+                (ResourceIdentifierImage) key::value,
                 ResourceProducers.image(
                     Font.MINECRAFT_DEFAULT,
                     Texture.texture(
