@@ -49,9 +49,6 @@ public final class PackReferencePartModel extends PackReferencePart {
                         .collect(Collectors.toList())
                 )
             );
-        System.out.println(
-            "assets/" + key.namespace() + "/models/" + key.value() + "/" + this.model
-        );
         context
             .pack()
             .with(
