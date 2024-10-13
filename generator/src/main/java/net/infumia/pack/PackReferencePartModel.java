@@ -58,21 +58,15 @@ public final class PackReferencePartModel extends PackReferencePart {
             .with(
                 FileResources.all(
                     this.textures.stream()
-                        .map(
-                            texture -> {
-                                final String path = this.parent(context) + texture;
-                                return FileResources.texture(
-                                    Texture.texture(
-                                        Key.key(key.namespace(), path),
-                                        Writable.path(
-                                            context
-                                                .rootDirectory()
-                                                .resolve(path)
-                                        )
-                                    )
-                                );
-                            }
-                        )
+                        .map(texture -> {
+                            final String path = this.parent(context) + texture;
+                            return FileResources.texture(
+                                Texture.texture(
+                                    Key.key(key.namespace(), path),
+                                    Writable.path(context.rootDirectory().resolve(path))
+                                )
+                            );
+                        })
                         .collect(Collectors.toList())
                 )
             );
@@ -82,9 +76,7 @@ public final class PackReferencePartModel extends PackReferencePart {
             .with(
                 FileResources.unknown(
                     "assets/" + key.namespace() + "/models/" + path,
-                    Writable.path(
-                        context.rootDirectory().resolve(path)
-                    )
+                    Writable.path(context.rootDirectory().resolve(path))
                 )
             );
         context
@@ -138,7 +130,8 @@ public final class PackReferencePartModel extends PackReferencePart {
                 .toString()
                 .toLowerCase(Locale.ROOT)
                 .replace("\\", "/")
-                .replace(" ", "_") + "/"
+                .replace(" ", "_") +
+            "/"
         );
     }
 
