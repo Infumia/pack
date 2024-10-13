@@ -13,6 +13,7 @@ import net.kyori.adventure.key.Key;
     {
         @JsonSubTypes.Type(value = PackReferencePartImage.class, name = "image"),
         @JsonSubTypes.Type(value = PackReferencePartItem.class, name = "item"),
+        @JsonSubTypes.Type(value = PackReferencePartModel.class, name = "model"),
     }
 )
 public abstract class PackReferencePart {

@@ -84,10 +84,10 @@ public final class ResourceProducers {
     /**
      * Creates an item resource with the specified parameters.
      *
-     * @param itemKey         The key for the item. Cannot be null.
-     * @param overriddenItemKey         The key for the base model. Cannot be null.
-     * @param itemImage           The writable image for the blank slot. Cannot be null.
-     * @param customModelData The custom model data value.
+     * @param itemKey           The key for the item. Cannot be null.
+     * @param overriddenItemKey The key for the base model. Cannot be null.
+     * @param itemImage         The writable image for the blank slot. Cannot be null.
+     * @param customModelData   The custom model data value.
      * @return A {@link FileResource} representing the created item.
      */
     public static FileResource item(
@@ -128,6 +128,16 @@ public final class ResourceProducers {
                     .build()
             )
         );
+    }
+
+    /**
+     * Creates a model resource with the specified parameters.
+     *
+     * @param key           The key for the item. Cannot be null.
+     * @return A {@link FileResource} representing the created model.
+     */
+    public static FileResource model(final Key key) {
+        return FileResources.model(Model.model().key(key).build());
     }
 
     private ResourceProducers() {

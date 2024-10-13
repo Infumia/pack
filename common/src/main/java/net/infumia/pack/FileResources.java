@@ -3,6 +3,7 @@ package net.infumia.pack;
 import java.util.Arrays;
 import java.util.Collection;
 import team.unnamed.creative.atlas.Atlas;
+import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.model.Model;
 import team.unnamed.creative.texture.Texture;
@@ -50,6 +51,17 @@ public final class FileResources {
      */
     public static FileResource model(final Model model) {
         return new FileResourceModel(model);
+    }
+
+    /**
+     * Creates a {@link FileResource} for the specified path and writable data.
+     *
+     * @param path     the path to create a file resource for. Cannot be null.
+     * @param writable the writable to create a file resource for. Cannot be null.
+     * @return a {@link FileResource} representing the unknown file.
+     */
+    public static FileResource unknown(final String path, final Writable writable) {
+        return new FileResourceUnknown(path, writable);
     }
 
     /**
