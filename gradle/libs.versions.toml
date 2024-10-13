@@ -2,7 +2,6 @@
 creative = "1.7.3"
 
 [libraries]
-adventure-api = { module = "net.kyori:adventure-api", version = "4.17.0" }
 creative-api = { module = "team.unnamed:creative-api", version.ref = "creative" }
 creative-serializer = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative" }
 
