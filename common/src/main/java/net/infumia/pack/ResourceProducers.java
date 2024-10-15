@@ -1,8 +1,6 @@
 package net.infumia.pack;
 
 import net.kyori.adventure.key.Key;
-import team.unnamed.creative.atlas.Atlas;
-import team.unnamed.creative.atlas.AtlasSource;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.model.ItemOverride;
@@ -101,7 +99,11 @@ public final class ResourceProducers {
                 Model.model()
                     .key(itemKey)
                     .parent(Model.ITEM_GENERATED)
-                    .textures(ModelTextures.builder().layers(ModelTexture.ofKey(itemKey)).build())
+                    .textures(
+                        ModelTextures.builder()
+                            .layers(ModelTexture.ofKey(Internal.toItemKey(itemKey)))
+                            .build()
+                    )
                     .build()
             ),
             FileResources.model(
@@ -118,15 +120,7 @@ public final class ResourceProducers {
                     )
                     .build()
             ),
-            FileResources.texture(
-                Texture.texture(Internal.keyWithPngExtension(itemKey), itemImage)
-            ),
-            FileResources.atlas(
-                Atlas.atlas()
-                    .key(Atlas.BLOCKS)
-                    .sources(AtlasSource.directory(itemKey.namespace(), itemKey.namespace() + "/"))
-                    .build()
-            )
+            FileResources.texture(Texture.texture(Internal.toTextureKey(itemKey), itemImage))
         );
     }
 
