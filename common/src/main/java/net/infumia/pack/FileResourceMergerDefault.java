@@ -96,13 +96,10 @@ final class FileResourceMergerDefault implements FileResourceMerger {
             mergedModels.add(builder.build());
         }
 
-        final Collection<FileResource> mergedResources = mergedAtlases
+        final Collection<FileResource> mergedResources = mergedModels
             .stream()
-            .map(FileResources::atlas)
+            .map(FileResources::model)
             .collect(Collectors.toList());
-        mergedResources.addAll(
-            mergedModels.stream().map(FileResources::model).collect(Collectors.toList())
-        );
         mergedResources.addAll(remaining);
         return mergedResources;
     }

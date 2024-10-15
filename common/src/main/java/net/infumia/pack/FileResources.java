@@ -2,7 +2,6 @@ package net.infumia.pack;
 
 import java.util.Arrays;
 import java.util.Collection;
-import team.unnamed.creative.atlas.Atlas;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.model.Model;
@@ -21,16 +20,6 @@ public final class FileResources {
      */
     public static FileResource texture(final Texture texture) {
         return new FileResourceTexture(texture);
-    }
-
-    /**
-     * Creates a {@link FileResource} for the specified atlas.
-     *
-     * @param atlas the atlas to create a file resource for. Cannot be null.
-     * @return a {@link FileResource} representing the atlas.
-     */
-    public static FileResource atlas(final Atlas atlas) {
-        return new FileResourceAtlas(atlas);
     }
 
     /**

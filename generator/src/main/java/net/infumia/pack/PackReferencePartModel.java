@@ -62,7 +62,7 @@ public final class PackReferencePartModel extends PackReferencePart {
                             final String path = this.parent(context) + texture;
                             return FileResources.texture(
                                 Texture.texture(
-                                    Key.key(key.namespace(), path),
+                                    Key.key(key.namespace(), "item/" + path),
                                     Writable.path(context.rootDirectory().resolve(path))
                                 )
                             );
