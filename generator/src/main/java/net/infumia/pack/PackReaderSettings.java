@@ -14,7 +14,8 @@ import net.kyori.adventure.text.serializer.ComponentSerializer;
  */
 public final class PackReaderSettings {
 
-    private final Path root;
+    private final ClassLoader classLoader;
+    private final String rootPathAsString;
     private final FileVisitOption[] visitOptions;
     private final String packReferenceFileName;
     private final ObjectMapper mapper;
@@ -24,7 +25,8 @@ public final class PackReaderSettings {
     /**
      * Ctor.
      *
-     * @param root                  the root path.
+     * @param classLoader           the class loader to load resources. Cannot be null.
+     * @param rootPathAsString      the root path as string. Cannot be null.
      * @param visitOptions          the visit options. Can be null.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
@@ -32,14 +34,16 @@ public final class PackReaderSettings {
      * @param serializer            the serializer to serialize components when needed. Cannot be null.
      */
     public PackReaderSettings(
-        final Path root,
+        final ClassLoader classLoader,
+        final String rootPathAsString,
         final FileVisitOption[] visitOptions,
         final String packReferenceFileName,
         final ObjectMapper mapper,
         final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this.root = root;
+        this.classLoader = classLoader;
+        this.rootPathAsString = rootPathAsString;
         this.visitOptions = visitOptions;
         this.packReferenceFileName = packReferenceFileName;
         this.mapper = mapper;
@@ -50,28 +54,47 @@ public final class PackReaderSettings {
     /**
      * Ctor.
      *
-     * @param root                  the root path.
+     * @param classLoader           the class loader to load resources. Cannot be null.
+     * @param rootPathAsString      the root path as string. Cannot be null.
      * @param packReferenceFileName the pack reference file name. Cannot be null.
      * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
      * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
      */
     public PackReaderSettings(
-        final Path root,
+        final ClassLoader classLoader,
+        final String rootPathAsString,
         final String packReferenceFileName,
         final ObjectMapper mapper,
         final Predicate<Path> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this(root, null, packReferenceFileName, mapper, readFilter, serializer);
+        this(
+            classLoader,
+            rootPathAsString,
+            null,
+            packReferenceFileName,
+            mapper,
+            readFilter,
+            serializer
+        );
     }
 
     /**
-     * Returns the root path.
+     * Returns the class loader.
      *
-     * @return the root path.
+     * @return the class loader.
      */
-    public Path root() {
-        return this.root;
+    public ClassLoader classLoader() {
+        return classLoader;
+    }
+
+    /**
+     * Returns the root path as string.
+     *
+     * @return the root path as string.
+     */
+    public String rootPathAsString() {
+        return rootPathAsString;
     }
 
     /**
@@ -122,7 +145,8 @@ public final class PackReaderSettings {
     @Override
     public String toString() {
         return new StringJoiner(", ", PackReaderSettings.class.getSimpleName() + "[", "]")
-            .add("root=" + this.root)
+            .add("classLoader=" + this.classLoader)
+            .add("rootPathAsString='" + this.rootPathAsString + "'")
             .add("visitOptions=" + Arrays.toString(this.visitOptions))
             .add("packReferenceFileName='" + this.packReferenceFileName + "'")
             .add("mapper=" + this.mapper)

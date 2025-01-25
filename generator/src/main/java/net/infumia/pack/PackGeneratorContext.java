@@ -1,6 +1,5 @@
 package net.infumia.pack;
 
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.StringJoiner;
@@ -18,17 +17,19 @@ public final class PackGeneratorContext {
     private final Pack pack;
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
-    private final Path rootDirectory;
+    private final ClassLoader classLoader;
+    private final String rootPathAsString;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
      * Ctor.
      *
+     * @param classLoader           the class loader to load resources. Cannot be null.
+     * @param rootPathAsString      the root path as string. Cannot be null.
      * @param resourcePack       the resource pack. Cannot be null.
      * @param pack               the pack. Cannot be null.
      * @param packReference      the pack file reference. Cannot be null.
      * @param packPartReferences the pack part references. Cannot be null.
-     * @param rootDirectory      the root directory of the pack. Cannot be null.
      * @param serializer         the serializer to serialize components when needed. Cannot be null.
      */
     PackGeneratorContext(
@@ -36,14 +37,16 @@ public final class PackGeneratorContext {
         final Pack pack,
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
-        final Path rootDirectory,
+        final ClassLoader classLoader,
+        final String rootPathAsString,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.resourcePack = resourcePack;
         this.pack = pack;
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
-        this.rootDirectory = rootDirectory;
+        this.classLoader = classLoader;
+        this.rootPathAsString = rootPathAsString;
         this.serializer = serializer;
     }
 
@@ -84,12 +87,21 @@ public final class PackGeneratorContext {
     }
 
     /**
-     * Returns the root directory.
+     * Returns the class loader.
      *
-     * @return the root directory. Can be null.
+     * @return the class loader.
      */
-    public Path rootDirectory() {
-        return this.rootDirectory;
+    public ClassLoader classLoader() {
+        return classLoader;
+    }
+
+    /**
+     * Returns the root path as string.
+     *
+     * @return the root path as string.
+     */
+    public String rootPathAsString() {
+        return rootPathAsString;
     }
 
     /**
