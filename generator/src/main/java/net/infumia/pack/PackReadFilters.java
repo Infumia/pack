@@ -1,6 +1,5 @@
 package net.infumia.pack;
 
-import java.nio.file.Path;
 import java.util.function.Predicate;
 
 /**
@@ -14,8 +13,8 @@ public final class PackReadFilters {
      * @param extension the file extension to filter by. Cannot be null.
      * @return a predicate that returns true for paths with the specified extension.
      */
-    public static Predicate<Path> withExtension(final String extension) {
-        return path -> path.getFileName().toString().endsWith(extension);
+    public static Predicate<Entry> withExtension(final String extension) {
+        return path -> path.hasExtension(extension);
     }
 
     private PackReadFilters() {

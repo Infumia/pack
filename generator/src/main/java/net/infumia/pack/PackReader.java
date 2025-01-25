@@ -3,81 +3,59 @@ package net.infumia.pack;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileVisitOption;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.jar.JarFile;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.ResourcePack;
 
 final class PackReader {
 
+    private static final Predicate<Entry> IS_REGULAR_FILE = Entry::isRegularFile;
+
     private final PackReaderSettings settings;
     private final Pack base;
-
-    private File packReferenceFile;
-    private ObjectReader packReader;
-    private ObjectReader packPartReader;
 
     PackReader(final PackReaderSettings settings, final Pack base) {
         this.settings = settings;
         this.base = base;
     }
 
-    PackGeneratorContext read() throws IOException, URISyntaxException {
-        this.prepare();
+    PackGeneratorContext read() throws IOException {
+        final ObjectMapper mapper = this.settings.mapper();
+        final InputStreamProvider inputStreamProvider = this.settings.inputStreamProvider();
+        final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
 
-        FileVisitOption[] visitOptions = this.settings.visitOptions();
-        if (visitOptions == null) {
-            visitOptions = new FileVisitOption[0];
+        final PackReferenceMeta packReferenceMeta;
+        try (
+            final InputStream stream = inputStreamProvider.provideFileStream(
+                packReferenceMetaFileName
+            )
+        ) {
+            packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
         }
 
-        final ClassLoader classLoader = this.settings.classLoader();
-        final String rootPathAsString = this.settings.rootPathAsString();
-        final URL rootUrl = classLoader.getResource(rootPathAsString);
+        inputStreamProvider.provideAll(
+            PackReader.IS_REGULAR_FILE.and(this.settings.readFilter()).and(
+                entry -> !entry.is(packReferenceMetaFileName)
+            )
+        );
 
-        if (rootUrl == null) {
-            throw new IllegalStateException("Root path does not exist: " + rootPathAsString);
-        }
-
-        final String protocol = rootUrl.getProtocol();
-
-        final Stream<Path> paths;
-        if (protocol.equals("jar")) {
-            final String jarPath = rootUrl.getPath().substring(5, rootUrl.getPath().indexOf("!"));
-            try (final JarFile jarFile = new JarFile(jarPath)) {
-                paths = jarFile
-                    .stream()
-                    .filter(entry -> entry.getName().startsWith(rootPathAsString))
-                    .filter(entry -> !entry.isDirectory())
-                    .map(entry -> Paths.get(entry.getName()))
-                    .filter(Files::isRegularFile);
-            }
-        } else if (protocol.equals("file")) {
-            final Path rootPath = Paths.get(rootUrl.toURI());
-            paths = Files.walk(rootPath, this.settings.visitOptions());
-        } else {
-            throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
-        }
-
-        try {
-            return this.read0(paths);
-        } finally {
-            paths.close();
-        }
+        return new PackGeneratorContext(
+            ResourcePack.resourcePack(),
+            this.base,
+            packReferenceMeta,
+            packReferenceParts,
+            this.settings.serializer()
+        );
     }
 
-    private PackGeneratorContext read0(@NotNull final Stream<Path> walking) throws IOException {
-        final PackReferenceMeta packReference = this.packReader.readValue(this.packReferenceFile);
+    private PackGeneratorContext read0(final Stream<Path> walking) {
         final Collection<PackReferencePart> packPartReferences = walking
             .filter(Files::isRegularFile)
             .filter(this.settings.readFilter())
@@ -89,50 +67,26 @@ final class PackReader {
                         this.packPartReader.readValues(file)
                 ) {
                     final Path path = file.getParentFile().toPath();
+                    final List<PackReferencePart> read = iterator.readAll();
                     if (path.equals(this.settings.root())) {
-                        return iterator.readAll();
+                        return read;
                     } else {
-                        return iterator
-                            .readAll()
+                        return read
                             .stream()
                             .map(part -> part.directory(path))
                             .collect(Collectors.toList());
                     }
                 } catch (final IOException e) {
-                    throw new RuntimeException("Error processing file: " + file, e);
+                    throw new RuntimeException(e);
                 }
             })
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
-        return new PackGeneratorContext(
-            ResourcePack.resourcePack(),
-            this.base,
-            packReference,
-            packPartReferences,
-            this.settings.classLoader(),
-            this.settings.rootPathAsString(),
-            this.settings.serializer()
-        );
-    }
-
-    private void prepare() {
-        final Path root = this.settings.root();
-        final Path packReferenceFile = root.resolve(this.settings.packReferenceFileName());
-        if (Files.notExists(packReferenceFile)) {
-            throw new IllegalStateException(
-                "Pack reference file does not exist: " + packReferenceFile
-            );
-        }
-        this.packReferenceFile = packReferenceFile.toFile();
-
-        final ObjectMapper mapper = this.settings.mapper();
-        this.packReader = mapper.readerFor(Internal.PACK_TYPE);
-        this.packPartReader = mapper.readerFor(Internal.PACK_PART_TYPE);
     }
 
     private static final class Internal {
 
-        private static final TypeReference<PackReferenceMeta> PACK_TYPE = new TypeReference<
+        private static final TypeReference<PackReferenceMeta> PACK_META_TYPE = new TypeReference<
             PackReferenceMeta
         >() {};
         private static final TypeReference<PackReferencePart> PACK_PART_TYPE = new TypeReference<

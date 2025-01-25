@@ -7,6 +7,6 @@ dependencies {
     compileOnly(project(":blank"))
     compileOnly(project(":language"))
 
-    compileOnly(libs.creative.serializer)
+    compileOnly(libs.creative.serializer) { exclude(group = "org.jetbrains") }
     compileOnly(libs.jackson.databind)
 }
