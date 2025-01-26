@@ -30,14 +30,14 @@ final class PackReader {
 
         final PackReferenceMeta packReferenceMeta;
         try (
-            final InputStream stream = inputStreamProvider.provideFileStream(
+            final InputStream stream = inputStreamProvider.provide(
                 packReferenceMetaFileName
             )
         ) {
             packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
         }
 
-        final List<InputStream> parts = inputStreamProvider.provideAll(
+        final List<Entry> parts = inputStreamProvider.provideAll(
             PackReader.IS_REGULAR_FILE.and(this.settings.readFilter()).and(
                 entry -> !entry.is(packReferenceMetaFileName)
             )
@@ -46,7 +46,7 @@ final class PackReader {
         final ObjectReader reader = mapper.readerFor(Internal.PACK_PART_TYPE);
         final List<PackReferencePart> packReferenceParts = parts
             .stream()
-            .flatMap(stream -> {
+            .flatMap(entry -> {
                 try (
                     final MappingIterator<PackReferencePart> iterator = reader.readValues(stream)
                 ) {
@@ -62,6 +62,7 @@ final class PackReader {
             this.base,
             packReferenceMeta,
             packReferenceParts,
+            inputStreamProvider,
             this.settings.serializer()
         );
     }

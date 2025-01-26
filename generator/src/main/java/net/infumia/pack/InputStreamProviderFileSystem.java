@@ -18,17 +18,16 @@ public final class InputStreamProviderFileSystem implements InputStreamProvider 
     }
 
     @Override
-    public InputStream provideFileStream(final String path) throws IOException {
+    public InputStream provide(final String path) throws IOException {
         return Files.newInputStream(this.root.resolve(path));
     }
 
     @Override
-    public List<InputStream> provideAll(final Predicate<Entry> filter) throws IOException {
+    public List<Entry> provideAll(final Predicate<Entry> filter) throws IOException {
         try (final Stream<Path> files = Files.walk(this.root)) {
             return files
                 .map(path -> new EntryPath(this.root, path))
                 .filter(filter)
-                .map(Entry::asInputStream)
                 .collect(Collectors.toList());
         }
     }

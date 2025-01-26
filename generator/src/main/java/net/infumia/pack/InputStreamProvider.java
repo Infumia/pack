@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public interface InputStreamProvider {
-    InputStream provideFileStream(String path) throws IOException;
+    InputStream provide(String path) throws IOException;
 
-    List<InputStream> provideAll(Predicate<Entry> filter) throws IOException;
+    List<Entry> provideAll(Predicate<Entry> filter) throws IOException;
 }

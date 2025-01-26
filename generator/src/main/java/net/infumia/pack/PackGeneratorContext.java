@@ -17,6 +17,7 @@ public final class PackGeneratorContext {
     private final Pack pack;
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
+    private final InputStreamProvider inputStreamProvider;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
@@ -26,6 +27,7 @@ public final class PackGeneratorContext {
      * @param pack               the pack. Cannot be null.
      * @param packReference      the pack file reference. Cannot be null.
      * @param packPartReferences the pack part references. Cannot be null.
+     * @param inputStreamProvider the input stream provider. Cannot be null.
      * @param serializer         the serializer to serialize components when needed. Cannot be null.
      */
     PackGeneratorContext(
@@ -33,12 +35,14 @@ public final class PackGeneratorContext {
         final Pack pack,
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
+        final InputStreamProvider inputStreamProvider,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.resourcePack = resourcePack;
         this.pack = pack;
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
+        this.inputStreamProvider = inputStreamProvider;
         this.serializer = serializer;
     }
 
@@ -88,6 +92,15 @@ public final class PackGeneratorContext {
     }
 
     /**
+     * Returns the input stream provider.
+     *
+     * @return the input stream provider.
+     */
+    public InputStreamProvider inputStreamProvider() {
+        return this.inputStreamProvider;
+    }
+
+    /**
      * Returns the last custom model data.
      *
      * @return the last custom model data.
@@ -103,6 +116,7 @@ public final class PackGeneratorContext {
             .add("pack=" + this.pack)
             .add("packReference=" + this.packReference)
             .add("packPartReferences=" + this.packPartReferences)
+            .add("inputStreamProvider=" + this.inputStreamProvider)
             .add("serializer=" + this.serializer)
             .toString();
     }

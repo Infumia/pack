@@ -18,17 +18,16 @@ public final class InputStreamProviderJarFile implements InputStreamProvider {
     }
 
     @Override
-    public InputStream provideFileStream(final String path) throws IOException {
+    public InputStream provide(final String path) throws IOException {
         return this.jarFile.getInputStream(this.jarFile.getEntry(path));
     }
 
     @Override
-    public List<InputStream> provideAll(final Predicate<Entry> filter) {
+    public List<Entry> provideAll(final Predicate<Entry> filter) {
         return this.jarFile.stream()
             .filter(entry -> entry.getName().startsWith(this.rootPathAsString))
             .map(entry -> new EntryJarEntry(this.jarFile, entry))
             .filter(filter)
-            .map(EntryJarEntry::asInputStream)
             .collect(Collectors.toList());
     }
 }

@@ -42,8 +42,8 @@ public final class PackReferencePartImage extends PackReferencePart {
                     Font.MINECRAFT_DEFAULT,
                     Texture.texture(
                         Key.key(key.namespace(), key.value() + ".png"),
-                        Writable.resource(
-                            context.classLoader(),
+                        Writable.copyInputStream(
+                            context.inputStreamProvider().provide()
                             context.rootPathAsString() + this.parent(context) + this.image
                         )
                     ),
