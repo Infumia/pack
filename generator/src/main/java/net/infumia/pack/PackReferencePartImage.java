@@ -43,7 +43,6 @@ public final class PackReferencePartImage extends PackReferencePart {
                     Texture.texture(
                         Key.key(key.namespace(), key.value() + ".png"),
                         Writable.copyInputStream(
-                            context.inputStreamProvider().provide()
                             context.rootPathAsString() + this.parent(context) + this.image
                         )
                     ),

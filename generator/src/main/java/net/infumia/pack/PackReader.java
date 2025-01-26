@@ -29,11 +29,7 @@ final class PackReader {
         final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
 
         final PackReferenceMeta packReferenceMeta;
-        try (
-            final InputStream stream = inputStreamProvider.provide(
-                packReferenceMetaFileName
-            )
-        ) {
+        try (final InputStream stream = inputStreamProvider.provide(packReferenceMetaFileName)) {
             packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
         }
 
@@ -48,6 +44,7 @@ final class PackReader {
             .stream()
             .flatMap(entry -> {
                 try (
+                    final InputStream stream = entry.asInputStream();
                     final MappingIterator<PackReferencePart> iterator = reader.readValues(stream)
                 ) {
                     return iterator.readAll().stream();
