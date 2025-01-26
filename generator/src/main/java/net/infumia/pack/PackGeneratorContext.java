@@ -17,15 +17,11 @@ public final class PackGeneratorContext {
     private final Pack pack;
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
-    private final ClassLoader classLoader;
-    private final String rootPathAsString;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
      * Ctor.
      *
-     * @param classLoader           the class loader to load resources. Cannot be null.
-     * @param rootPathAsString      the root path as string. Cannot be null.
      * @param resourcePack       the resource pack. Cannot be null.
      * @param pack               the pack. Cannot be null.
      * @param packReference      the pack file reference. Cannot be null.
@@ -37,16 +33,12 @@ public final class PackGeneratorContext {
         final Pack pack,
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
-        final ClassLoader classLoader,
-        final String rootPathAsString,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.resourcePack = resourcePack;
         this.pack = pack;
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
-        this.classLoader = classLoader;
-        this.rootPathAsString = rootPathAsString;
         this.serializer = serializer;
     }
 
@@ -87,24 +79,6 @@ public final class PackGeneratorContext {
     }
 
     /**
-     * Returns the class loader.
-     *
-     * @return the class loader.
-     */
-    public ClassLoader classLoader() {
-        return classLoader;
-    }
-
-    /**
-     * Returns the root path as string.
-     *
-     * @return the root path as string.
-     */
-    public String rootPathAsString() {
-        return rootPathAsString;
-    }
-
-    /**
      * Returns the component serializer.
      *
      * @return the component serializer.
@@ -119,7 +93,7 @@ public final class PackGeneratorContext {
      * @return the last custom model data.
      */
     public AtomicInteger lastCustomModelData() {
-        return lastCustomModelData;
+        return this.lastCustomModelData;
     }
 
     @Override

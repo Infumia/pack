@@ -3,15 +3,12 @@ package net.infumia.pack;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import team.unnamed.creative.ResourcePack;
 
 final class PackReader {
@@ -40,11 +37,25 @@ final class PackReader {
             packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
         }
 
-        inputStreamProvider.provideAll(
+        final List<InputStream> parts = inputStreamProvider.provideAll(
             PackReader.IS_REGULAR_FILE.and(this.settings.readFilter()).and(
                 entry -> !entry.is(packReferenceMetaFileName)
             )
         );
+
+        final ObjectReader reader = mapper.readerFor(Internal.PACK_PART_TYPE);
+        final List<PackReferencePart> packReferenceParts = parts
+            .stream()
+            .flatMap(stream -> {
+                try (
+                    final MappingIterator<PackReferencePart> iterator = reader.readValues(stream)
+                ) {
+                    return iterator.readAll().stream();
+                } catch (final IOException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .collect(Collectors.toList());
 
         return new PackGeneratorContext(
             ResourcePack.resourcePack(),
@@ -53,35 +64,6 @@ final class PackReader {
             packReferenceParts,
             this.settings.serializer()
         );
-    }
-
-    private PackGeneratorContext read0(final Stream<Path> walking) {
-        final Collection<PackReferencePart> packPartReferences = walking
-            .filter(Files::isRegularFile)
-            .filter(this.settings.readFilter())
-            .map(Path::toFile)
-            .filter(file -> !this.packReferenceFile.equals(file))
-            .map(file -> {
-                try (
-                    final MappingIterator<PackReferencePart> iterator =
-                        this.packPartReader.readValues(file)
-                ) {
-                    final Path path = file.getParentFile().toPath();
-                    final List<PackReferencePart> read = iterator.readAll();
-                    if (path.equals(this.settings.root())) {
-                        return read;
-                    } else {
-                        return read
-                            .stream()
-                            .map(part -> part.directory(path))
-                            .collect(Collectors.toList());
-                    }
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
     }
 
     private static final class Internal {
