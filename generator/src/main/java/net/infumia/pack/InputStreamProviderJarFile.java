@@ -3,7 +3,6 @@ package net.infumia.pack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -29,7 +28,7 @@ public final class InputStreamProviderJarFile implements InputStreamProvider {
     public Collection<Entry> provideAll(final Predicate<Entry> filter) {
         return this.jarFile.stream()
             .filter(entry -> entry.getName().startsWith(this.rootPathAsString))
-            .map(entry -> new EntryJarEntry(this, entry, Collections.emptyList()))
+            .map(entry -> new EntryJarEntry(this, entry))
             .filter(filter)
             .collect(Collectors.toSet());
     }

@@ -4,27 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Objects;
 
 final class EntryPath implements Entry {
 
     private final InputStreamProviderFileSystem provider;
     private final Path path;
-    private final Collection<Entry> children;
 
-    EntryPath(
-        final InputStreamProviderFileSystem provider,
-        final Path path,
-        final Collection<Entry> children
-    ) {
+    EntryPath(final InputStreamProviderFileSystem provider, final Path path) {
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(children, "children");
         this.provider = provider;
         this.path = path;
-        this.children = Collections.unmodifiableCollection(children);
     }
 
     @Override
@@ -35,11 +26,6 @@ final class EntryPath implements Entry {
     @Override
     public String rootRelativeName() {
         return this.name().substring(this.provider.root.toString().length());
-    }
-
-    @Override
-    public Collection<Entry> children() {
-        return this.children;
     }
 
     @Override
