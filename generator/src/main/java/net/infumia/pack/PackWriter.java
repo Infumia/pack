@@ -22,6 +22,6 @@ final class PackWriter {
         if (outputFile != null) {
             writer.writeToZipFile(outputFile, resourcePack);
         }
-        return new PackGeneratedContext(outputDirectory, outputFile);
+        return new PackGeneratedContext(resourcePack, outputDirectory, outputFile);
     }
 }
