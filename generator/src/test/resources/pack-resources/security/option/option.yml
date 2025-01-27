@@ -1,0 +1,24 @@
+---
+type: "image"
+key: "default"
+image: "default.png"
+height: 18
+ascent: -41
+---
+type: "image"
+key: "disabled"
+image: "disabled.png"
+height: 18
+ascent: -41
+---
+type: "image"
+key: "enabled"
+image: "enabled.png"
+height: 18
+ascent: -41
+---
+type: "image"
+key: "friends_only"
+image: "friends_only.png"
+height: 18
+ascent: -41

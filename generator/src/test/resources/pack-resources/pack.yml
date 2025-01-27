@@ -1,0 +1,7 @@
+---
+format: 6
+description: "Test Resource Pack"
+add-spaces: true
+add-blank-slot: true
+blank-slot-custom-model-data: 150
+default-namespace: "test"

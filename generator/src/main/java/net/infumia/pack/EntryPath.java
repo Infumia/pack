@@ -10,15 +10,19 @@ import java.util.Objects;
 
 final class EntryPath implements Entry {
 
-    private final Path root;
+    private final InputStreamProviderFileSystem provider;
     private final Path path;
     private final Collection<Entry> children;
 
-    EntryPath(final Path root, final Path path, final Collection<Entry> children) {
-        Objects.requireNonNull(root, "root");
+    EntryPath(
+        final InputStreamProviderFileSystem provider,
+        final Path path,
+        final Collection<Entry> children
+    ) {
+        Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(children, "children");
-        this.root = root;
+        this.provider = provider;
         this.path = path;
         this.children = Collections.unmodifiableCollection(children);
     }
@@ -26,6 +30,11 @@ final class EntryPath implements Entry {
     @Override
     public String name() {
         return this.path.toString();
+    }
+
+    @Override
+    public String rootRelativeName() {
+        return this.name().substring(this.provider.root.toString().length());
     }
 
     @Override
@@ -45,7 +54,7 @@ final class EntryPath implements Entry {
 
     @Override
     public boolean is(final String path) {
-        return this.path.equals(this.root.resolve(path));
+        return this.path.equals(this.provider.root.resolve(path));
     }
 
     @Override

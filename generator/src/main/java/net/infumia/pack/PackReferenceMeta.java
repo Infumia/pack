@@ -59,6 +59,42 @@ public final class PackReferenceMeta {
     }
 
     /**
+     * Returns the pack format.
+     *
+     * @return the pack format. Can be null.
+     */
+    public Integer format() {
+        return this.format;
+    }
+
+    /**
+     * Returns the minimum pack format.
+     *
+     * @return the minimum pack format. Can be null.
+     */
+    public Integer minimumFormat() {
+        return this.minimumFormat;
+    }
+
+    /**
+     * Returns the maximum pack format.
+     *
+     * @return the maximum pack format. Can be null.
+     */
+    public Integer maximumFormat() {
+        return this.maximumFormat;
+    }
+
+    /**
+     * Returns the description of the pack.
+     *
+     * @return the description of the pack.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
      * Returns whether the {@link BlankSlot} resources should be added.
      *
      * @return {@code true} if the {@link BlankSlot} resources should be added, {@code false} otherwise
@@ -73,7 +109,7 @@ public final class PackReferenceMeta {
      * @return the custom model data of the blank slot.
      */
     public Integer blankSlotCustomModelData() {
-        return blankSlotCustomModelData;
+        return this.blankSlotCustomModelData;
     }
 
     /**
@@ -100,7 +136,7 @@ public final class PackReferenceMeta {
      * @return the custom model data offset. Can be null
      */
     public Integer customModelDataOffset() {
-        return customModelDataOffset;
+        return this.customModelDataOffset;
     }
 
     /**
@@ -149,7 +185,10 @@ public final class PackReferenceMeta {
             .add("maximumFormat=" + this.maximumFormat)
             .add("description='" + this.description + "'")
             .add("addBlankSlot=" + this.addBlankSlot)
+            .add("blankSlotCustomModelData=" + this.blankSlotCustomModelData)
             .add("addSpaces=" + this.addSpaces)
+            .add("defaultNamespace='" + this.defaultNamespace + "'")
+            .add("customModelDataOffset=" + this.customModelDataOffset)
             .toString();
     }
 }

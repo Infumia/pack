@@ -6,6 +6,8 @@ import java.util.Collection;
 public interface Entry {
     String name();
 
+    String rootRelativeName();
+
     Collection<Entry> children();
 
     boolean isRegularFile();

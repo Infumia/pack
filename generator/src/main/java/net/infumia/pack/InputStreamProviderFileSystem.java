@@ -7,10 +7,12 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class InputStreamProviderFileSystem implements InputStreamProvider {
 
-    private final Path root;
+    final Path root;
 
     public InputStreamProviderFileSystem(final Path root) {
         this.root = root;
@@ -23,6 +25,11 @@ public final class InputStreamProviderFileSystem implements InputStreamProvider 
 
     @Override
     public Collection<Entry> provideAll(final Predicate<Entry> filter) throws IOException {
-        return Collections.emptyList();
+        try (final Stream<Path> files = Files.walk(this.root)) {
+            return files
+                .map(path -> new EntryPath(this, path, Collections.emptyList()))
+                .filter(filter)
+                .collect(Collectors.toList());
+        }
     }
 }
