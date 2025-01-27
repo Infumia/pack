@@ -33,7 +33,7 @@ public final class PackReferencePartModel extends PackReferencePart {
     private String overriddenKey;
 
     @Override
-    public void add(final PackReadContext context) {
+    public void add(final PackReadContext context, final Pack pack) {
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -42,57 +42,48 @@ public final class PackReferencePartModel extends PackReferencePart {
         }
 
         final Key key = this.extractKey(context);
-        context
-            .pack()
-            .with(
-                FileResources.all(
-                    this.textures.stream()
-                        .map(
-                            texture ->
-                                FileResources.texture(
-                                    Texture.texture(
-                                        Key.key(
-                                            key.namespace(),
-                                            "item/" + this.parentPath() + texture
-                                        ),
-                                        this.provideWritableWithParent(context, texture)
-                                    )
-                                )
-                        )
-                        .collect(Collectors.toList())
-                )
-            );
-        context
-            .pack()
-            .with(
-                FileResources.unknown(
-                    "assets/" + key.namespace() + "/models/" + this.parentPath() + this.model,
-                    this.provideWritableWithParent(context, this.model)
-                )
-            );
-        context
-            .pack()
-            .with(
-                FileResources.model(
-                    Model.model()
-                        .key(overriddenItemKey)
-                        .parent(Model.ITEM_GENERATED)
-                        .textures(
-                            ModelTextures.builder()
-                                .layers(ModelTexture.ofKey(overriddenItemKey))
-                                .build()
-                        )
-                        .overrides(
-                            ItemOverride.of(
-                                key,
-                                ItemPredicate.customModelData(
-                                    this.nextCustomModelData(context, this.customModelData)
+        pack.with(
+            FileResources.all(
+                this.textures.stream()
+                    .map(
+                        texture ->
+                            FileResources.texture(
+                                Texture.texture(
+                                    Key.key(key.namespace(), "item/" + this.parentPath() + texture),
+                                    this.provideWritableWithParent(context, texture)
                                 )
                             )
+                    )
+                    .collect(Collectors.toList())
+            )
+        );
+        pack.with(
+            FileResources.unknown(
+                "assets/" + key.namespace() + "/models/" + this.parentPath() + this.model,
+                this.provideWritableWithParent(context, this.model)
+            )
+        );
+        pack.with(
+            FileResources.model(
+                Model.model()
+                    .key(overriddenItemKey)
+                    .parent(Model.ITEM_GENERATED)
+                    .textures(
+                        ModelTextures.builder()
+                            .layers(ModelTexture.ofKey(overriddenItemKey))
+                            .build()
+                    )
+                    .overrides(
+                        ItemOverride.of(
+                            key,
+                            ItemPredicate.customModelData(
+                                this.nextCustomModelData(context, this.customModelData)
+                            )
                         )
-                        .build()
-                )
-            );
+                    )
+                    .build()
+            )
+        );
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.infumia.pack;
 
 import java.io.IOException;
+import team.unnamed.creative.ResourcePack;
 
 /**
  * Utility class for generating resource packs.
@@ -21,52 +22,35 @@ public final class PackGenerator {
         final PackWriterSettings writerSettings,
         final Pack base
     ) throws IOException {
-        return PackGenerator.write(
-            writerSettings,
-            PackParser.parse(PackGenerator.read(readerSettings, base))
-        );
-    }
-
-    /**
-     * Generates a resource pack based on the provided settings with a default base pack.
-     *
-     * @param readerSettings the pack reader settings. Cannot be null.
-     * @param writerSettings the pack writer settings. Cannot be null.
-     * @return the generated pack context.
-     * @throws IOException if an I/ O error is thrown when accessing the starting file.
-     */
-    public static PackGeneratedContext generate(
-        final PackReaderSettings readerSettings,
-        final PackWriterSettings writerSettings
-    ) throws IOException {
-        return PackGenerator.generate(readerSettings, writerSettings, Packs.create());
+        final ResourcePack resourcePack = ResourcePack.resourcePack();
+        PackParser.parse(PackGenerator.read(readerSettings), base);
+        base.writeAll(resourcePack);
+        return PackGenerator.write(writerSettings, resourcePack);
     }
 
     /**
      * Reads the pack based on the provided settings and base pack.
      *
      * @param readerSettings the pack reader settings. Cannot be null.
-     * @param base           the base pack. Cannot be null.
-     * @return the pack generation context.
+     * @return the pack read context.
      * @throws IOException if an I/O error is thrown when accessing the starting file.
      */
-    public static PackReadContext read(final PackReaderSettings readerSettings, final Pack base)
-        throws IOException {
-        return new PackReader(readerSettings, base).read();
+    public static PackReadContext read(final PackReaderSettings readerSettings) throws IOException {
+        return new PackReader(readerSettings).read();
     }
 
     /**
      * Writes the pack based on the provided settings and context.
      *
      * @param writerSettings the pack writer settings. Cannot be null.
-     * @param context        the pack generator context. Cannot be null.
+     * @param resourcePack   the resource pack to write. Cannot be null.
      * @return the generated pack context.
      */
     public static PackGeneratedContext write(
         final PackWriterSettings writerSettings,
-        final PackReadContext context
+        final ResourcePack resourcePack
     ) {
-        return new PackWriter(writerSettings).write(context);
+        return new PackWriter(writerSettings).write(resourcePack);
     }
 
     private PackGenerator() {

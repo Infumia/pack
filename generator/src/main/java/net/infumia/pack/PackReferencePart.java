@@ -81,8 +81,9 @@ public abstract class PackReferencePart {
      * Adds this part to the given pack generation context.
      *
      * @param context the pack generation context to add.
+     * @param pack    the pack to add the part to.
      */
-    public abstract void add(PackReadContext context);
+    public abstract void add(PackReadContext context, Pack pack);
 
     /**
      * Prepares the creator of the part.

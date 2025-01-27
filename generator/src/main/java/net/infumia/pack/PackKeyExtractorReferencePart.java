@@ -18,7 +18,7 @@ public interface PackKeyExtractorReferencePart {
     /**
      * Extracts the key from the given pack reference part.
      *
-     * @param context the pack generator context. Cannot be null.
+     * @param context the pack read context. Cannot be null.
      * @param part    the pack reference part. Cannot be null.
      * @return the extracted key.
      */

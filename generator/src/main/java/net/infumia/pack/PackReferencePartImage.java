@@ -21,21 +21,19 @@ public final class PackReferencePartImage extends PackReferencePart {
     private int ascent;
 
     @Override
-    public void add(final PackReadContext context) {
+    public void add(final PackReadContext context, final Pack pack) {
         final Key key = this.extractKey(context);
-        context
-            .pack()
-            .with(
-                (ResourceIdentifierImage) key::value,
-                ResourceProducers.image(
-                    Font.MINECRAFT_DEFAULT,
-                    Texture.texture(
-                        Internal.toPngKey(key),
-                        this.provideWritableWithParent(context, this.image)
-                    ),
-                    new TextureProperties(this.height, this.ascent)
-                )
-            );
+        pack.with(
+            (ResourceIdentifierImage) key::value,
+            ResourceProducers.image(
+                Font.MINECRAFT_DEFAULT,
+                Texture.texture(
+                    Internal.toPngKey(key),
+                    this.provideWritableWithParent(context, this.image)
+                ),
+                new TextureProperties(this.height, this.ascent)
+            )
+        );
     }
 
     @Override

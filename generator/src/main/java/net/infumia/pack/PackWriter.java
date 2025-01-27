@@ -12,10 +12,9 @@ final class PackWriter {
         this.settings = settings;
     }
 
-    PackGeneratedContext write(final PackReadContext context) {
+    PackGeneratedContext write(final ResourcePack resourcePack) {
         final MinecraftResourcePackWriter writer = this.settings.writer();
         final Path outputDirectory = this.settings.outputDirectory();
-        final ResourcePack resourcePack = context.resourcePack();
         if (outputDirectory != null) {
             writer.writeToDirectory(outputDirectory.toFile(), resourcePack);
         }
@@ -23,6 +22,6 @@ final class PackWriter {
         if (outputFile != null) {
             writer.writeToZipFile(outputFile, resourcePack);
         }
-        return new PackGeneratedContext(resourcePack, context.pack(), outputDirectory, outputFile);
+        return new PackGeneratedContext(outputDirectory, outputFile);
     }
 }

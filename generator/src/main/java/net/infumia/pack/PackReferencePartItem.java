@@ -22,7 +22,7 @@ public final class PackReferencePartItem extends PackReferencePart {
     private String overriddenKey;
 
     @Override
-    public void add(final PackReadContext context) {
+    public void add(final PackReadContext context, final Pack pack) {
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -30,16 +30,14 @@ public final class PackReferencePartItem extends PackReferencePart {
             overriddenItemKey = Key.key(this.overriddenNamespace, this.overriddenKey);
         }
 
-        context
-            .pack()
-            .with(
-                ResourceProducers.item(
-                    this.extractKey(context),
-                    overriddenItemKey,
-                    this.provideWritable(context, this.image),
-                    this.nextCustomModelData(context, this.customModelData)
-                )
-            );
+        pack.with(
+            ResourceProducers.item(
+                this.extractKey(context),
+                overriddenItemKey,
+                this.provideWritable(context, this.image),
+                this.nextCustomModelData(context, this.customModelData)
+            )
+        );
     }
 
     @Override

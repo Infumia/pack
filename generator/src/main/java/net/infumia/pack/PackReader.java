@@ -10,18 +10,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import team.unnamed.creative.ResourcePack;
 
 final class PackReader {
 
     private static final Predicate<Entry> IS_REGULAR_FILE = Entry::isRegularFile;
 
     private final PackReaderSettings settings;
-    private final Pack base;
 
-    PackReader(final PackReaderSettings settings, final Pack base) {
+    PackReader(final PackReaderSettings settings) {
         this.settings = settings;
-        this.base = base;
     }
 
     PackReadContext read() throws IOException {
@@ -56,13 +53,7 @@ final class PackReader {
             })
             .collect(Collectors.toList());
 
-        return new PackReadContext(
-            ResourcePack.resourcePack(),
-            this.base,
-            packReferenceMeta,
-            packReferenceParts,
-            this.settings
-        );
+        return new PackReadContext(packReferenceMeta, packReferenceParts, this.settings);
     }
 
     private static final class Internal {

@@ -9,23 +9,20 @@ import team.unnamed.creative.metadata.pack.PackMeta;
 public final class PackParser {
 
     /**
-     * Parses the given pack generator context.
+     * Parses the given pack read context.
      *
-     * @param context the pack generator context. Cannot be null.
-     * @return the updated pack generator context.
+     * @param context the pack read context. Cannot be null.
+     * @param pack    the pack. Cannot be null.
      */
-    public static PackReadContext parse(final PackReadContext context) {
-        PackParser.parseMeta(context);
-        PackParser.parseParts(context);
-        context.pack().writeAll(context.resourcePack());
-        return context;
+    public static void parse(final PackReadContext context, final Pack pack) {
+        PackParser.parseMeta(context, pack);
+        PackParser.parseParts(context, pack);
     }
 
-    private static void parseMeta(final PackReadContext context) {
-        final Pack pack = context.pack();
+    private static void parseMeta(final PackReadContext context, final Pack pack) {
         final PackReferenceMeta meta = context.packReference();
         final PackMeta packMeta = meta.parsePackMeta(context.readerSettings().serializer());
-        context.resourcePack().packMeta(packMeta);
+        pack.with(FileResources.meta(packMeta));
         if (meta.addBlankSlot()) {
             final int customModelData;
             final Integer cmd = meta.blankSlotCustomModelData();
@@ -45,12 +42,12 @@ public final class PackParser {
         }
     }
 
-    private static void parseParts(final PackReadContext context) {
+    private static void parseParts(final PackReadContext context, final Pack pack) {
         context
             .packPartReferences()
             .stream()
             .sorted(Comparator.comparing(part -> part.extractKey(context)))
-            .forEach(part -> part.add(context));
+            .forEach(part -> part.add(context, pack));
     }
 
     private PackParser() {
