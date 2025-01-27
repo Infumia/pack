@@ -1,12 +1,9 @@
 package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.nio.file.Path;
-import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.key.Key;
-import team.unnamed.creative.base.Writable;
 
 /**
  * Represents an item part of a pack reference.
@@ -31,11 +28,9 @@ public final class PackReferencePartItem extends PackReferencePart {
     @JsonProperty(value = "overridden-key", required = true)
     private String overriddenKey;
 
-    private Path directory;
-
     @Override
     public void add(final PackGeneratorContext context) {
-        final Key overriddenItemKey;
+        /*final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
         } else {
@@ -53,13 +48,7 @@ public final class PackReferencePartItem extends PackReferencePart {
                     ),
                     this.customModelData(context)
                 )
-            );
-    }
-
-    @Override
-    PackReferencePartItem directory(final Path directory) {
-        this.directory = directory;
-        return this;
+            );*/
     }
 
     @Override
@@ -82,12 +71,12 @@ public final class PackReferencePartItem extends PackReferencePart {
             .add("image='" + this.image + "'")
             .add("overriddenNamespace='" + this.overriddenNamespace + "'")
             .add("overriddenKey='" + this.overriddenKey + "'")
-            .add("directory=" + this.directory)
             .toString();
     }
 
     private String parent(final PackGeneratorContext context) {
-        if (this.directory == null) {
+        return "";
+        /*if (this.directory == null) {
             return "";
         }
         return (
@@ -99,7 +88,7 @@ public final class PackReferencePartItem extends PackReferencePart {
                 .replace("\\", "/")
                 .replace(" ", "_") +
             "/"
-        );
+        );*/
     }
 
     private int customModelData(final PackGeneratorContext context) {

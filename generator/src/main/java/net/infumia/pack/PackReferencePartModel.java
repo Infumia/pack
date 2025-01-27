@@ -3,17 +3,8 @@ package net.infumia.pack;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import net.kyori.adventure.key.Key;
-import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.model.ItemOverride;
-import team.unnamed.creative.model.ItemPredicate;
-import team.unnamed.creative.model.Model;
-import team.unnamed.creative.model.ModelTexture;
-import team.unnamed.creative.model.ModelTextures;
-import team.unnamed.creative.texture.Texture;
 
 /**
  * Represents a model part of a pack reference.
@@ -45,7 +36,7 @@ public final class PackReferencePartModel extends PackReferencePart {
 
     @Override
     public void add(final PackGeneratorContext context) {
-        final Key key = this.extractKey(context);
+        /*final Key key = this.extractKey(context);
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -99,13 +90,7 @@ public final class PackReferencePartModel extends PackReferencePart {
                         )
                         .build()
                 )
-            );
-    }
-
-    @Override
-    PackReferencePartModel directory(final Path directory) {
-        this.directory = directory;
-        return this;
+            );*/
     }
 
     @Override
@@ -120,7 +105,8 @@ public final class PackReferencePartModel extends PackReferencePart {
     }
 
     private String parent(final PackGeneratorContext context) {
-        if (this.directory == null) {
+        return "";
+        /*if (this.directory == null) {
             return "";
         }
         return (
@@ -132,7 +118,7 @@ public final class PackReferencePartModel extends PackReferencePart {
                 .replace("\\", "/")
                 .replace(" ", "_") +
             "/"
-        );
+        );*/
     }
 
     private int customModelData(final PackGeneratorContext context) {

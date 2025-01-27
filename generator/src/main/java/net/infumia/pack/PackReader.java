@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -33,10 +34,8 @@ final class PackReader {
             packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
         }
 
-        final List<Entry> parts = inputStreamProvider.provideAll(
-            PackReader.IS_REGULAR_FILE.and(this.settings.readFilter()).and(
-                entry -> !entry.is(packReferenceMetaFileName)
-            )
+        final Collection<Entry> parts = inputStreamProvider.provideAll(
+            entry -> !entry.is(packReferenceMetaFileName)
         );
 
         final ObjectReader reader = mapper.readerFor(Internal.PACK_PART_TYPE);

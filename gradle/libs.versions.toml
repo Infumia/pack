@@ -1,7 +1,11 @@
 [versions]
 creative = "1.7.3"
+junit = "5.11.4"
 
 [libraries]
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+
 creative-api = { module = "team.unnamed:creative-api", version.ref = "creative" }
 creative-serializer = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative" }
 

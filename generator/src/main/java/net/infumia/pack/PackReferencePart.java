@@ -2,7 +2,6 @@ package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.nio.file.Path;
 import net.kyori.adventure.key.Key;
 
 /**
@@ -24,14 +23,6 @@ public abstract class PackReferencePart {
      * @param context the pack generation context to add.
      */
     public abstract void add(PackGeneratorContext context);
-
-    /**
-     * Sets the directory for this pack part reference.
-     *
-     * @param directory the directory path. Cannot be null.
-     * @return the updated pack part reference.
-     */
-    abstract PackReferencePart directory(Path directory);
 
     /**
      * Returns the key of the part.

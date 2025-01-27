@@ -9,4 +9,7 @@ dependencies {
 
     compileOnly(libs.creative.serializer) { exclude(group = "org.jetbrains") }
     compileOnly(libs.jackson.databind)
+
+    testImplementation(libs.junit.api)
+    testImplementation(libs.junit.engine)
 }

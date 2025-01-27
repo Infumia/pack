@@ -1,8 +1,7 @@
 package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.nio.file.Path;
-import java.util.Locale;
+import java.nio.file.Paths;
 import java.util.StringJoiner;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
@@ -29,8 +28,6 @@ public final class PackReferencePartImage extends PackReferencePart {
     @JsonProperty(required = true)
     private int ascent;
 
-    private Path directory;
-
     @Override
     public void add(final PackGeneratorContext context) {
         final Key key = this.extractKey(context);
@@ -42,19 +39,14 @@ public final class PackReferencePartImage extends PackReferencePart {
                     Font.MINECRAFT_DEFAULT,
                     Texture.texture(
                         Key.key(key.namespace(), key.value() + ".png"),
-                        Writable.copyInputStream(
+                        Writable.path(Paths.get(""))
+                        /*Writable.copyInputStream(
                             context.rootPathAsString() + this.parent(context) + this.image
-                        )
+                        )*/
                     ),
                     new TextureProperties(this.height, this.ascent)
                 )
             );
-    }
-
-    @Override
-    PackReferencePartImage directory(final Path directory) {
-        this.directory = directory;
-        return this;
     }
 
     @Override
@@ -65,7 +57,7 @@ public final class PackReferencePartImage extends PackReferencePart {
         if (namespace == null) {
             throw new IllegalStateException("Pack reference namespace cannot be null!");
         }
-        return Key.key(namespace, this.parent(context) + this.key);
+        return Key.key(namespace, /*this.parent(context)+*/this.key);
     }
 
     @Override
@@ -76,23 +68,6 @@ public final class PackReferencePartImage extends PackReferencePart {
             .add("image='" + this.image + "'")
             .add("height=" + this.height)
             .add("ascent=" + this.ascent)
-            .add("directory=" + this.directory)
             .toString();
-    }
-
-    private String parent(final PackGeneratorContext context) {
-        if (this.directory == null) {
-            return "";
-        }
-        return (
-            context
-                .rootDirectory()
-                .relativize(this.directory)
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .replace("\\", "/")
-                .replace(" ", "_") +
-            "/"
-        );
     }
 }
