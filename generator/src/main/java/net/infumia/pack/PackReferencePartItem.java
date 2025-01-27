@@ -34,7 +34,7 @@ public final class PackReferencePartItem extends PackReferencePart {
             ResourceProducers.item(
                 this.extractKey(context),
                 overriddenItemKey,
-                this.provideWritable(context, this.image),
+                this.provideWritableWithParent(context, this.image),
                 this.nextCustomModelData(context, this.customModelData)
             )
         );
