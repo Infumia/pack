@@ -16,9 +16,9 @@ public final class PackWriterSettings {
     /**
      * Ctor.
      *
-     * @param writer the resource pack writer. Cannot be null.
-     * @param outputDirectory    the output directory. Can be null.
-     * @param outputFile         the output file. Can be null.
+     * @param writer          the resource pack writer. Cannot be null.
+     * @param outputDirectory the output directory. Can be null.
+     * @param outputFile      the output file. Can be null.
      */
     public PackWriterSettings(
         final MinecraftResourcePackWriter writer,

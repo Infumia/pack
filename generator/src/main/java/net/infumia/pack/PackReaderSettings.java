@@ -1,10 +1,6 @@
 package net.infumia.pack;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.StringJoiner;
 import java.util.function.Predicate;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
@@ -14,82 +10,65 @@ import net.kyori.adventure.text.serializer.ComponentSerializer;
  */
 public final class PackReaderSettings {
 
-    private final Path root;
-    private final FileVisitOption[] visitOptions;
-    private final String packReferenceFileName;
+    private final EntryProvider entryProvider;
+    private final PackKeyExtractorReferencePart keyExtractor;
+    private final String packReferenceMetaFileName;
     private final ObjectMapper mapper;
-    private final Predicate<Path> readFilter;
+    private final Predicate<Entry> readFilter;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
      * Ctor.
      *
-     * @param root                  the root path.
-     * @param visitOptions          the visit options. Can be null.
-     * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
-     * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
-     * @param serializer            the serializer to serialize components when needed. Cannot be null.
+     * @param entryProvider             the entry provider. Cannot be null.
+     * @param keyExtractor              the pack key extractor. Cannot be null.
+     * @param packReferenceMetaFileName the pack reference meta file name. Cannot be null.
+     * @param mapper                    the object mapper to read pack and pack part reference files. Cannot be null.
+     * @param readFilter                the read filter to filter entries {@link EntryProvider#provideAll(Predicate)}.
+     * @param serializer                the serializer to serialize components when needed. Cannot be null.
+     * @see PackReadFilters
      */
     public PackReaderSettings(
-        final Path root,
-        final FileVisitOption[] visitOptions,
-        final String packReferenceFileName,
+        final EntryProvider entryProvider,
+        final PackKeyExtractorReferencePart keyExtractor,
+        final String packReferenceMetaFileName,
         final ObjectMapper mapper,
-        final Predicate<Path> readFilter,
+        final Predicate<Entry> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this.root = root;
-        this.visitOptions = visitOptions;
-        this.packReferenceFileName = packReferenceFileName;
+        this.entryProvider = entryProvider;
+        this.keyExtractor = keyExtractor;
+        this.packReferenceMetaFileName = packReferenceMetaFileName;
         this.mapper = mapper;
         this.readFilter = readFilter;
         this.serializer = serializer;
     }
 
     /**
-     * Ctor.
+     * Returns the entry provider.
      *
-     * @param root                  the root path.
-     * @param packReferenceFileName the pack reference file name. Cannot be null.
-     * @param mapper                the object mapper to read pack and pack part reference files. Cannot be null.
-     * @param readFilter            the read filter for {@link Files#walk(Path, FileVisitOption...)}.
+     * @return the entry provider.
      */
-    public PackReaderSettings(
-        final Path root,
-        final String packReferenceFileName,
-        final ObjectMapper mapper,
-        final Predicate<Path> readFilter,
-        final ComponentSerializer<?, ?, String> serializer
-    ) {
-        this(root, null, packReferenceFileName, mapper, readFilter, serializer);
+    public EntryProvider entryProvider() {
+        return this.entryProvider;
     }
 
     /**
-     * Returns the root path.
+     * Returns the pack key extractor.
      *
-     * @return the root path.
+     * @return the pack key extractor.
      */
-    public Path root() {
-        return this.root;
+    public PackKeyExtractorReferencePart keyExtractor() {
+        return this.keyExtractor;
     }
 
     /**
-     * Returns the visit options.
+     * Returns the pack reference meta file name.
      *
-     * @return the visit options.
+     * @return the pack reference meta file name.
      */
-    public FileVisitOption[] visitOptions() {
-        return this.visitOptions;
-    }
-
-    /**
-     * Returns the pack reference file name.
-     *
-     * @return the pack reference file name.
-     */
-    public String packReferenceFileName() {
-        return this.packReferenceFileName;
+    public String packReferenceMetaFileName() {
+        return this.packReferenceMetaFileName;
     }
 
     /**
@@ -106,7 +85,7 @@ public final class PackReaderSettings {
      *
      * @return the read filter.
      */
-    public Predicate<Path> readFilter() {
+    public Predicate<Entry> readFilter() {
         return this.readFilter;
     }
 
@@ -122,9 +101,8 @@ public final class PackReaderSettings {
     @Override
     public String toString() {
         return new StringJoiner(", ", PackReaderSettings.class.getSimpleName() + "[", "]")
-            .add("root=" + this.root)
-            .add("visitOptions=" + Arrays.toString(this.visitOptions))
-            .add("packReferenceFileName='" + this.packReferenceFileName + "'")
+            .add("inputStreamProvider=" + this.entryProvider)
+            .add("packReferenceMetaFileName=" + this.packReferenceMetaFileName)
             .add("mapper=" + this.mapper)
             .add("readFilter=" + this.readFilter)
             .add("serializer=" + this.serializer)

@@ -3,6 +3,7 @@ package net.infumia.gradle
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.*
@@ -16,6 +17,17 @@ fun Project.applyJava(javaVersion: Int = 8) {
         toolchain {
             languageVersion = JavaLanguageVersion.of(javaVersion)
             vendor = JvmVendorSpec.ADOPTIUM
+        }
+    }
+
+    tasks {
+        withType<Test> {
+            useJUnitPlatform()
+
+            testLogging {
+                events("PASSED", "SKIPPED", "FAILED")
+                showStandardStreams = true
+            }
         }
     }
 }

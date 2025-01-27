@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
+import team.unnamed.creative.metadata.pack.PackMeta;
 import team.unnamed.creative.model.Model;
 import team.unnamed.creative.texture.Texture;
 
@@ -40,6 +41,16 @@ public final class FileResources {
      */
     public static FileResource model(final Model model) {
         return new FileResourceModel(model);
+    }
+
+    /**
+     * Creates a {@link FileResource} for the specified meta.
+     *
+     * @param meta the meta to create a file resource for. Cannot be null.
+     * @return a {@link FileResource} representing the meta.
+     */
+    public static FileResource meta(final PackMeta meta) {
+        return new FileResourcePackMeta(meta);
     }
 
     /**

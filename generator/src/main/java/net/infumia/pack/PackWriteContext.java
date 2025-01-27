@@ -7,10 +7,9 @@ import team.unnamed.creative.ResourcePack;
 /**
  * Context for generated resource pack.
  */
-public final class PackGeneratedContext {
+public final class PackWriteContext {
 
     private final ResourcePack resourcePack;
-    private final Pack pack;
     private final Path outputDirectory;
     private final Path outputFile;
 
@@ -18,18 +17,15 @@ public final class PackGeneratedContext {
      * Ctor.
      *
      * @param resourcePack    the resource pack. Cannot be null.
-     * @param pack            the pack. Cannot be null.
      * @param outputDirectory the output directory. Can be null.
      * @param outputFile      the output file. Can be null.
      */
-    PackGeneratedContext(
+    PackWriteContext(
         final ResourcePack resourcePack,
-        final Pack pack,
         final Path outputDirectory,
         final Path outputFile
     ) {
         this.resourcePack = resourcePack;
-        this.pack = pack;
         this.outputDirectory = outputDirectory;
         this.outputFile = outputFile;
     }
@@ -41,15 +37,6 @@ public final class PackGeneratedContext {
      */
     public ResourcePack resourcePack() {
         return this.resourcePack;
-    }
-
-    /**
-     * Returns the pack.
-     *
-     * @return the pack.
-     */
-    public Pack pack() {
-        return this.pack;
     }
 
     /**
@@ -72,9 +59,8 @@ public final class PackGeneratedContext {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", PackGeneratedContext.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", PackWriteContext.class.getSimpleName() + "[", "]")
             .add("resourcePack=" + this.resourcePack)
-            .add("pack=" + this.pack)
             .add("outputDirectory=" + this.outputDirectory)
             .add("outputFile=" + this.outputFile)
             .toString();

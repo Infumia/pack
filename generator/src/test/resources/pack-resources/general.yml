@@ -1,0 +1,60 @@
+---
+type: "image"
+key: "back-4"
+image: "back.png"
+height: 18
+ascent: -4
+---
+type: "image"
+key: "yes"
+image: "yes.png"
+height: 16
+ascent: -5
+---
+type: "image"
+key: "no"
+image: "no.png"
+height: 16
+ascent: -5
+---
+type: "item"
+key: "left"
+image: "left.png"
+overridden-key: "item/paper"
+custom-model-data: 204
+---
+type: "item"
+key: "right"
+image: "right.png"
+overridden-key: "item/paper"
+custom-model-data: 205
+---
+type: "item"
+key: "on_switch"
+image: "on_switch.png"
+overridden-key: "item/paper"
+custom-model-data: 206
+---
+type: "item"
+key: "off_switch"
+image: "off_switch.png"
+overridden-key: "item/paper"
+custom-model-data: 207
+---
+type: "image"
+key: "green_overlay"
+image: "green_overlay.png"
+height: 18
+ascent: -4
+---
+type: "image"
+key: "red_overlay"
+image: "red_overlay.png"
+height: 18
+ascent: -4
+---
+type: "image"
+key: "orange_overlay"
+image: "orange_overlay.png"
+height: 18
+ascent: -4

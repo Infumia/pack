@@ -4,99 +4,61 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
-import team.unnamed.creative.ResourcePack;
 
 final class PackReader {
 
+    private static final Predicate<Entry> IS_REGULAR_FILE = Entry::isRegularFile;
+
     private final PackReaderSettings settings;
-    private final Pack base;
 
-    private File packReferenceFile;
-    private ObjectReader packReader;
-    private ObjectReader packPartReader;
-
-    PackReader(final PackReaderSettings settings, final Pack base) {
+    PackReader(final PackReaderSettings settings) {
         this.settings = settings;
-        this.base = base;
     }
 
-    PackGeneratorContext read() throws IOException {
-        this.prepare();
+    PackReadContext read() throws IOException {
+        final ObjectMapper mapper = this.settings.mapper();
+        final EntryProvider entryProvider = this.settings.entryProvider();
+        final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
 
-        FileVisitOption[] visitOptions = this.settings.visitOptions();
-        if (visitOptions == null) {
-            visitOptions = new FileVisitOption[0];
+        final Entry metaEntry = entryProvider.provide(packReferenceMetaFileName);
+        final PackReferenceMeta packReferenceMeta;
+        try (final InputStream metaStream = metaEntry.asInputStream()) {
+            packReferenceMeta = mapper.readValue(metaStream, Internal.PACK_META_TYPE);
         }
-        try (final Stream<Path> walking = Files.walk(this.settings.root(), visitOptions)) {
-            return this.read0(walking);
-        }
-    }
 
-    private PackGeneratorContext read0(@NotNull final Stream<Path> walking) throws IOException {
-        final PackReferenceMeta packReference = this.packReader.readValue(this.packReferenceFile);
-        final Collection<PackReferencePart> packPartReferences = walking
-            .filter(Files::isRegularFile)
-            .filter(this.settings.readFilter())
-            .map(Path::toFile)
-            .filter(file -> !this.packReferenceFile.equals(file))
-            .map(file -> {
+        final Collection<Entry> parts = entryProvider.provideAll(
+            PackReader.IS_REGULAR_FILE.and(entry -> !entry.is(packReferenceMetaFileName)).and(
+                this.settings.readFilter()
+            )
+        );
+
+        final ObjectReader reader = mapper.readerFor(Internal.PACK_PART_TYPE);
+        final List<PackReferencePart> packReferenceParts = parts
+            .stream()
+            .flatMap(entry -> {
                 try (
-                    final MappingIterator<PackReferencePart> iterator =
-                        this.packPartReader.readValues(file)
+                    final InputStream stream = entry.asInputStream();
+                    final MappingIterator<PackReferencePart> iterator = reader.readValues(stream)
                 ) {
-                    final Path path = file.getParentFile().toPath();
-                    if (path.equals(this.settings.root())) {
-                        return iterator.readAll();
-                    } else {
-                        return iterator
-                            .readAll()
-                            .stream()
-                            .map(part -> part.directory(path))
-                            .collect(Collectors.toList());
-                    }
+                    return iterator.readAll().stream().peek(part -> part.prepareCreator(entry));
                 } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             })
-            .flatMap(Collection::stream)
             .collect(Collectors.toList());
-        return new PackGeneratorContext(
-            ResourcePack.resourcePack(),
-            this.base,
-            packReference,
-            packPartReferences,
-            this.settings.root(),
-            this.settings.serializer()
-        );
-    }
 
-    private void prepare() {
-        final Path root = this.settings.root();
-        final Path packReferenceFile = root.resolve(this.settings.packReferenceFileName());
-        if (Files.notExists(packReferenceFile)) {
-            throw new IllegalStateException(
-                "Pack reference file does not exist: " + packReferenceFile
-            );
-        }
-        this.packReferenceFile = packReferenceFile.toFile();
-
-        final ObjectMapper mapper = this.settings.mapper();
-        this.packReader = mapper.readerFor(Internal.PACK_TYPE);
-        this.packPartReader = mapper.readerFor(Internal.PACK_PART_TYPE);
+        return new PackReadContext(packReferenceMeta, packReferenceParts, this.settings);
     }
 
     private static final class Internal {
 
-        private static final TypeReference<PackReferenceMeta> PACK_TYPE = new TypeReference<
+        private static final TypeReference<PackReferenceMeta> PACK_META_TYPE = new TypeReference<
             PackReferenceMeta
         >() {};
         private static final TypeReference<PackReferencePart> PACK_PART_TYPE = new TypeReference<

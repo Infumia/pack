@@ -1,0 +1,12 @@
+---
+type: "image"
+key: "book"
+image: "book.png"
+height: 25
+ascent: -27
+---
+type: "image"
+key: "discord"
+image: "discord.png"
+height: 28
+ascent: -62
