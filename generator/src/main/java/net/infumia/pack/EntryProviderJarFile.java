@@ -31,7 +31,7 @@ public final class EntryProviderJarFile implements EntryProvider {
     }
 
     private static String normalize(String path) {
-        path = path.replace(File.separatorChar, '/');
+        path = path.replace('\\', '/');
         return path.endsWith("/") ? path : path + "/";
     }
 }
