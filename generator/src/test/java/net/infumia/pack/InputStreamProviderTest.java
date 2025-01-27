@@ -2,18 +2,13 @@ package net.infumia.pack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -31,10 +26,13 @@ final class InputStreamProviderTest {
     @ParameterizedTest
     @MethodSource("inputStreamProviderFactory")
     void provide(final InputStreamProvider provider) throws IOException {
-        final InputStream metaStream = provider.provide("pack.yml");
+        final Entry metaEntry = provider.provide("pack.yml");
 
         final ObjectMapper mapper = new YAMLMapper();
-        final PackReferenceMeta meta = mapper.readValue(metaStream, PackReferenceMeta.class);
+        final PackReferenceMeta meta = mapper.readValue(
+            metaEntry.asInputStream(),
+            PackReferenceMeta.class
+        );
 
         assertEquals(6, meta.format());
         assertEquals("Test Resource Pack", meta.description());
@@ -53,26 +51,13 @@ final class InputStreamProviderTest {
 
         final Collection<String> actualPartNames = partEntries
             .stream()
-            .map(Entry::rootRelativeName)
-            .map(s -> s.replace(File.separatorChar, '/'))
-            .map(s -> s.startsWith("/") ? s.substring(1) : s)
-            .map(s -> s.substring(0, s.length() - ".yml".length()))
+            .map(Entry::simplifiedName)
             .collect(Collectors.toSet());
         final Collection<String> expectedPartNames = new HashSet<>(
             Arrays.asList("general", "security/help", "security/option/option")
         );
 
         assertEquals(expectedPartNames, actualPartNames);
-
-        final ObjectMapper mapper = new YAMLMapper();
-        final ObjectReader reader = mapper.readerFor(PackReferencePart.class);
-
-        for (final Entry entry : partEntries) {
-            final MappingIterator<PackReferencePart> iterator = reader.readValues(
-                entry.asInputStream()
-            );
-            final List<PackReferencePart> parts = iterator.readAll();
-        }
     }
 
     private static Stream<InputStreamProvider> inputStreamProviderFactory() throws IOException {

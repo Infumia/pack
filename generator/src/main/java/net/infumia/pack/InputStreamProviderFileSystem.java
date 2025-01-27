@@ -1,7 +1,6 @@
 package net.infumia.pack;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -18,8 +17,8 @@ public final class InputStreamProviderFileSystem implements InputStreamProvider 
     }
 
     @Override
-    public InputStream provide(final String path) throws IOException {
-        return Files.newInputStream(this.root.resolve(path));
+    public Entry provide(final String path) {
+        return new EntryPath(this, this.root.resolve(path));
     }
 
     @Override

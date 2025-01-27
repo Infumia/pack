@@ -1,5 +1,6 @@
 package net.infumia.pack;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -26,6 +27,13 @@ final class EntryPath implements Entry {
     @Override
     public String rootRelativeName() {
         return this.name().substring(this.provider.root.toString().length());
+    }
+
+    @Override
+    public String simplifiedName() {
+        String creatorName = this.rootRelativeName().replace(File.separatorChar, '/');
+        creatorName = creatorName.startsWith("/") ? creatorName.substring(1) : creatorName;
+        return creatorName.substring(0, creatorName.length() - ".yml".length());
     }
 
     @Override

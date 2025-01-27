@@ -1,7 +1,5 @@
 package net.infumia.pack;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
@@ -20,8 +18,8 @@ public final class InputStreamProviderJarFile implements InputStreamProvider {
     }
 
     @Override
-    public InputStream provide(final String path) throws IOException {
-        return this.jarFile.getInputStream(this.jarFile.getEntry(this.rootPathAsString + path));
+    public Entry provide(final String path) {
+        return new EntryJarEntry(this, this.jarFile.getJarEntry(this.rootPathAsString + path));
     }
 
     @Override

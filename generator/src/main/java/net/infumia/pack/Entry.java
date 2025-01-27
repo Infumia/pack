@@ -7,6 +7,8 @@ public interface Entry {
 
     String rootRelativeName();
 
+    String simplifiedName();
+
     boolean isRegularFile();
 
     boolean hasExtension(String extension);

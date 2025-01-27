@@ -29,9 +29,10 @@ final class PackReader {
         final InputStreamProvider inputStreamProvider = this.settings.inputStreamProvider();
         final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
 
+        final Entry metaEntry = inputStreamProvider.provide(packReferenceMetaFileName);
         final PackReferenceMeta packReferenceMeta;
-        try (final InputStream stream = inputStreamProvider.provide(packReferenceMetaFileName)) {
-            packReferenceMeta = mapper.readValue(stream, Internal.PACK_META_TYPE);
+        try (final InputStream metaStream = metaEntry.asInputStream()) {
+            packReferenceMeta = mapper.readValue(metaStream, Internal.PACK_META_TYPE);
         }
 
         final Collection<Entry> parts = inputStreamProvider.provideAll(

@@ -1,21 +1,14 @@
 package net.infumia.pack;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.nio.file.Path;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
-import net.kyori.adventure.key.Key;
 
 /**
  * Represents a model part of a pack reference.
  */
 public final class PackReferencePartModel extends PackReferencePart {
-
-    @JsonProperty
-    private String namespace;
-
-    @JsonProperty(required = true)
-    private String key;
 
     @JsonProperty(required = true)
     private List<String> textures;
@@ -31,8 +24,6 @@ public final class PackReferencePartModel extends PackReferencePart {
 
     @JsonProperty(value = "overridden-key", required = true)
     private String overriddenKey;
-
-    private Path directory;
 
     @Override
     public void add(final PackGeneratorContext context) {
@@ -94,14 +85,16 @@ public final class PackReferencePartModel extends PackReferencePart {
     }
 
     @Override
-    Key extractKey(final PackGeneratorContext context) {
-        final String namespace = this.namespace == null
-            ? context.packReference().defaultNamespace()
-            : this.namespace;
-        if (namespace == null) {
-            throw new IllegalStateException("Pack reference namespace cannot be null!");
-        }
-        return Key.key(namespace, this.parent(context) + this.key);
+    public String toString() {
+        return new StringJoiner(", ", PackReferencePartItem.class.getSimpleName() + "[", "]")
+            .add("namespace='" + this.namespace() + "'")
+            .add("key='" + this.key() + "'")
+            .add("textures=" + this.textures)
+            .add("model='" + this.model + "'")
+            .add("customModelData=" + this.customModelData)
+            .add("overriddenNamespace='" + this.overriddenNamespace + "'")
+            .add("overriddenKey='" + this.overriddenKey + "'")
+            .toString();
     }
 
     private String parent(final PackGeneratorContext context) {
@@ -127,14 +120,14 @@ public final class PackReferencePartModel extends PackReferencePart {
         }
 
         final Integer offset = context.packReference().customModelDataOffset();
-        if (offset == null) {
+        /*if (offset == null) {
             throw new IllegalStateException(
                 String.format(
                     "Custom model data offset cannot be null when custom-model-data not specified (%s)!",
                     this.extractKey(context)
                 )
             );
-        }
+        }*/
 
         final AtomicInteger lastCustomModelData = context.lastCustomModelData();
         if (offset > lastCustomModelData.get()) {
