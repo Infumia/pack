@@ -3,6 +3,7 @@ package net.infumia.pack;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -58,6 +59,13 @@ final class InputStreamProviderTest {
         );
 
         assertEquals(expectedPartNames, actualPartNames);
+
+        final ObjectMapper mapper = new YAMLMapper();
+        final ObjectReader reader = mapper.readerFor(PackReferencePart.class);
+
+        for (final Entry entry : partEntries) {
+            reader.readValues(entry.asInputStream()).readAll();
+        }
     }
 
     private static Stream<InputStreamProvider> inputStreamProviderFactory() throws IOException {
