@@ -14,7 +14,7 @@ public final class PackReadFilters {
      * @return a predicate that returns true for paths with the specified extension.
      */
     public static Predicate<Entry> withExtension(final String extension) {
-        return path -> path.hasExtension(extension);
+        return entry -> entry.hasExtension(extension);
     }
 
     private PackReadFilters() {

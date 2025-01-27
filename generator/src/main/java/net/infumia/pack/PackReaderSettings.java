@@ -1,9 +1,6 @@
 package net.infumia.pack;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.StringJoiner;
 import java.util.function.Predicate;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
@@ -13,7 +10,7 @@ import net.kyori.adventure.text.serializer.ComponentSerializer;
  */
 public final class PackReaderSettings {
 
-    private final InputStreamProvider inputStreamProvider;
+    private final EntryProvider entryProvider;
     private final String packReferenceMetaFileName;
     private final ObjectMapper mapper;
     private final Predicate<Entry> readFilter;
@@ -22,20 +19,21 @@ public final class PackReaderSettings {
     /**
      * Ctor.
      *
-     * @param inputStreamProvider       the input stream provider. Cannot be null.
+     * @param entryProvider             the entry provider. Cannot be null.
      * @param packReferenceMetaFileName the pack reference meta file name. Cannot be null.
      * @param mapper                    the object mapper to read pack and pack part reference files. Cannot be null.
-     * @param readFilter                the read filter for {@link Files#walk(Path, FileVisitOption...)}.
+     * @param readFilter                the read filter to filter entries {@link EntryProvider#provideAll(Predicate)}.
      * @param serializer                the serializer to serialize components when needed. Cannot be null.
+     * @see PackReadFilters
      */
     public PackReaderSettings(
-        final InputStreamProvider inputStreamProvider,
+        final EntryProvider entryProvider,
         final String packReferenceMetaFileName,
         final ObjectMapper mapper,
         final Predicate<Entry> readFilter,
         final ComponentSerializer<?, ?, String> serializer
     ) {
-        this.inputStreamProvider = inputStreamProvider;
+        this.entryProvider = entryProvider;
         this.packReferenceMetaFileName = packReferenceMetaFileName;
         this.mapper = mapper;
         this.readFilter = readFilter;
@@ -43,12 +41,12 @@ public final class PackReaderSettings {
     }
 
     /**
-     * Returns the input stream provider.
+     * Returns the entry provider.
      *
-     * @return the input stream provider.
+     * @return the entry provider.
      */
-    public InputStreamProvider inputStreamProvider() {
-        return this.inputStreamProvider;
+    public EntryProvider inputStreamProvider() {
+        return this.entryProvider;
     }
 
     /**
@@ -90,7 +88,7 @@ public final class PackReaderSettings {
     @Override
     public String toString() {
         return new StringJoiner(", ", PackReaderSettings.class.getSimpleName() + "[", "]")
-            .add("inputStreamProvider=" + this.inputStreamProvider)
+            .add("inputStreamProvider=" + this.entryProvider)
             .add("packReferenceMetaFileName=" + this.packReferenceMetaFileName)
             .add("mapper=" + this.mapper)
             .add("readFilter=" + this.readFilter)

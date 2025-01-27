@@ -17,32 +17,32 @@ public final class PackGeneratorContext {
     private final Pack pack;
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
-    private final InputStreamProvider inputStreamProvider;
+    private final EntryProvider entryProvider;
     private final ComponentSerializer<?, ?, String> serializer;
 
     /**
      * Ctor.
      *
-     * @param resourcePack        the resource pack. Cannot be null.
-     * @param pack                the pack. Cannot be null.
-     * @param packReference       the pack file reference. Cannot be null.
-     * @param packPartReferences  the pack part references. Cannot be null.
-     * @param inputStreamProvider the input stream provider. Cannot be null.
-     * @param serializer          the serializer to serialize components when needed. Cannot be null.
+     * @param resourcePack       the resource pack. Cannot be null.
+     * @param pack               the pack. Cannot be null.
+     * @param packReference      the pack file reference. Cannot be null.
+     * @param packPartReferences the pack part references. Cannot be null.
+     * @param entryProvider      the entry provider. Cannot be null.
+     * @param serializer         the serializer to serialize components when needed. Cannot be null.
      */
     PackGeneratorContext(
         final ResourcePack resourcePack,
         final Pack pack,
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
-        final InputStreamProvider inputStreamProvider,
+        final EntryProvider entryProvider,
         final ComponentSerializer<?, ?, String> serializer
     ) {
         this.resourcePack = resourcePack;
         this.pack = pack;
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
-        this.inputStreamProvider = inputStreamProvider;
+        this.entryProvider = entryProvider;
         this.serializer = serializer;
     }
 
@@ -92,12 +92,12 @@ public final class PackGeneratorContext {
     }
 
     /**
-     * Returns the input stream provider.
+     * Returns the entry provider.
      *
-     * @return the input stream provider.
+     * @return the entry provider.
      */
-    public InputStreamProvider inputStreamProvider() {
-        return this.inputStreamProvider;
+    public EntryProvider inputStreamProvider() {
+        return this.entryProvider;
     }
 
     /**
@@ -116,7 +116,7 @@ public final class PackGeneratorContext {
             .add("pack=" + this.pack)
             .add("packReference=" + this.packReference)
             .add("packPartReferences=" + this.packPartReferences)
-            .add("inputStreamProvider=" + this.inputStreamProvider)
+            .add("inputStreamProvider=" + this.entryProvider)
             .add("serializer=" + this.serializer)
             .toString();
     }

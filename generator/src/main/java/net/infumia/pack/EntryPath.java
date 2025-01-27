@@ -8,10 +8,10 @@ import java.util.Objects;
 
 final class EntryPath implements Entry {
 
-    private final InputStreamProviderFileSystem provider;
+    private final EntryProviderFileSystem provider;
     private final Path path;
 
-    EntryPath(final InputStreamProviderFileSystem provider, final Path path) {
+    EntryPath(final EntryProviderFileSystem provider, final Path path) {
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(path, "path");
         this.provider = provider;

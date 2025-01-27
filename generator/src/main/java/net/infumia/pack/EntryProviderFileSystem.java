@@ -8,11 +8,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class InputStreamProviderFileSystem implements InputStreamProvider {
+public final class EntryProviderFileSystem implements EntryProvider {
 
     final Path root;
 
-    public InputStreamProviderFileSystem(final Path root) {
+    public EntryProviderFileSystem(final Path root) {
         this.root = root;
     }
 

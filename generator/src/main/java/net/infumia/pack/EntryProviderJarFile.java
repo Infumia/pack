@@ -6,14 +6,14 @@ import java.util.function.Predicate;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-public final class InputStreamProviderJarFile implements InputStreamProvider {
+public final class EntryProviderJarFile implements EntryProvider {
 
     final JarFile jarFile;
     final String rootPathAsString;
 
-    public InputStreamProviderJarFile(final JarFile jarFile, final String rootPathAsString) {
+    public EntryProviderJarFile(final JarFile jarFile, final String rootPathAsString) {
         this.jarFile = jarFile;
-        this.rootPathAsString = InputStreamProviderJarFile.normalize(rootPathAsString);
+        this.rootPathAsString = EntryProviderJarFile.normalize(rootPathAsString);
     }
 
     @Override

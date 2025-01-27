@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-final class InputStreamProviderTest {
+final class EntryProviderTest {
 
     private final Predicate<Entry> isMetaEntry = entry -> entry.is("pack.yml");
     private final Predicate<Entry> hasYmlExtension = entry -> entry.hasExtension("yml");
@@ -26,7 +26,7 @@ final class InputStreamProviderTest {
 
     @ParameterizedTest
     @MethodSource("inputStreamProviderFactory")
-    void provide(final InputStreamProvider provider) throws IOException {
+    void provide(final EntryProvider provider) throws IOException {
         final Entry metaEntry = provider.provide("pack.yml");
 
         final ObjectMapper mapper = new YAMLMapper();
@@ -45,7 +45,7 @@ final class InputStreamProviderTest {
 
     @ParameterizedTest
     @MethodSource("inputStreamProviderFactory")
-    void provideAll(final InputStreamProvider provider) throws IOException {
+    void provideAll(final EntryProvider provider) throws IOException {
         final Collection<Entry> partEntries = provider.provideAll(
             this.isRegularFile.and(this.hasYmlExtension).and(this.isMetaEntry.negate())
         );
@@ -68,18 +68,18 @@ final class InputStreamProviderTest {
         }
     }
 
-    private static Stream<InputStreamProvider> inputStreamProviderFactory() throws IOException {
+    private static Stream<EntryProvider> inputStreamProviderFactory() throws IOException {
         return Stream.of(
-            new InputStreamProviderFileSystem(Paths.get("src/test/resources/pack-resources")),
-            new InputStreamProviderJarFile(
+            new EntryProviderFileSystem(Paths.get("src/test/resources/pack-resources")),
+            new EntryProviderJarFile(
                 new JarFile(Paths.get("src/test/resources/test.jar").toFile()),
                 "pack-resources/"
             ),
-            new InputStreamProviderJarFile(
+            new EntryProviderJarFile(
                 new JarFile(Paths.get("src/test/resources/test.jar").toFile()),
                 "pack-resources"
             ),
-            new InputStreamProviderJarFile(
+            new EntryProviderJarFile(
                 new JarFile(Paths.get("src/test/resources/test.jar").toFile()),
                 "pack-resources\\"
             )

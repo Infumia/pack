@@ -26,17 +26,17 @@ final class PackReader {
 
     PackGeneratorContext read() throws IOException {
         final ObjectMapper mapper = this.settings.mapper();
-        final InputStreamProvider inputStreamProvider = this.settings.inputStreamProvider();
+        final EntryProvider entryProvider = this.settings.inputStreamProvider();
         final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
 
-        final Entry metaEntry = inputStreamProvider.provide(packReferenceMetaFileName);
+        final Entry metaEntry = entryProvider.provide(packReferenceMetaFileName);
         final PackReferenceMeta packReferenceMeta;
         try (final InputStream metaStream = metaEntry.asInputStream()) {
             packReferenceMeta = mapper.readValue(metaStream, Internal.PACK_META_TYPE);
         }
 
-        final Collection<Entry> parts = inputStreamProvider.provideAll(
-            entry -> !entry.is(packReferenceMetaFileName)
+        final Collection<Entry> parts = entryProvider.provideAll(
+            PackReader.IS_REGULAR_FILE.and(entry -> !entry.is(packReferenceMetaFileName))
         );
 
         final ObjectReader reader = mapper.readerFor(Internal.PACK_PART_TYPE);
@@ -59,7 +59,7 @@ final class PackReader {
             this.base,
             packReferenceMeta,
             packReferenceParts,
-            inputStreamProvider,
+            entryProvider,
             this.settings.serializer()
         );
     }

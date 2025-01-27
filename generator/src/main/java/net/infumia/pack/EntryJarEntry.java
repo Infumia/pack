@@ -8,10 +8,10 @@ import java.util.zip.ZipEntry;
 
 final class EntryJarEntry implements Entry {
 
-    private final InputStreamProviderJarFile provider;
+    private final EntryProviderJarFile provider;
     private final JarEntry jarEntry;
 
-    EntryJarEntry(final InputStreamProviderJarFile provider, final JarEntry jarEntry) {
+    EntryJarEntry(final EntryProviderJarFile provider, final JarEntry jarEntry) {
         Objects.requireNonNull(provider, "provider is null");
         Objects.requireNonNull(jarEntry, "jarEntry is null");
         this.provider = provider;
