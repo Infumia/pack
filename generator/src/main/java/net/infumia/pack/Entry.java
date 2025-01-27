@@ -1,5 +1,6 @@
 package net.infumia.pack;
 
+import java.io.File;
 import java.io.InputStream;
 
 public interface Entry {
@@ -7,7 +8,11 @@ public interface Entry {
 
     String rootRelativeName();
 
-    String simplifiedName();
+    default String simplifiedName() {
+        String creatorName = this.rootRelativeName().replace(File.separatorChar, '/');
+        creatorName = creatorName.startsWith("/") ? creatorName.substring(1) : creatorName;
+        return creatorName.substring(0, creatorName.length() - ".yml".length());
+    }
 
     boolean isRegularFile();
 

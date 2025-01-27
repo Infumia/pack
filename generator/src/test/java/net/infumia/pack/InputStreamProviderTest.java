@@ -65,7 +65,7 @@ final class InputStreamProviderTest {
             new InputStreamProviderFileSystem(Paths.get("src/test/resources/pack-resources")),
             new InputStreamProviderJarFile(
                 new JarFile(Paths.get("src/test/resources/test.jar").toFile()),
-                "pack-resources"
+                "pack-resources\\"
             )
         );
     }

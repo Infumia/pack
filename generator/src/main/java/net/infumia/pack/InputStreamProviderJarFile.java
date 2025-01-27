@@ -1,5 +1,6 @@
 package net.infumia.pack;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
@@ -12,9 +13,7 @@ public final class InputStreamProviderJarFile implements InputStreamProvider {
 
     public InputStreamProviderJarFile(final JarFile jarFile, final String rootPathAsString) {
         this.jarFile = jarFile;
-        this.rootPathAsString = rootPathAsString.endsWith("/")
-            ? rootPathAsString
-            : rootPathAsString + "/";
+        this.rootPathAsString = InputStreamProviderJarFile.normalize(rootPathAsString);
     }
 
     @Override
@@ -29,5 +28,10 @@ public final class InputStreamProviderJarFile implements InputStreamProvider {
             .map(entry -> new EntryJarEntry(this, entry))
             .filter(filter)
             .collect(Collectors.toSet());
+    }
+
+    private static String normalize(String path) {
+        path = path.replace(File.separatorChar, '/');
+        return path.endsWith("/") ? path : path + "/";
     }
 }

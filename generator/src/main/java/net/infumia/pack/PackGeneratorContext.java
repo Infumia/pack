@@ -23,12 +23,12 @@ public final class PackGeneratorContext {
     /**
      * Ctor.
      *
-     * @param resourcePack       the resource pack. Cannot be null.
-     * @param pack               the pack. Cannot be null.
-     * @param packReference      the pack file reference. Cannot be null.
-     * @param packPartReferences the pack part references. Cannot be null.
+     * @param resourcePack        the resource pack. Cannot be null.
+     * @param pack                the pack. Cannot be null.
+     * @param packReference       the pack file reference. Cannot be null.
+     * @param packPartReferences  the pack part references. Cannot be null.
      * @param inputStreamProvider the input stream provider. Cannot be null.
-     * @param serializer         the serializer to serialize components when needed. Cannot be null.
+     * @param serializer          the serializer to serialize components when needed. Cannot be null.
      */
     PackGeneratorContext(
         final ResourcePack resourcePack,
