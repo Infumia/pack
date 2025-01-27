@@ -75,7 +75,7 @@ final class InputStreamProviderTest {
         }
     }
 
-    static Stream<InputStreamProvider> inputStreamProviderFactory() throws IOException {
+    private static Stream<InputStreamProvider> inputStreamProviderFactory() throws IOException {
         return Stream.of(
             new InputStreamProviderFileSystem(Paths.get("src/test/resources/pack-resources")),
             new InputStreamProviderJarFile(
