@@ -7,7 +7,7 @@ import team.unnamed.creative.ResourcePack;
 /**
  * Context for generated resource pack.
  */
-public final class PackGeneratedContext {
+public final class PackWriteContext {
 
     private final ResourcePack resourcePack;
     private final Path outputDirectory;
@@ -20,7 +20,7 @@ public final class PackGeneratedContext {
      * @param outputDirectory the output directory. Can be null.
      * @param outputFile      the output file. Can be null.
      */
-    PackGeneratedContext(
+    PackWriteContext(
         final ResourcePack resourcePack,
         final Path outputDirectory,
         final Path outputFile
@@ -59,7 +59,7 @@ public final class PackGeneratedContext {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", PackGeneratedContext.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", PackWriteContext.class.getSimpleName() + "[", "]")
             .add("resourcePack=" + this.resourcePack)
             .add("outputDirectory=" + this.outputDirectory)
             .add("outputFile=" + this.outputFile)

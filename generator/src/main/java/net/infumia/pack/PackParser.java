@@ -1,12 +1,49 @@
 package net.infumia.pack;
 
+import java.io.IOException;
 import java.util.Comparator;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.metadata.pack.PackMeta;
 
 /**
  * Utility class for parsing packs.
  */
 public final class PackParser {
+
+    /**
+     * Reads the pack based on the provided settings and base pack.
+     *
+     * @param readerSettings the pack reader settings. Cannot be null.
+     * @return the pack read context.
+     * @throws IOException if an I/O error is thrown when accessing the starting file.
+     */
+    public static PackReadContext read(final PackReaderSettings readerSettings) throws IOException {
+        return new PackReader(readerSettings).read();
+    }
+
+    /**
+     * Writes the pack based on the provided settings and context.
+     *
+     * @param writerSettings the pack writer settings. Cannot be null.
+     * @param resourcePack   the resource pack to write. Cannot be null.
+     * @return the generated pack context.
+     */
+    public static PackWriteContext write(
+        final PackWriterSettings writerSettings,
+        final ResourcePack resourcePack
+    ) {
+        return new PackWriter(writerSettings).write(resourcePack);
+    }
+
+    /**
+     * Writes the pack based on the provided settings and context.
+     *
+     * @param writerSettings the pack writer settings. Cannot be null.
+     * @return the generated pack context.
+     */
+    public static PackWriteContext write(final PackWriterSettings writerSettings) {
+        return PackParser.write(writerSettings, ResourcePack.resourcePack());
+    }
 
     /**
      * Parses the given pack read context.
