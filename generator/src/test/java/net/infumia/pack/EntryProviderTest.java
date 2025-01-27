@@ -2,10 +2,12 @@ package net.infumia.pack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +27,7 @@ final class EntryProviderTest {
     private final Predicate<Entry> isRegularFile = Entry::isRegularFile;
 
     @ParameterizedTest
-    @MethodSource("inputStreamProviderFactory")
+    @MethodSource("entryProviderFactory")
     void provide(final EntryProvider provider) throws IOException {
         final Entry metaEntry = provider.provide("pack.yml");
 
@@ -44,7 +46,7 @@ final class EntryProviderTest {
     }
 
     @ParameterizedTest
-    @MethodSource("inputStreamProviderFactory")
+    @MethodSource("entryProviderFactory")
     void provideAll(final EntryProvider provider) throws IOException {
         final Collection<Entry> partEntries = provider.provideAll(
             this.isRegularFile.and(this.hasYmlExtension).and(this.isMetaEntry.negate())
@@ -64,11 +66,16 @@ final class EntryProviderTest {
         final ObjectReader reader = mapper.readerFor(PackReferencePart.class);
 
         for (final Entry entry : partEntries) {
-            reader.readValues(entry.asInputStream()).readAll();
+            try (
+                final InputStream stream = entry.asInputStream();
+                final MappingIterator<Object> iterator = reader.readValues(stream);
+            ) {
+                iterator.readAll();
+            }
         }
     }
 
-    private static Stream<EntryProvider> inputStreamProviderFactory() throws IOException {
+    private static Stream<EntryProvider> entryProviderFactory() throws IOException {
         return Stream.of(
             new EntryProviderFileSystem(Paths.get("src/test/resources/pack-resources")),
             new EntryProviderJarFile(

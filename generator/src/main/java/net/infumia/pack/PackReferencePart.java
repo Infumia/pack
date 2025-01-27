@@ -3,6 +3,7 @@ package net.infumia.pack;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import net.kyori.adventure.key.Key;
 
 /**
  * Abstract base class for a pack part reference.
@@ -53,12 +54,13 @@ public abstract class PackReferencePart {
     }
 
     /**
-     * Prepares the creator of the part.
+     * Extracts the key of the part.
      *
-     * @param creator the creator to prepare.
+     * @param context the pack generation context.
+     * @return the key of the part.
      */
-    void prepareCreator(final Entry creator) {
-        this.creator = creator;
+    public Key extractKey(final PackGeneratorContext context) {
+        return context.readerSettings().keyExtractor().extract(context, this);
     }
 
     /**
@@ -67,4 +69,13 @@ public abstract class PackReferencePart {
      * @param context the pack generation context to add.
      */
     public abstract void add(PackGeneratorContext context);
+
+    /**
+     * Prepares the creator of the part.
+     *
+     * @param creator the creator to prepare.
+     */
+    void prepareCreator(final Entry creator) {
+        this.creator = creator;
+    }
 }

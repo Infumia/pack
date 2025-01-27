@@ -2,7 +2,9 @@ package net.infumia.pack;
 
 import net.kyori.adventure.key.Key;
 
-public final class PackKeyExtractorReferencePartImpl implements PackKeyExtractorReferencePart {
+final class PackKeyExtractorReferencePartImpl implements PackKeyExtractorReferencePart {
+
+    static final PackKeyExtractorReferencePart INSTANCE = new PackKeyExtractorReferencePartImpl();
 
     @Override
     public Key extract(final PackGeneratorContext context, final PackReferencePart part) {

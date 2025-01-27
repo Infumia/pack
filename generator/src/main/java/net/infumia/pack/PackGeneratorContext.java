@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
 import team.unnamed.creative.ResourcePack;
 
 /**
@@ -17,8 +16,7 @@ public final class PackGeneratorContext {
     private final Pack pack;
     private final PackReferenceMeta packReference;
     private final Collection<PackReferencePart> packPartReferences;
-    private final EntryProvider entryProvider;
-    private final ComponentSerializer<?, ?, String> serializer;
+    private final PackReaderSettings readerSettings;
 
     /**
      * Ctor.
@@ -27,23 +25,20 @@ public final class PackGeneratorContext {
      * @param pack               the pack. Cannot be null.
      * @param packReference      the pack file reference. Cannot be null.
      * @param packPartReferences the pack part references. Cannot be null.
-     * @param entryProvider      the entry provider. Cannot be null.
-     * @param serializer         the serializer to serialize components when needed. Cannot be null.
+     * @param readerSettings     the reader settings. Cannot be null.
      */
     PackGeneratorContext(
         final ResourcePack resourcePack,
         final Pack pack,
         final PackReferenceMeta packReference,
         final Collection<PackReferencePart> packPartReferences,
-        final EntryProvider entryProvider,
-        final ComponentSerializer<?, ?, String> serializer
+        final PackReaderSettings readerSettings
     ) {
         this.resourcePack = resourcePack;
         this.pack = pack;
         this.packReference = packReference;
         this.packPartReferences = Collections.unmodifiableCollection(packPartReferences);
-        this.entryProvider = entryProvider;
-        this.serializer = serializer;
+        this.readerSettings = readerSettings;
     }
 
     /**
@@ -83,21 +78,12 @@ public final class PackGeneratorContext {
     }
 
     /**
-     * Returns the component serializer.
+     * Returns the reader settings.
      *
-     * @return the component serializer.
+     * @return the reader settings.
      */
-    public ComponentSerializer<?, ?, String> serializer() {
-        return this.serializer;
-    }
-
-    /**
-     * Returns the entry provider.
-     *
-     * @return the entry provider.
-     */
-    public EntryProvider inputStreamProvider() {
-        return this.entryProvider;
+    public PackReaderSettings readerSettings() {
+        return this.readerSettings;
     }
 
     /**
@@ -112,12 +98,12 @@ public final class PackGeneratorContext {
     @Override
     public String toString() {
         return new StringJoiner(", ", PackGeneratorContext.class.getSimpleName() + "[", "]")
+            .add("lastCustomModelData=" + this.lastCustomModelData)
             .add("resourcePack=" + this.resourcePack)
             .add("pack=" + this.pack)
             .add("packReference=" + this.packReference)
             .add("packPartReferences=" + this.packPartReferences)
-            .add("inputStreamProvider=" + this.entryProvider)
-            .add("serializer=" + this.serializer)
+            .add("readerSettings=" + this.readerSettings)
             .toString();
     }
 }
