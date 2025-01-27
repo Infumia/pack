@@ -24,7 +24,10 @@ fun Project.applyJava(javaVersion: Int = 8) {
         withType<Test> {
             useJUnitPlatform()
 
-            testLogging { events("PASSED", "SKIPPED", "FAILED") }
+            testLogging {
+                events("PASSED", "SKIPPED", "FAILED")
+                showStandardStreams = true
+            }
         }
     }
 }
