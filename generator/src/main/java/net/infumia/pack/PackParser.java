@@ -14,14 +14,14 @@ public final class PackParser {
      * @param context the pack generator context. Cannot be null.
      * @return the updated pack generator context.
      */
-    public static PackGeneratorContext parse(final PackGeneratorContext context) {
+    public static PackReadContext parse(final PackReadContext context) {
         PackParser.parseMeta(context);
         PackParser.parseParts(context);
         context.pack().writeAll(context.resourcePack());
         return context;
     }
 
-    private static void parseMeta(final PackGeneratorContext context) {
+    private static void parseMeta(final PackReadContext context) {
         final Pack pack = context.pack();
         final PackReferenceMeta meta = context.packReference();
         final PackMeta packMeta = meta.parsePackMeta(context.readerSettings().serializer());
@@ -45,7 +45,7 @@ public final class PackParser {
         }
     }
 
-    private static void parseParts(final PackGeneratorContext context) {
+    private static void parseParts(final PackReadContext context) {
         context
             .packPartReferences()
             .stream()

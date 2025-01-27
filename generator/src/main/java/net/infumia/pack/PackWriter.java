@@ -12,7 +12,7 @@ final class PackWriter {
         this.settings = settings;
     }
 
-    PackGeneratedContext write(final PackGeneratorContext context) {
+    PackGeneratedContext write(final PackReadContext context) {
         final MinecraftResourcePackWriter writer = this.settings.writer();
         final Path outputDirectory = this.settings.outputDirectory();
         final ResourcePack resourcePack = context.resourcePack();

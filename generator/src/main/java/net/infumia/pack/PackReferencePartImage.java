@@ -3,7 +3,6 @@ package net.infumia.pack;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.StringJoiner;
 import net.kyori.adventure.key.Key;
-import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.texture.Texture;
 
@@ -22,7 +21,7 @@ public final class PackReferencePartImage extends PackReferencePart {
     private int ascent;
 
     @Override
-    public void add(final PackGeneratorContext context) {
+    public void add(final PackReadContext context) {
         final Key key = this.extractKey(context);
         context
             .pack()
@@ -31,10 +30,8 @@ public final class PackReferencePartImage extends PackReferencePart {
                 ResourceProducers.image(
                     Font.MINECRAFT_DEFAULT,
                     Texture.texture(
-                        Key.key(key.namespace(), key.value() + ".png"),
-                        Writable.copyInputStream(
-                            context.rootPathAsString() + this.parent(context) + this.image
-                        )
+                        Internal.toPngKey(key),
+                        this.provideWritableWithParent(context, this.image)
                     ),
                     new TextureProperties(this.height, this.ascent)
                 )

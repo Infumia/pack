@@ -50,10 +50,8 @@ public final class PackGenerator {
      * @return the pack generation context.
      * @throws IOException if an I/O error is thrown when accessing the starting file.
      */
-    public static PackGeneratorContext read(
-        final PackReaderSettings readerSettings,
-        final Pack base
-    ) throws IOException {
+    public static PackReadContext read(final PackReaderSettings readerSettings, final Pack base)
+        throws IOException {
         return new PackReader(readerSettings, base).read();
     }
 
@@ -66,7 +64,7 @@ public final class PackGenerator {
      */
     public static PackGeneratedContext write(
         final PackWriterSettings writerSettings,
-        final PackGeneratorContext context
+        final PackReadContext context
     ) {
         return new PackWriter(writerSettings).write(context);
     }

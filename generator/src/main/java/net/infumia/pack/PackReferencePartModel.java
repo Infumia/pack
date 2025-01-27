@@ -3,7 +3,14 @@ package net.infumia.pack;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import net.kyori.adventure.key.Key;
+import team.unnamed.creative.model.ItemOverride;
+import team.unnamed.creative.model.ItemPredicate;
+import team.unnamed.creative.model.Model;
+import team.unnamed.creative.model.ModelTexture;
+import team.unnamed.creative.model.ModelTextures;
+import team.unnamed.creative.texture.Texture;
 
 /**
  * Represents a model part of a pack reference.
@@ -26,8 +33,7 @@ public final class PackReferencePartModel extends PackReferencePart {
     private String overriddenKey;
 
     @Override
-    public void add(final PackGeneratorContext context) {
-        /*final Key key = this.extractKey(context);
+    public void add(final PackReadContext context) {
         final Key overriddenItemKey;
         if (this.overriddenNamespace == null) {
             overriddenItemKey = Key.key(this.overriddenKey);
@@ -35,30 +41,33 @@ public final class PackReferencePartModel extends PackReferencePart {
             overriddenItemKey = Key.key(this.overriddenNamespace, this.overriddenKey);
         }
 
+        final Key key = this.extractKey(context);
         context
             .pack()
             .with(
                 FileResources.all(
                     this.textures.stream()
-                        .map(texture -> {
-                            final String path = this.parent(context) + texture;
-                            return FileResources.texture(
-                                Texture.texture(
-                                    Key.key(key.namespace(), "item/" + path),
-                                    Writable.path(context.rootDirectory().resolve(path))
+                        .map(
+                            texture ->
+                                FileResources.texture(
+                                    Texture.texture(
+                                        Key.key(
+                                            key.namespace(),
+                                            "item/" + this.parentPath() + texture
+                                        ),
+                                        this.provideWritableWithParent(context, texture)
+                                    )
                                 )
-                            );
-                        })
+                        )
                         .collect(Collectors.toList())
                 )
             );
-        final String path = this.parent(context) + this.model;
         context
             .pack()
             .with(
                 FileResources.unknown(
-                    "assets/" + key.namespace() + "/models/" + path,
-                    Writable.path(context.rootDirectory().resolve(path))
+                    "assets/" + key.namespace() + "/models/" + this.parentPath() + this.model,
+                    this.provideWritableWithParent(context, this.model)
                 )
             );
         context
@@ -76,12 +85,14 @@ public final class PackReferencePartModel extends PackReferencePart {
                         .overrides(
                             ItemOverride.of(
                                 key,
-                                ItemPredicate.customModelData(this.customModelData(context))
+                                ItemPredicate.customModelData(
+                                    this.nextCustomModelData(context, this.customModelData)
+                                )
                             )
                         )
                         .build()
                 )
-            );*/
+            );
     }
 
     @Override
@@ -95,44 +106,5 @@ public final class PackReferencePartModel extends PackReferencePart {
             .add("overriddenNamespace='" + this.overriddenNamespace + "'")
             .add("overriddenKey='" + this.overriddenKey + "'")
             .toString();
-    }
-
-    private String parent(final PackGeneratorContext context) {
-        return "";
-        /*if (this.directory == null) {
-            return "";
-        }
-        return (
-            context
-                .rootDirectory()
-                .relativize(this.directory)
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .replace("\\", "/")
-                .replace(" ", "_") +
-            "/"
-        );*/
-    }
-
-    private int customModelData(final PackGeneratorContext context) {
-        if (this.customModelData != null) {
-            return this.customModelData;
-        }
-
-        final Integer offset = context.packReference().customModelDataOffset();
-        /*if (offset == null) {
-            throw new IllegalStateException(
-                String.format(
-                    "Custom model data offset cannot be null when custom-model-data not specified (%s)!",
-                    this.extractKey(context)
-                )
-            );
-        }*/
-
-        final AtomicInteger lastCustomModelData = context.lastCustomModelData();
-        if (offset > lastCustomModelData.get()) {
-            lastCustomModelData.set(offset);
-        }
-        return lastCustomModelData.getAndIncrement();
     }
 }

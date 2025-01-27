@@ -24,7 +24,7 @@ final class PackReader {
         this.base = base;
     }
 
-    PackGeneratorContext read() throws IOException {
+    PackReadContext read() throws IOException {
         final ObjectMapper mapper = this.settings.mapper();
         final EntryProvider entryProvider = this.settings.entryProvider();
         final String packReferenceMetaFileName = this.settings.packReferenceMetaFileName();
@@ -56,7 +56,7 @@ final class PackReader {
             })
             .collect(Collectors.toList());
 
-        return new PackGeneratorContext(
+        return new PackReadContext(
             ResourcePack.resourcePack(),
             this.base,
             packReferenceMeta,

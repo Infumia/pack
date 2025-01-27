@@ -23,7 +23,7 @@ final class ResourceProducerSpacesBitmap extends ResourceProducerSpacesAbstract 
 
     ResourceProducerSpacesBitmap(final Key fontKey, final Key textureKey, final Writable writable) {
         super(fontKey);
-        this.textureKey = Internal.toTextureKey(textureKey);
+        this.textureKey = Internal.toItemPngKey(textureKey);
         this.writable = writable;
     }
 

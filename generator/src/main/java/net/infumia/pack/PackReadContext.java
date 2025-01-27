@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import team.unnamed.creative.ResourcePack;
 
 /**
- * Context for resource pack generator.
+ * Represents the pack read context.
  */
-public final class PackGeneratorContext {
+public final class PackReadContext {
 
     private final AtomicInteger lastCustomModelData = new AtomicInteger();
     private final ResourcePack resourcePack;
@@ -27,7 +27,7 @@ public final class PackGeneratorContext {
      * @param packPartReferences the pack part references. Cannot be null.
      * @param readerSettings     the reader settings. Cannot be null.
      */
-    PackGeneratorContext(
+    PackReadContext(
         final ResourcePack resourcePack,
         final Pack pack,
         final PackReferenceMeta packReference,
@@ -97,7 +97,7 @@ public final class PackGeneratorContext {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", PackGeneratorContext.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", PackReadContext.class.getSimpleName() + "[", "]")
             .add("lastCustomModelData=" + this.lastCustomModelData)
             .add("resourcePack=" + this.resourcePack)
             .add("pack=" + this.pack)

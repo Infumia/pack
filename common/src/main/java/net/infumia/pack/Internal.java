@@ -13,14 +13,18 @@ final class Internal {
     static final Key DEFAULT_SPACES_TEXTURE_KEY = Key.key(Internal.DEFAULT_NAMESPACE, "spaces");
     static final int SEPARATOR_WIDTH = 1;
 
-    static Key toTextureKey(final Key key) {
-        //noinspection PatternValidation
-        return Key.key(key.namespace(), "item/" + key.value().concat(".png"));
+    static Key toItemPngKey(final Key key) {
+        return Internal.toPngKey(Internal.toItemKey(key));
     }
 
     static Key toItemKey(final Key key) {
         //noinspection PatternValidation
         return Key.key(key.namespace(), "item/" + key.value());
+    }
+
+    static Key toPngKey(final Key key) {
+        //noinspection PatternValidation
+        return Key.key(key.namespace(), key.value() + ".png");
     }
 
     static Writable resourceFromJar(final String fileName) {

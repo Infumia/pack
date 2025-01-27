@@ -120,7 +120,7 @@ public final class ResourceProducers {
                     )
                     .build()
             ),
-            FileResources.texture(Texture.texture(Internal.toTextureKey(itemKey), itemImage))
+            FileResources.texture(Texture.texture(Internal.toItemPngKey(itemKey), itemImage))
         );
     }
 
