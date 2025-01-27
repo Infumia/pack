@@ -1,6 +1,5 @@
 package net.infumia.pack;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
