@@ -1,6 +1,6 @@
 [versions]
 creative = "1.7.3"
-junit = "5.11.4"
+junit = "5.13.4"
 jackson = "2.20.0"
 
 [libraries]
